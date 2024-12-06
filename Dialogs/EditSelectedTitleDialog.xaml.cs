@@ -22,6 +22,7 @@ namespace SQLLab2.Dialogs
         public EditSelectedTitleDialog()
         {
             InitializeComponent();
+            DataContext = (App.Current.MainWindow as MainWindow).DataContext;
         }
         public void CloseDialog(object sender, RoutedEventArgs e)
         {

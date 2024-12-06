@@ -5,41 +5,55 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLLab2.Dialogs"
         mc:Ignorable="d"
-        Title="EditSelectedTitleDialog" Height="500" Width="400">
+        Title="EditSelectedTitleDialog" Height="Auto" Width="400">
     <Grid>
         <StackPanel>
             <Label Content="Title:"
                HorizontalAlignment="Center"
                Margin="0,20,0,0"/>
-            <TextBox Width="200"/>
+            <TextBox Width="200"
+                     Text="{Binding SelectedBook.Title, Mode=OneWay}"/>
 
             <Label Content="ISBN13:"
                HorizontalAlignment="Center"
                Margin="0,20,0,0"/>
-            <TextBox Width="200"/>
+            <TextBox Width="200"
+                     Text="{Binding SelectedBook.Isbn, Mode=OneWay}"/>
 
             <Label Content="Language:"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
-            <TextBox Width="200"/>
+            <TextBox Width="200"
+                     Text="{Binding SelectedBook.Language, Mode=OneWay}"/>
 
             <Label Content="Date published (xxxx-xx-xx):"
                HorizontalAlignment="Center"
                Margin="0,20,0,0"/>
-            <TextBox Width="200"/>
+            <TextBox Width="200"
+                     Text="{Binding SelectedBook.PublishDate, Mode=OneWay}"/>
 
             <Label Content="Author:"
                HorizontalAlignment="Center"
                Margin="0,20,0,0"/>
-            <!--Bind to authors-->
-            <ComboBox Width="200"/>
+            <!--Fix so you can select multiple-->
+            <ComboBox Width="200" ItemsSource="{Binding Authors}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding FirstName}" Margin="4"/>
+                            <TextBlock Text="{Binding LastName}" Margin="4"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
             <Label Content="Price:"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
-            <TextBox Width="200"/>
+            <TextBox Width="200"
+                     Text="{Binding SelectedBook.Price, Mode=OneWay}"/>
 
-            <DockPanel Margin="0,50,0,0"
+            <DockPanel Margin="0,50,0,50"
                    LastChildFill="False"
                    HorizontalAlignment="Center">
                 <Button Content="OK"

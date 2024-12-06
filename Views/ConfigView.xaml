@@ -28,7 +28,6 @@
                LastChildFill="True"
                Margin="20,20,20,0"
                Height="30">
-            <!--Bind to command and set individual button as commandparameter-->
             <Button Content="Store 1" Style="{StaticResource storeBtn}"
                     Command="{Binding ChangeStoreCommand}"
                     CommandParameter="1"/>

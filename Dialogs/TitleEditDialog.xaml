@@ -34,12 +34,17 @@
             <Button Style="{StaticResource addRemoveBtn}"
                     Command="{Binding CreateNewDialogCommand}"
                     CommandParameter="EditSelectedTitleDialog">
-                <!-- Command, only clickable when author is selected-->
                 <fa:IconBlock Icon="Cogs"/>
             </Button>
         </DockPanel>
-        <ListBox Grid.Row="1">
-            <!--BINDING TO AUTHORS-->
+        <ListBox Grid.Row="1"
+                 ItemsSource="{Binding Books}"
+                 SelectedItem="{Binding SelectedBook}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}" Margin="5"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
         </ListBox>
         <Button Grid.Row="2"
                 Content="OK"

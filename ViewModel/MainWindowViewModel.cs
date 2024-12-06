@@ -15,6 +15,7 @@ namespace SQLLab2.ViewModel
     class MainWindowViewModel : ViewModelBase
     {
         private ObservableCollection<StoreSupply> _storeSupply;
+        private ObservableCollection<Author> _authors;
         private ObservableCollection<Book> _books;
         private StoreSupply _selectedStoreSupply;
         private Book _selectedBook;
@@ -39,6 +40,15 @@ namespace SQLLab2.ViewModel
             }
         }
 
+        public ObservableCollection<Author> Authors
+        {
+            get => _authors;
+            set
+            {
+                _authors = value;
+                RaisePropertyChanged();
+            }
+        }
         public ObservableCollection<Book> Books
         {
             get => _books;
@@ -108,6 +118,7 @@ namespace SQLLab2.ViewModel
             }
 
             Books = GetBooks();
+            Authors = GetAuthors();
         }
         private void InitializeCommands()
         {
@@ -159,6 +170,16 @@ namespace SQLLab2.ViewModel
                 .ToList());
 
             return books;
+        }
+
+        private ObservableCollection<Author> GetAuthors()
+        {
+            using var db = new BookstoreContext();
+            var authors = new ObservableCollection<Author>(
+                db.Authors
+                .ToList());
+
+            return authors;
         }
     }
 }
