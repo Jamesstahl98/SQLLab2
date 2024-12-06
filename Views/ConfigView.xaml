@@ -29,9 +29,15 @@
                Margin="20,20,20,0"
                Height="30">
             <!--Bind to command and set individual button as commandparameter-->
-            <Button Content="Store 1" Style="{StaticResource storeBtn}"/>
-            <Button Content="Store 2" Style="{StaticResource storeBtn}"/>
-            <Button Content="Store 3" Style="{StaticResource storeBtn}"/>
+            <Button Content="Store 1" Style="{StaticResource storeBtn}"
+                    Command="{Binding ChangeStoreCommand}"
+                    CommandParameter="1"/>
+            <Button Content="Store 2" Style="{StaticResource storeBtn}"
+                    Command="{Binding ChangeStoreCommand}"
+                    CommandParameter="2"/>
+            <Button Content="Store 3" Style="{StaticResource storeBtn}"
+                    Command="{Binding ChangeStoreCommand}"
+                    CommandParameter="3"/>
             <DockPanel HorizontalAlignment="Right"
                    Margin="0,0,20,0">
                 <Button Style="{StaticResource addRemoveBtn}"
@@ -60,10 +66,8 @@
                         <TextBlock Text="Amount" Grid.Column="0" HorizontalAlignment="Left" FontWeight="Bold" Margin="5"/>
                         <TextBlock Text="Title" Grid.Column="1" HorizontalAlignment="Left" FontWeight="Bold" Margin="5"/>
                     </Grid>
-                    <!--Bind to books-->
-                    <!--Bind selectedItem to selected book-->
                     <ListBox Grid.Row="1" 
-                             ItemsSource="{Binding StoreOneSupply}"
+                             ItemsSource="{Binding StoreSupply}"
                              SelectedItem="{Binding SelectedStoreSupply}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>

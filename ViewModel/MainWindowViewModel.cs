@@ -4,7 +4,9 @@ using SQLLab2.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Design;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,42 +14,32 @@ namespace SQLLab2.ViewModel
 {
     class MainWindowViewModel : ViewModelBase
     {
-        private ObservableCollection<StoreSupply> _storeOneSupply;
-        private ObservableCollection<StoreSupply> _storeTwoSupply;
-        private ObservableCollection<StoreSupply> _storeThreeSupply;
-        private List<Book> _books;
+        private ObservableCollection<StoreSupply> _storeSupply;
+        private ObservableCollection<Book> _books;
         private StoreSupply _selectedStoreSupply;
         private Book _selectedBook;
+        private Store _selectedStore;
 
-        public ObservableCollection<StoreSupply> StoreOneSupply
+        public Store SelectedStore
         {
-            get => _storeOneSupply;
+            get => _selectedStore;
             set 
             { 
-                _storeOneSupply = value;
+                _selectedStore = value;
                 RaisePropertyChanged();
             }
         }
-        public ObservableCollection<StoreSupply> StoreTwoSupply
+        public ObservableCollection<StoreSupply> StoreSupply
         {
-            get => _storeTwoSupply;
-            set
-            {
-                _storeTwoSupply = value;
-                RaisePropertyChanged();
-            }
-        }
-        public ObservableCollection<StoreSupply> StoreThreeSupply
-        {
-            get => _storeThreeSupply;
-            set
-            {
-                _storeThreeSupply = value;
+            get => _storeSupply;
+            set 
+            { 
+                _storeSupply = value;
                 RaisePropertyChanged();
             }
         }
 
-        public List<Book> Books
+        public ObservableCollection<Book> Books
         {
             get => _books;
             set
@@ -97,6 +89,7 @@ namespace SQLLab2.ViewModel
         public DelegateCommand CreateNewDialogCommand { get; private set; }
         public DelegateCommand SubtractSupplyCommand { get; private set; }
         public DelegateCommand AddSupplyCommand { get; private set; }
+        public DelegateCommand ChangeStoreCommand { get; private set; }
 
         public event Action<string> CreateDialogRequested;
         public MainWindowViewModel()
@@ -106,12 +99,8 @@ namespace SQLLab2.ViewModel
 
             try
             {
-                StoreOneSupply = new ObservableCollection<StoreSupply>(
+                StoreSupply = new ObservableCollection<StoreSupply>(
                 db.StoreSupplies.Where(s => s.StoreId == 1).ToList());
-                StoreTwoSupply = new ObservableCollection<StoreSupply>(
-                    db.StoreSupplies.Where(s => s.StoreId == 2).ToList());
-                StoreThreeSupply = new ObservableCollection<StoreSupply>(
-                    db.StoreSupplies.Where(s => s.StoreId == 3).ToList());
             }
             catch (Exception ex)
             {
@@ -125,6 +114,19 @@ namespace SQLLab2.ViewModel
             CreateNewDialogCommand = new DelegateCommand(CreateNewDialog);
             SubtractSupplyCommand = new DelegateCommand(SubtractSupply);
             AddSupplyCommand = new DelegateCommand(AddSupply);
+            ChangeStoreCommand = new DelegateCommand(ChangeStore);
+        }
+
+        private void ChangeStore(object obj)
+        {
+            int parameterId = Convert.ToInt32(obj);
+            if (parameterId is int storeId)
+            {
+                using var db = new BookstoreContext();
+                var storeSupplies = db.StoreSupplies.Where(s => s.StoreId == storeId).ToList();
+
+                StoreSupply = new ObservableCollection<StoreSupply>(storeSupplies);
+            }
         }
 
         private void AddSupply(object obj)
@@ -149,14 +151,12 @@ namespace SQLLab2.ViewModel
             CreateDialogRequested?.Invoke(className);
         }
 
-        private List<Book> GetBooks()   
+        private ObservableCollection<Book> GetBooks()   
         {
             using var db = new BookstoreContext();
-            var books = db.StoreSupplies
-                .Select(s => s.IsbnNavigation)
-                .GroupBy(b => b.Isbn)
-                .Select(g => g.First())
-                .ToList();
+            var books = new ObservableCollection<Book>(
+                db.Books
+                .ToList());
 
             return books;
         }
