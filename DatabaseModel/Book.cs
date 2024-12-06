@@ -15,7 +15,7 @@ public partial class Book
 
     public int Pages { get; set; }
 
-    public DateTime? PublishDate { get; set; }
+    public DateOnly? PublishDate { get; set; }
 
     public int? PublisherId { get; set; }
 

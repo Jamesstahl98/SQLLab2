@@ -11,9 +11,9 @@ public partial class Author
 
     public string LastName { get; set; } = null!;
 
-    public DateTime BirthDate { get; set; }
+    public DateOnly BirthDate { get; set; }
 
-    public DateTime? DeathDate { get; set; }
+    public DateOnly? DeathDate { get; set; }
 
     public virtual ICollection<Book> BookIsbns { get; set; } = new List<Book>();
 }

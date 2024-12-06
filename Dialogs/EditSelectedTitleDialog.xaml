@@ -9,34 +9,35 @@
     <Grid>
         <StackPanel>
             <Label Content="Title:"
-               HorizontalAlignment="Center"
-               Margin="0,20,0,0"/>
+                   HorizontalAlignment="Center"
+                   Margin="0,20,0,0"/>
             <TextBox Width="200"
-                     Text="{Binding SelectedBook.Title, Mode=OneWay}"/>
+                     Text="{Binding SelectedBook.Title}"/>
 
             <Label Content="ISBN13:"
                HorizontalAlignment="Center"
                Margin="0,20,0,0"/>
             <TextBox Width="200"
-                     Text="{Binding SelectedBook.Isbn, Mode=OneWay}"/>
+                     Text="{Binding SelectedBook.Isbn}"/>
 
             <Label Content="Language:"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
             <TextBox Width="200"
-                     Text="{Binding SelectedBook.Language, Mode=OneWay}"/>
+                     Text="{Binding SelectedBook.Language}"/>
 
             <Label Content="Date published (xxxx-xx-xx):"
                HorizontalAlignment="Center"
                Margin="0,20,0,0"/>
             <TextBox Width="200"
-                     Text="{Binding SelectedBook.PublishDate, Mode=OneWay}"/>
+                     Text="{Binding SelectedBook.PublishDate}"/>
 
             <Label Content="Author:"
                HorizontalAlignment="Center"
                Margin="0,20,0,0"/>
-            <!--Fix so you can select multiple-->
-            <ComboBox Width="200" ItemsSource="{Binding Authors}">
+            
+            <!-- Fix so this is doable with multiple authors -->
+            <ComboBox Width="200" ItemsSource="{Binding MainWindowViewModel.Authors}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -51,7 +52,7 @@
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
             <TextBox Width="200"
-                     Text="{Binding SelectedBook.Price, Mode=OneWay}"/>
+                     Text="{Binding SelectedBook.Price}"/>
 
             <DockPanel Margin="0,50,0,50"
                    LastChildFill="False"
@@ -59,6 +60,7 @@
                 <Button Content="OK"
                         Width="50"
                         Margin="0,0,20,0"
+                        Command="{Binding UpdateTitleCommand}"
                         Click="CloseDialog"/>
                 <Button Content="Cancel"
                         Width="50"

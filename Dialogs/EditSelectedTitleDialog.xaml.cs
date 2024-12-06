@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLLab2.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,7 @@ namespace SQLLab2.Dialogs
         public EditSelectedTitleDialog()
         {
             InitializeComponent();
-            DataContext = (App.Current.MainWindow as MainWindow).DataContext;
+            DataContext = new EditSelectedTitleViewModel((App.Current.MainWindow as MainWindow).DataContext as MainWindowViewModel);
         }
         public void CloseDialog(object sender, RoutedEventArgs e)
         {
