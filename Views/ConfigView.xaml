@@ -34,10 +34,12 @@
             <Button Content="Store 3" Style="{StaticResource storeBtn}"/>
             <DockPanel HorizontalAlignment="Right"
                    Margin="0,0,20,0">
-                <Button Style="{StaticResource addRemoveBtn}">
+                <Button Style="{StaticResource addRemoveBtn}"
+                        Command="{Binding AddSupplyCommand}">
                     <fa:IconBlock Icon="Plus"/>
                 </Button>
-                <Button Style="{StaticResource addRemoveBtn}">
+                <Button Style="{StaticResource addRemoveBtn}"
+                        Command="{Binding SubtractSupplyCommand}">
                     <fa:IconBlock Icon="Minus"/>
                 </Button>
             </DockPanel>
@@ -60,7 +62,9 @@
                     </Grid>
                     <!--Bind to books-->
                     <!--Bind selectedItem to selected book-->
-                    <ListBox Grid.Row="1">
+                    <ListBox Grid.Row="1" 
+                             ItemsSource="{Binding StoreOneSupply}"
+                             SelectedItem="{Binding SelectedStoreSupply}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -69,8 +73,8 @@
                                         <ColumnDefinition Width="340"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <TextBlock Text="Amount" Grid.Column="0" Margin="5"/>
-                                    <TextBlock Text="Amount" Grid.Column="1" Margin="5"/>
+                                    <TextBlock Text="{Binding Amount}" Grid.Column="0" Margin="5"/>
+                                    <TextBlock Text="{Binding Isbn}" Grid.Column="1" Margin="5"/>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -90,12 +94,30 @@
         <StackPanel Grid.Column="1"
                 Grid.Row="1"
                 Margin="20">
-            <Label Content="Binding to author name"/>
-            <Label Content="Title"/>
-            <Label Content="ISBN"/>
-            <Label Content="Price"/>
-            <Label Content="Date published"/>
-            <Label Content="Pages"/>
+            <StackPanel Orientation="Horizontal" DataContext="{Binding SelectedBook.Authors}">
+                <TextBlock Text="{Binding Path=FirstName, 
+                                 StringFormat='Author: {0}'}"
+                           Margin="4"/>
+                <TextBlock Text="{Binding LastName}" Margin="4"/>
+            </StackPanel>
+            <TextBlock Text="{Binding Path=SelectedBook.Title, 
+                StringFormat='Title: {0}'}"
+                       Margin="4"/>
+            <TextBlock Text="{Binding Path=SelectedBook.Isbn, 
+                            StringFormat='ISBN: {0}'}"
+                       Margin="4"/>
+            <TextBlock Text="{Binding Path=SelectedBook.Publisher.Name, 
+                            StringFormat='Publisher: {0}'}"
+                       Margin="4"/>
+            <TextBlock Text="{Binding Path=SelectedBook.PublishDate, 
+                            StringFormat='Date Published: {0}'}"
+                       Margin="4"/>
+            <TextBlock Text="{Binding Path=SelectedBook.Price, 
+                            StringFormat='Price: {0}'}"
+                       Margin="4"/>
+            <TextBlock Text="{Binding Path=SelectedBook.Pages, 
+                            StringFormat='Pages: {0}'}"
+                       Margin="4"/>
         </StackPanel>
     </Grid>
 </UserControl>
