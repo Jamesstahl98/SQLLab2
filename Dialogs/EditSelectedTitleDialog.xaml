@@ -35,18 +35,25 @@
             <Label Content="Author:"
                HorizontalAlignment="Center"
                Margin="0,20,0,0"/>
-            
-            <!-- Fix so this is doable with multiple authors -->
-            <ComboBox Width="200" ItemsSource="{Binding MainWindowViewModel.Authors}">
-                <ComboBox.ItemTemplate>
+
+            <ItemsControl ItemsSource="{Binding EditableAuthors}">
+                <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding FirstName}" Margin="4"/>
-                            <TextBlock Text="{Binding LastName}" Margin="4"/>
-                        </StackPanel>
+                        <ComboBox Width="200"
+                      ItemsSource="{Binding DataContext.AllAuthors, RelativeSource={RelativeSource AncestorType=Window}}"
+                      SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.EditableAuthors[0], Mode=TwoWay}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding FirstName}" Margin="4"/>
+                                        <TextBlock Text="{Binding LastName}" Margin="4"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                     </DataTemplate>
-                </ComboBox.ItemTemplate>
-            </ComboBox>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
             <Label Content="Price:"
                    HorizontalAlignment="Center"

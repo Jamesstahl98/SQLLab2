@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Model\" />
     <Folder Include="Converters\" />
+    <Folder Include="Model\" />
   </ItemGroup>
 
   <ItemGroup>

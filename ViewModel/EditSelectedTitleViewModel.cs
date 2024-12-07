@@ -1,6 +1,7 @@
 ﻿using SQLLab2.Commands;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,17 @@ namespace SQLLab2.ViewModel
     internal class EditSelectedTitleViewModel : ViewModelBase
     {
         private Book _selectedBook;
-
+        private ObservableCollection<Author> _editableAuthors;
+        public ObservableCollection<Author> EditableAuthors
+        {
+            get => _editableAuthors;
+            set
+            {
+                _editableAuthors = value;
+                RaisePropertyChanged();
+            }
+        }
+        public ObservableCollection<Author> AllAuthors { get; set; }
         public MainWindowViewModel MainWindowViewModel { get; set; }
         public Book SelectedBook
         {
@@ -26,7 +37,9 @@ namespace SQLLab2.ViewModel
         public EditSelectedTitleViewModel(MainWindowViewModel mainWindowViewModel)
         {
             MainWindowViewModel = mainWindowViewModel;
-            SelectedBook = MainWindowViewModel.SelectedBook;
+            SelectedBook = new Book(mainWindowViewModel.SelectedBook);
+            EditableAuthors = new ObservableCollection<Author>(SelectedBook.Authors);
+            AllAuthors = MainWindowViewModel.Authors;
 
             InitializeCommands();
         }
@@ -38,7 +51,15 @@ namespace SQLLab2.ViewModel
 
         private void UpdateTitle(object obj)
         {
-            MainWindowViewModel.SelectedBook = SelectedBook;
+            var originalBook = MainWindowViewModel.SelectedBook;
+
+            originalBook.Title = SelectedBook.Title;
+            originalBook.Isbn = SelectedBook.Isbn;
+            originalBook.Language = SelectedBook.Language;
+            originalBook.PublishDate = SelectedBook.PublishDate;
+            originalBook.Price = SelectedBook.Price;
+
+            originalBook.Authors = EditableAuthors;
         }
     }
 }

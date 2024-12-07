@@ -14,12 +14,12 @@ namespace SQLLab2.ViewModel
 {
     class MainWindowViewModel : ViewModelBase
     {
-        private ObservableCollection<StoreSupply> _storeSupply;
-        private ObservableCollection<Author> _authors;
-        private ObservableCollection<Book> _books;
         private StoreSupply _selectedStoreSupply;
         private Book _selectedBook;
         private Store _selectedStore;
+        private ObservableCollection<StoreSupply> _storeSupply;
+        private ObservableCollection<Author> _authors;
+        private ObservableCollection<Book> _books;
 
         public Store SelectedStore
         {
@@ -33,8 +33,8 @@ namespace SQLLab2.ViewModel
         public ObservableCollection<StoreSupply> StoreSupply
         {
             get => _storeSupply;
-            set 
-            { 
+            set
+            {
                 _storeSupply = value;
                 RaisePropertyChanged();
             }
@@ -44,7 +44,7 @@ namespace SQLLab2.ViewModel
         {
             get => _authors;
             set
-            {
+            { 
                 _authors = value;
                 RaisePropertyChanged();
             }
@@ -53,7 +53,7 @@ namespace SQLLab2.ViewModel
         {
             get => _books;
             set
-            {
+            { 
                 _books = value;
                 RaisePropertyChanged();
             }
@@ -166,7 +166,8 @@ namespace SQLLab2.ViewModel
         {
             using var db = new BookstoreContext();
             var books = new ObservableCollection<Book>(
-                db.Books
+                db.Books.Include(b => b.Authors)
+                .Include(b => b.Publisher)
                 .ToList());
 
             return books;
