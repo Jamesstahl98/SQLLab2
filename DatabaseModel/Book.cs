@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls;
 
 namespace SQLLab2;
 
-public partial class Book : INotifyPropertyChanged
+public partial class Book: INotifyPropertyChanged
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    private ObservableCollection<Author> _authors = new ObservableCollection<Author>();
+    private ObservableCollection<Author> _authors;
 
     public string Isbn { get; set; } = null!;
 
@@ -26,7 +25,7 @@ public partial class Book : INotifyPropertyChanged
 
     public int? PublisherId { get; set; }
 
-    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+    public virtual ICollection<OrderBookJt> OrderBookJts { get; set; } = new List<OrderBookJt>();
 
     public virtual Publisher? Publisher { get; set; }
 
@@ -36,12 +35,16 @@ public partial class Book : INotifyPropertyChanged
     {
         get => _authors;
         set
-        { 
+        {
             _authors = value;
             OnPropertyChanged();
         }
     }
+
     public virtual ICollection<Genre> Genres { get; set; } = new List<Genre>();
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     public Book()
     {
 
@@ -59,7 +62,6 @@ public partial class Book : INotifyPropertyChanged
         PublishDate = other.PublishDate;
         PublisherId = other.PublisherId;
         Publisher = other.Publisher;
-        Orders = new List<Order>(other.Orders);
         StoreSupplies = new List<StoreSupply>(other.StoreSupplies);
         Authors = new ObservableCollection<Author>(other.Authors);
         Genres = new List<Genre>(other.Genres);

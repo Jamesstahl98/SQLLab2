@@ -9,9 +9,15 @@ public partial class Order
 
     public int CustomerId { get; set; }
 
-    public string BookIsbn { get; set; } = null!;
+    public DateTime DateAndTimePlaced { get; set; }
 
-    public virtual Book BookIsbnNavigation { get; set; } = null!;
+    public string City { get; set; } = null!;
+
+    public string Address { get; set; } = null!;
+
+    public string PostalCode { get; set; } = null!;
 
     public virtual Customer Customer { get; set; } = null!;
+
+    public virtual ICollection<OrderBookJt> OrderBookJts { get; set; } = new List<OrderBookJt>();
 }

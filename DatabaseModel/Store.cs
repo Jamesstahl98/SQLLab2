@@ -9,7 +9,11 @@ public partial class Store
 
     public string StoreName { get; set; } = null!;
 
+    public string City { get; set; } = null!;
+
     public string Address { get; set; } = null!;
+
+    public string PostalCode { get; set; } = null!;
 
     public virtual ICollection<StoreSupply> StoreSupplies { get; set; } = new List<StoreSupply>();
 }
