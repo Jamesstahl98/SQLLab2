@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace SQLLab2;
 
 public partial class BookstoreContext : DbContext
 {
+    [DllImport("Kernel32")]
+    public static extern void AllocConsole();
     public BookstoreContext()
     {
     }
@@ -39,7 +44,18 @@ public partial class BookstoreContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Initial Catalog=Bookstore;Integrated Security=True;Trust Server Certificate=True;Server SPN=localhost");
+    { 
+        optionsBuilder.UseSqlServer("Initial Catalog=Bookstore;Integrated Security=True;Trust Server Certificate=True;Server SPN=localhost");
+        AllocConsole();
+        optionsBuilder
+            .LogTo(
+                message => MyLogger(message),
+                new[] { DbLoggerCategory.Database.Command.Name },
+                LogLevel.Information,
+                DbContextLoggerOptions.Level | DbContextLoggerOptions.LocalTime
+            )
+            .EnableSensitiveDataLogging();
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -258,4 +274,23 @@ public partial class BookstoreContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+    private void MyLogger(string message)
+    {
+        var lines = message.Split('\n');
+
+        Console.WriteLine();
+
+        for (int i = 0; i < lines.Length; i++)
+        {
+            if (i == 0) Console.ForegroundColor = ConsoleColor.Blue;
+            if (i == 1) Console.ForegroundColor = ConsoleColor.DarkGray;
+            if (i == 2) Console.ForegroundColor = ConsoleColor.White;
+
+            Console.WriteLine(lines[i]);
+        }
+
+        Console.ResetColor();
+        Console.WriteLine();
+    }
 }

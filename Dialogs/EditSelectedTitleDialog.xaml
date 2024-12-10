@@ -3,9 +3,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         xmlns:local="clr-namespace:SQLLab2.Dialogs"
         mc:Ignorable="d"
         Title="EditSelectedTitleDialog" Height="Auto" Width="400">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/SQLLab2;component/Styles/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <StackPanel>
             <Label Content="Title:"
@@ -32,16 +40,29 @@
             <TextBox Width="200"
                      Text="{Binding SelectedBook.PublishDate}"/>
 
-            <Label Content="Author:"
-               HorizontalAlignment="Center"
-               Margin="0,20,0,0"/>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,20,0,0">
+                <Button Style="{StaticResource addRemoveBtn}"
+                        Margin="0,0,0,0"
+                        VerticalAlignment="Center"
+                        Command="{Binding AddAuthorCommand}">
+                    <fa:IconBlock Icon="Plus"/>
+                </Button>
+                <Label Content="Author:"
+                       HorizontalAlignment="Center"/>
+            </StackPanel>
+
 
             <ItemsControl ItemsSource="{Binding EditableAuthors}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <ComboBox Width="200"
-                      ItemsSource="{Binding DataContext.AllAuthors, RelativeSource={RelativeSource AncestorType=Window}}"
-                      SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.EditableAuthors[0], Mode=TwoWay}">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <ComboBox Width="200"
+                                      Height="30"
+                                  ItemsSource="{Binding DataContext.AllAuthors, RelativeSource={RelativeSource AncestorType=Window}}"
+                                  SelectedItem="{Binding SelectedAuthor, Mode=TwoWay}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -50,7 +71,16 @@
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
-                        </ComboBox>
+                            </ComboBox>
+
+                            <Button Style="{StaticResource addRemoveBtn}"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding DataContext.RemoveAuthorCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}">
+                                <fa:IconBlock Icon="Minus"/>
+                            </Button>
+                        </StackPanel>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
