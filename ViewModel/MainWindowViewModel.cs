@@ -3,6 +3,7 @@ using Microsoft.Identity.Client;
 using SQLLab2.Commands;
 using SQLLab2.Dialogs;
 using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
@@ -180,6 +181,20 @@ namespace SQLLab2.ViewModel
                 db.Books.Include(b => b.Authors)
                 .Include(b => b.Publisher)
                 .ToList());
+        }
+        public void AddBookToStoreSupplies(Book book)
+        {
+            using var db = new BookstoreContext();
+            var storeCount = db.Stores.Count();
+
+            for (int i = 1; i < storeCount; i++)
+            {
+                var store = db.Stores.Where(s => s.Id == i).Include(s => s.StoreSupplies).SingleOrDefault();
+                store.StoreSupplies.Add(new StoreSupply() { Isbn = book.Isbn, Amount = 0, StoreId = i });
+            }
+
+            db.SaveChanges();
+            ChangeStoreCommand.Execute(1);
         }
     }
 }

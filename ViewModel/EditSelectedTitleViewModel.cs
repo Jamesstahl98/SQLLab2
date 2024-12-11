@@ -57,22 +57,30 @@ namespace SQLLab2.ViewModel
         public DelegateCommand AddAuthorCommand { get; private set; }
         public DelegateCommand RemoveAuthorCommand { get; private set; }
 
-        public EditSelectedTitleViewModel(MainWindowViewModel mainWindowViewModel)
+        public EditSelectedTitleViewModel(MainWindowViewModel mainWindowViewModel, bool newWindow)
         {
             MainWindowViewModel = mainWindowViewModel;
 
             AllAuthors = MainWindowViewModel.Authors;
+            if (!newWindow)
+            {
+                SelectedBook = new Book(mainWindowViewModel.SelectedBook);
 
-            SelectedBook = new Book(mainWindowViewModel.SelectedBook);
-
-
-            EditableAuthors = new ObservableCollection<EditableAuthor>(
+                EditableAuthors = new ObservableCollection<EditableAuthor>(
                 SelectedBook.Authors.Select(author =>
                     new EditableAuthor
                     {
                         SelectedAuthor = AllAuthors.FirstOrDefault(a => a.Id == author.Id) ?? AllAuthors.FirstOrDefault()
                     })
             );
+            }
+
+            else
+            {
+                SelectedBook = new Book();
+
+                EditableAuthors = new ObservableCollection<EditableAuthor>();
+            }
 
             InitializeCommands();
         }
@@ -102,15 +110,27 @@ namespace SQLLab2.ViewModel
                 .Include(b => b.Authors)
                 .FirstOrDefault(b => b.Isbn == SelectedBook.Isbn);
 
-            if (originalBook == null) return;
+            if (originalBook == null)
+            {
+                originalBook = SelectedBook;
+                db.Books.Add(originalBook);
+            }
 
             originalBook.Title = SelectedBook.Title;
             originalBook.Isbn = SelectedBook.Isbn;
             originalBook.Language = SelectedBook.Language;
             originalBook.PublishDate = SelectedBook.PublishDate;
             originalBook.Price = SelectedBook.Price;
+            originalBook.Pages = SelectedBook.Pages;
 
-            originalBook.Authors.Clear();
+            if (originalBook.Authors != null)
+            {
+                originalBook.Authors.Clear();
+            }
+            else
+            {
+                originalBook.Authors = new ObservableCollection<Author>();
+            }
             foreach (var editableAuthor in EditableAuthors)
             {
                 var author = editableAuthor.SelectedAuthor;
@@ -127,6 +147,7 @@ namespace SQLLab2.ViewModel
                 }
             }
             db.SaveChanges();
+            MainWindowViewModel.AddBookToStoreSupplies(originalBook);
             MainWindowViewModel.RefreshBooks();
         }
     }

@@ -25,7 +25,9 @@
            Margin="20,10,20,0"
            Width="80"
            HorizontalAlignment="Right">
-            <Button Style="{StaticResource addRemoveBtn}">
+            <Button Style="{StaticResource addRemoveBtn}"
+                    Command="{Binding CreateNewDialogCommand}"
+                    CommandParameter="AddTitleDialog">
                 <fa:IconBlock Icon="Plus"/>
             </Button>
             <Button Style="{StaticResource addRemoveBtn}">
