@@ -126,8 +126,8 @@ namespace SQLLab2.ViewModel
                     originalBook.Authors.Add(author);
                 }
             }
-
             db.SaveChanges();
+            MainWindowViewModel.RefreshBooks();
         }
     }
 }

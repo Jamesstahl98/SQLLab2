@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using SQLLab2.Commands;
+using SQLLab2.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -117,7 +118,7 @@ namespace SQLLab2.ViewModel
                 Console.WriteLine($"Error fetching store supplies: {ex.Message}");
             }
 
-            Books = GetBooks();
+            RefreshBooks();
             Authors = GetAuthors();
         }
         private void InitializeCommands()
@@ -159,18 +160,8 @@ namespace SQLLab2.ViewModel
         private void CreateNewDialog(object obj)
         {
             string className = obj as string;
+
             CreateDialogRequested?.Invoke(className);
-        }
-
-        private ObservableCollection<Book> GetBooks()   
-        {
-            using var db = new BookstoreContext();
-            var books = new ObservableCollection<Book>(
-                db.Books.Include(b => b.Authors)
-                .Include(b => b.Publisher)
-                .ToList());
-
-            return books;
         }
 
         private ObservableCollection<Author> GetAuthors()
@@ -181,6 +172,14 @@ namespace SQLLab2.ViewModel
                 .ToList());
 
             return authors;
+        }
+        public void RefreshBooks()
+        {
+            using var db = new BookstoreContext();
+            Books = new ObservableCollection<Book>(
+                db.Books.Include(b => b.Authors)
+                .Include(b => b.Publisher)
+                .ToList());
         }
     }
 }
