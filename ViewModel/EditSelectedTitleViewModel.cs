@@ -122,6 +122,7 @@ namespace SQLLab2.ViewModel
             originalBook.Title = SelectedBook.Title;
             originalBook.Isbn = SelectedBook.Isbn;
             originalBook.Language = SelectedBook.Language;
+            originalBook.Publisher = SelectedBook.Publisher;
             originalBook.PublishDate = SelectedBook.PublishDate;
             originalBook.Price = SelectedBook.Price;
             originalBook.Pages = SelectedBook.Pages;
