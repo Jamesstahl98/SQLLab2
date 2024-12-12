@@ -57,12 +57,12 @@ namespace SQLLab2.ViewModel
         public DelegateCommand AddAuthorCommand { get; private set; }
         public DelegateCommand RemoveAuthorCommand { get; private set; }
 
-        public EditSelectedTitleViewModel(MainWindowViewModel mainWindowViewModel, bool newWindow)
+        public EditSelectedTitleViewModel(MainWindowViewModel mainWindowViewModel, bool newTitle)
         {
             MainWindowViewModel = mainWindowViewModel;
 
             AllAuthors = MainWindowViewModel.Authors;
-            if (!newWindow)
+            if (!newTitle)
             {
                 SelectedBook = new Book(mainWindowViewModel.SelectedBook);
 

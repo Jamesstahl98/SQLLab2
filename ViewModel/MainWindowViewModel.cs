@@ -21,6 +21,8 @@ namespace SQLLab2.ViewModel
         private ObservableCollection<StoreSupply> _storeSupply;
         private ObservableCollection<Author> _authors;
         private ObservableCollection<Book> _books;
+        private Author _selectedAuthor;
+
         public ObservableCollection<StoreSupply> StoreSupply
         {
             get => _storeSupply;
@@ -61,6 +63,16 @@ namespace SQLLab2.ViewModel
                 RaisePropertyChanged();
 
                 UpdateSelectedBook();
+            }
+        }
+
+        public Author SelectedAuthor
+        {
+            get => _selectedAuthor;
+            set
+            {
+                _selectedAuthor = value;
+                RaisePropertyChanged();
             }
         }
 
@@ -111,7 +123,7 @@ namespace SQLLab2.ViewModel
 
             RefreshBooks();
             RefreshPublishers();
-            Authors = GetAuthors();
+            RefreshAuthors();
         }
         private void InitializeCommands()
         {
@@ -162,16 +174,6 @@ namespace SQLLab2.ViewModel
 
             CreateDialogRequested?.Invoke(className);
         }
-
-        private ObservableCollection<Author> GetAuthors()
-        {
-            using var db = new BookstoreContext();
-            var authors = new ObservableCollection<Author>(
-                db.Authors
-                .ToList());
-
-            return authors;
-        }
         public void AddBookToStoreSupplies(Book book)
         {
             using var db = new BookstoreContext();
@@ -186,6 +188,13 @@ namespace SQLLab2.ViewModel
 
             db.SaveChanges();
         }
+        public void RefreshAuthors()
+        {
+            using var db = new BookstoreContext();
+            Authors = new ObservableCollection<Author>(
+                db.Authors
+                .ToList());
+        }
         public void RefreshBooks()
         {
             using var db = new BookstoreContext();
@@ -196,7 +205,6 @@ namespace SQLLab2.ViewModel
 
             ChangeStoreCommand.Execute(1);
         }
-
         public void RefreshPublishers()
         {
             using var db = new BookstoreContext();

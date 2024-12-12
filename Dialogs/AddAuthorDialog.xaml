@@ -11,22 +11,26 @@
             <Label Content="First name:"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
-            <TextBox Width="200"/>
+            <TextBox Width="200"
+                     Text="{Binding SelectedAuthor.FirstName}"/>
             
             <Label Content="Last name:"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
-            <TextBox Width="200"/>
+            <TextBox Width="200"
+                     Text="{Binding SelectedAuthor.LastName}"/>
             
             <Label Content="Birth date:"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
-            <TextBox Width="200"/>
+            <TextBox Width="200"
+                     Text="{Binding SelectedAuthor.BirthDate}"/>
             
             <Label Content="Death date (Leave blank if author is alive):"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
-            <TextBox Width="200"/>
+            <TextBox Width="200"
+                     Text="{Binding SelectedAuthor.DeathDate}"/>
             
             <DockPanel Margin="0,50,0,0"
                        LastChildFill="False"
@@ -34,6 +38,7 @@
                 <Button Content="OK"
                         Width="50"
                         Margin="0,0,20,0"
+                        Command="{Binding UpdateAuthorCommand}"
                         Click="CloseDialog"/>
                 <Button Content="Cancel"
                         Width="50"

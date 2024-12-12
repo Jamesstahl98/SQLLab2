@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         xmlns:local="clr-namespace:SQLLab2.Dialogs" xmlns:viewmodel="clr-namespace:SQLLab2.ViewModel"
+        xmlns:converters="clr-namespace:SQLLab2.Converters"
         mc:Ignorable="d"
         Title="AuthorEditDialog" Height="450" Width="400">
     <Window.Resources>
         <ResourceDictionary>
+            <converters:AuthorsConverter x:Key="AuthorsToStringConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/SQLLab2;component/Styles/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -22,29 +24,36 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0"
-                   Margin="20,10,20,0"
-                   Width="80"
-                   HorizontalAlignment="Right">
-            <Button Style="{StaticResource addRemoveBtn}">
+       Margin="20,10,20,0"
+       Width="80"
+       HorizontalAlignment="Right">
+            <Button Style="{StaticResource addRemoveBtn}"
+                Command="{Binding CreateNewDialogCommand}"
+                CommandParameter="AddAuthorDialog">
                 <fa:IconBlock Icon="Plus"/>
             </Button>
             <Button Style="{StaticResource addRemoveBtn}">
                 <fa:IconBlock Icon="Minus"/>
             </Button>
             <Button Style="{StaticResource addRemoveBtn}"
-                    Command="{Binding CreateNewDialogCommand}"
-                    CommandParameter="EditSelectedAuthorDialog">
-                <!-- Command, only clickable when author is selected-->
+                Command="{Binding CreateNewDialogCommand}"
+                CommandParameter="EditSelectedAuthorDialog">
                 <fa:IconBlock Icon="Cogs"/>
             </Button>
         </DockPanel>
-        <ListBox Grid.Row="1">
-            <!--BINDING TO AUTHORS-->
-        </ListBox>
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding Authors}"
+                  SelectedItem="{Binding SelectedAuthor}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Author" Binding="{Binding FullName}"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <Button Grid.Row="2"
-                Content="OK"
-                Width="60"
-                Margin="20"
-                Click="CloseDialog"/>
+            Content="OK"
+            Width="60"
+            Margin="20"
+            Click="CloseDialog"/>
     </Grid>
 </Window>

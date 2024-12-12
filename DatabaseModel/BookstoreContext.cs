@@ -70,6 +70,8 @@ public partial class BookstoreContext : DbContext
             entity.Property(e => e.DeathDate).HasColumnName("deathDate");
             entity.Property(e => e.FirstName).HasColumnName("firstName");
             entity.Property(e => e.LastName).HasColumnName("lastName");
+
+            entity.Ignore(e => e.FullName);
         });
 
         modelBuilder.Entity<Book>(entity =>
