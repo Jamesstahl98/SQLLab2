@@ -5,10 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              xmlns:local="clr-namespace:SQLLab2.Views"
+             xmlns:converters="clr-namespace:SQLLab2.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <ResourceDictionary>
+            <converters:AuthorsConverter x:Key="AuthorsConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/SQLLab2;component/Styles/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -49,42 +51,18 @@
                 </Button>
             </DockPanel>
         </DockPanel>
-        <Grid Grid.Row="1">
-            <Border BorderBrush="Black" BorderThickness="2">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60"/>
-                            <ColumnDefinition Width="100"/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Text="Amount" Grid.Column="0" HorizontalAlignment="Left" FontWeight="Bold" Margin="5"/>
-                        <TextBlock Text="Title" Grid.Column="1" HorizontalAlignment="Left" FontWeight="Bold" Margin="5"/>
-                    </Grid>
-                    <ListBox Grid.Row="1" 
-                             ItemsSource="{Binding StoreSupply}"
-                             SelectedItem="{Binding SelectedStoreSupply}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50"/>
-                                        <ColumnDefinition Width="340"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <TextBlock Text="{Binding Amount}" Grid.Column="0" Margin="5"/>
-                                    <TextBlock Text="{Binding Isbn}" Grid.Column="1" Margin="5"/>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </Grid>
-            </Border>
-        </Grid>
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding StoreSupply}"
+                  SelectedItem="{Binding SelectedStoreSupply}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" />
+                <DataGridTextColumn Header="Title" Binding="{Binding IsbnNavigation.Title}" />
+                <DataGridTextColumn Header="Author(s)" Binding="{Binding IsbnNavigation.Authors,
+                    Converter={StaticResource AuthorsConverter}}" />
+            </DataGrid.Columns>
+        </DataGrid>
         <Label Content="Book Information"
                FontSize="22"
                HorizontalAlignment="Center"

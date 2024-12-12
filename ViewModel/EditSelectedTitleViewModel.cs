@@ -104,6 +104,8 @@ namespace SQLLab2.ViewModel
 
         private void UpdateTitle(object obj)
         {
+            bool isNewBook = false;
+
             using var db = new BookstoreContext();
 
             var originalBook = db.Books
@@ -114,6 +116,7 @@ namespace SQLLab2.ViewModel
             {
                 originalBook = SelectedBook;
                 db.Books.Add(originalBook);
+                isNewBook = true;
             }
 
             originalBook.Title = SelectedBook.Title;
@@ -147,7 +150,10 @@ namespace SQLLab2.ViewModel
                 }
             }
             db.SaveChanges();
-            MainWindowViewModel.AddBookToStoreSupplies(originalBook);
+            if (isNewBook)
+            {
+                MainWindowViewModel.AddBookToStoreSupplies(originalBook);
+            }
             MainWindowViewModel.RefreshBooks();
         }
     }

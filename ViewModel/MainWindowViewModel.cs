@@ -18,20 +18,9 @@ namespace SQLLab2.ViewModel
     {
         private StoreSupply _selectedStoreSupply;
         private Book _selectedBook;
-        private Store _selectedStore;
         private ObservableCollection<StoreSupply> _storeSupply;
         private ObservableCollection<Author> _authors;
         private ObservableCollection<Book> _books;
-
-        public Store SelectedStore
-        {
-            get => _selectedStore;
-            set 
-            { 
-                _selectedStore = value;
-                RaisePropertyChanged();
-            }
-        }
         public ObservableCollection<StoreSupply> StoreSupply
         {
             get => _storeSupply;
@@ -111,8 +100,7 @@ namespace SQLLab2.ViewModel
 
             try
             {
-                StoreSupply = new ObservableCollection<StoreSupply>(
-                db.StoreSupplies.Where(s => s.StoreId == 1).ToList());
+                ChangeStoreCommand.Execute(1);
             }
             catch (Exception ex)
             {
@@ -136,9 +124,16 @@ namespace SQLLab2.ViewModel
             if (parameterId is int storeId)
             {
                 using var db = new BookstoreContext();
-                var storeSupplies = db.StoreSupplies.Where(s => s.StoreId == storeId).ToList();
+
+                var storeSupplies = db.StoreSupplies
+                    .Where(s => s.StoreId == storeId)
+                    .Include(ss => ss.IsbnNavigation)
+                    .ThenInclude(b => b.Authors)
+                    .ToList();
 
                 StoreSupply = new ObservableCollection<StoreSupply>(storeSupplies);
+
+                
             }
         }
 
@@ -174,6 +169,20 @@ namespace SQLLab2.ViewModel
 
             return authors;
         }
+        public void AddBookToStoreSupplies(Book book)
+        {
+            using var db = new BookstoreContext();
+
+            var storeCount = db.Stores.Count();
+
+            for (int i = 1; i <= storeCount; i++)
+            {
+                var store = db.Stores.Where(s => s.Id == i).Include(s => s.StoreSupplies).SingleOrDefault();
+                store.StoreSupplies.Add(new StoreSupply() { Isbn = book.Isbn, Amount = 0, StoreId = i });
+            }
+
+            db.SaveChanges();
+        }
         public void RefreshBooks()
         {
             using var db = new BookstoreContext();
@@ -181,19 +190,7 @@ namespace SQLLab2.ViewModel
                 db.Books.Include(b => b.Authors)
                 .Include(b => b.Publisher)
                 .ToList());
-        }
-        public void AddBookToStoreSupplies(Book book)
-        {
-            using var db = new BookstoreContext();
-            var storeCount = db.Stores.Count();
 
-            for (int i = 1; i < storeCount; i++)
-            {
-                var store = db.Stores.Where(s => s.Id == i).Include(s => s.StoreSupplies).SingleOrDefault();
-                store.StoreSupplies.Add(new StoreSupply() { Isbn = book.Isbn, Amount = 0, StoreId = i });
-            }
-
-            db.SaveChanges();
             ChangeStoreCommand.Execute(1);
         }
     }
