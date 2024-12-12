@@ -50,6 +50,8 @@ namespace SQLLab2.ViewModel
             }
         }
 
+        public ObservableCollection<Publisher> Publishers { get; set; }
+
         public StoreSupply SelectedStoreSupply
         {
             get => _selectedStoreSupply;
@@ -108,6 +110,7 @@ namespace SQLLab2.ViewModel
             }
 
             RefreshBooks();
+            RefreshPublishers();
             Authors = GetAuthors();
         }
         private void InitializeCommands()
@@ -192,6 +195,12 @@ namespace SQLLab2.ViewModel
                 .ToList());
 
             ChangeStoreCommand.Execute(1);
+        }
+
+        public void RefreshPublishers()
+        {
+            using var db = new BookstoreContext();
+            Publishers = new ObservableCollection<Publisher>(db.Publishers);
         }
     }
 }

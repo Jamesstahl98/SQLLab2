@@ -39,15 +39,13 @@
                 <fa:IconBlock Icon="Cogs"/>
             </Button>
         </DockPanel>
-        <ListBox Grid.Row="1"
+        <DataGrid Grid.Row="1"
                  ItemsSource="{Binding Books}"
                  SelectedItem="{Binding SelectedBook}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Title}" Margin="5"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Title" Binding="{Binding Title}"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <Button Grid.Row="2"
                 Content="OK"
                 Width="60"

@@ -110,22 +110,34 @@ namespace SQLLab2.ViewModel
 
             var originalBook = db.Books
                 .Include(b => b.Authors)
+                .Include(b => b.Publisher)
                 .FirstOrDefault(b => b.Isbn == SelectedBook.Isbn);
 
             if (originalBook == null)
             {
-                originalBook = SelectedBook;
-                db.Books.Add(originalBook);
+                originalBook = new Book();
                 isNewBook = true;
             }
 
-            originalBook.Title = SelectedBook.Title;
-            originalBook.Isbn = SelectedBook.Isbn;
-            originalBook.Language = SelectedBook.Language;
-            originalBook.Publisher = SelectedBook.Publisher;
-            originalBook.PublishDate = SelectedBook.PublishDate;
-            originalBook.Price = SelectedBook.Price;
-            originalBook.Pages = SelectedBook.Pages;
+            SaveChangesToBook(originalBook);
+
+            if(isNewBook)
+            {
+                db.Books.Add(originalBook);
+            }
+
+            if (SelectedBook.Publisher != null)
+            {
+                var trackedPublisher = db.Publishers.FirstOrDefault(p => p.Id == SelectedBook.Publisher.Id);
+                if (trackedPublisher != null)
+                {
+                    originalBook.Publisher = trackedPublisher;
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Publisher with ID {SelectedBook.Publisher.Id} not found in the database.");
+                }
+            }
 
             if (originalBook.Authors != null)
             {
@@ -150,12 +162,23 @@ namespace SQLLab2.ViewModel
                     originalBook.Authors.Add(author);
                 }
             }
+
             db.SaveChanges();
             if (isNewBook)
             {
                 MainWindowViewModel.AddBookToStoreSupplies(originalBook);
             }
             MainWindowViewModel.RefreshBooks();
+        }
+
+        private void SaveChangesToBook(Book book)
+        {
+            book.Title = SelectedBook.Title;
+            book.Isbn = SelectedBook.Isbn;
+            book.Language = SelectedBook.Language;
+            book.PublishDate = SelectedBook.PublishDate;
+            book.Price = SelectedBook.Price;
+            book.Pages = SelectedBook.Pages;
         }
     }
 }

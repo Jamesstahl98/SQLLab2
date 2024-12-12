@@ -37,8 +37,10 @@
             <Label Content="Publisher:"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
-            <TextBox Width="200"
-                     Text="{Binding SelectedBook.Publisher}"/>
+            <ComboBox Width="200"
+                      ItemsSource="{Binding MainWindowViewModel.Publishers}"
+                      SelectedItem="{Binding SelectedBook.Publisher}"
+                      DisplayMemberPath="Name"/>
 
             <Label Content="Date published (xxxx-xx-xx):"
                HorizontalAlignment="Center"
@@ -58,7 +60,6 @@
                 <Label Content="Author:"
                        HorizontalAlignment="Center"/>
             </StackPanel>
-
 
             <ItemsControl ItemsSource="{Binding EditableAuthors}">
                 <ItemsControl.ItemTemplate>
