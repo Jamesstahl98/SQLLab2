@@ -42,7 +42,7 @@
                       SelectedItem="{Binding SelectedBook.Publisher}"
                       DisplayMemberPath="Name"/>
 
-            <Label Content="Date published (xxxx-xx-xx):"
+            <Label Content="Date published (xx-xx-xxxx):"
            HorizontalAlignment="Center"
            Margin="0,20,0,0"/>
             <TextBox Width="200"

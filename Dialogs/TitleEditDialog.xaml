@@ -30,7 +30,9 @@
                     CommandParameter="AddTitleDialog">
                 <fa:IconBlock Icon="Plus"/>
             </Button>
-            <Button Style="{StaticResource addRemoveBtn}">
+            <Button Style="{StaticResource addRemoveBtn}"
+                    Command="{Binding CreateNewDialogCommand}"
+                    CommandParameter="RemoveTitleDialog">
                 <fa:IconBlock Icon="Minus"/>
             </Button>
             <Button Style="{StaticResource addRemoveBtn}"

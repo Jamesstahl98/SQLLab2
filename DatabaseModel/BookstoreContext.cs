@@ -101,11 +101,11 @@ public partial class BookstoreContext : DbContext
                     "BookAuthorJt",
                     r => r.HasOne<Author>().WithMany()
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK__bookAutho__autho__3B2BBE9D"),
                     l => l.HasOne<Book>().WithMany()
                         .HasForeignKey("BookIsbn")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK__bookAutho__bookI__3C1FE2D6"),
                     j =>
                     {
@@ -256,12 +256,12 @@ public partial class BookstoreContext : DbContext
 
             entity.HasOne(d => d.IsbnNavigation).WithMany(p => p.StoreSupplies)
                 .HasForeignKey(d => d.Isbn)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__storeSuppl__ISBN__3296789C");
 
             entity.HasOne(d => d.Store).WithMany(p => p.StoreSupplies)
                 .HasForeignKey(d => d.StoreId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__storeSupp__store__31A25463");
         });
 

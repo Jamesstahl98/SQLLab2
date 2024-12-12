@@ -1,0 +1,29 @@
+﻿<Window x:Class="SQLLab2.Dialogs.RemoveTitleDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SQLLab2.Dialogs"
+        mc:Ignorable="d"
+        Title="RemoveTitleDialog" Height="Auto" Width="250">
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="{Binding BookToDelete.Title,
+                             StringFormat=You are about to delete the book {0} Proceed?}"
+                       TextWrapping="Wrap"
+                       Margin="40"/>
+            <DockPanel Margin="0,50,0,50"
+                       LastChildFill="False"
+                       HorizontalAlignment="Center">
+                <Button Content="OK"
+                        Width="50"
+                        Margin="0,0,20,0"
+                        Command="{Binding DeleteBookCommand}"
+                        Click="CloseDialog"/>
+                <Button Content="Cancel"
+                        Width="50"
+                        Click="CloseDialog"/>
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+</Window>

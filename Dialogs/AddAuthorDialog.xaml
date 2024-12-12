@@ -20,7 +20,7 @@
             <TextBox Width="200"
                      Text="{Binding SelectedAuthor.LastName}"/>
             
-            <Label Content="Birth date:"
+            <Label Content="Birth date (xx/xx/xxxx):"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
             <TextBox Width="200"

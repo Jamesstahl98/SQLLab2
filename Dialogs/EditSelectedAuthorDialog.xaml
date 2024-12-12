@@ -20,13 +20,13 @@
             <TextBox Width="200"
                  Text="{Binding SelectedAuthor.LastName}"/>
 
-            <Label Content="Birth date:"
+            <Label Content="Birth date (xx-xx-xxxx):"
                HorizontalAlignment="Center"
                Margin="0,20,0,0"/>
             <TextBox Width="200"
                  Text="{Binding SelectedAuthor.BirthDate}"/>
 
-            <Label Content="Death date (Leave blank if author is alive):"
+            <Label Content="Death date (xx-xx-xxxx) (Leave blank if author is alive):"
                HorizontalAlignment="Center"
                Margin="0,20,0,0"/>
             <TextBox Width="200"
