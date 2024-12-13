@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -9,13 +8,13 @@ using System.Windows.Data;
 
 namespace SQLLab2.Converters
 {
-    public class AuthorsToStringConverter : IValueConverter
+    public class PublisherToStringConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is ObservableCollection<Author> authors)
+            if (value is Publisher publisher)
             {
-                return string.Join(", ", authors.Select(a => $"{a.FirstName} {a.LastName}"));
+                return publisher.Name;
             }
             return string.Empty;
         }

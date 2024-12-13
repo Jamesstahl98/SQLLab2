@@ -10,7 +10,7 @@
         Title="AuthorEditDialog" Height="450" Width="400">
     <Window.Resources>
         <ResourceDictionary>
-            <converters:AuthorsConverter x:Key="AuthorsToStringConverter"/>
+            <converters:AuthorsToStringConverter x:Key="AuthorsToStringConverter"/>
             <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/SQLLab2;component/Styles/Styles.xaml"/>
