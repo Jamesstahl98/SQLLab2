@@ -62,7 +62,7 @@ namespace SQLLab2.ViewModel
                 _selectedStoreSupply = value;
                 RaisePropertyChanged();
 
-                UpdateSelectedBook();
+                UpdateSelectedBookAsync();
             }
         }
 
@@ -86,7 +86,7 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        private void UpdateSelectedBook()
+        private async Task UpdateSelectedBookAsync()
         {
             if (SelectedStoreSupply == null)
             {
@@ -95,60 +95,62 @@ namespace SQLLab2.ViewModel
             }
 
             using var db = new BookstoreContext();
-            SelectedBook = db.Books
+            SelectedBook = await db.Books
                            .Include(b => b.Authors)
                            .Include(b => b.Publisher)
-                           .SingleOrDefault(b => b.Isbn == SelectedStoreSupply.Isbn);
+                           .SingleOrDefaultAsync(b => b.Isbn == SelectedStoreSupply.Isbn);
         }
 
         public DelegateCommand CreateNewDialogCommand { get; private set; }
         public DelegateCommand SubtractSupplyCommand { get; private set; }
         public DelegateCommand AddSupplyCommand { get; private set; }
-        public DelegateCommand ChangeStoreCommand { get; private set; }
+        public DelegateCommand ChangeStoreAsyncCommand { get; private set; }
 
         public event Action<string> CreateDialogRequested;
+        public Action<string> ShowMessage { get; set; }
         public MainWindowViewModel()
         {
             InitializeCommands();
-            using var db = new BookstoreContext();
+            Task.Run(async () => await InitializeDataAsync());
+        }
 
+        private async Task InitializeDataAsync()
+        {
             try
             {
-                ChangeStoreCommand.Execute(1);
+                await ChangeStoreAsync(1);
+                await RefreshBooksAsync();
+                await RefreshPublishersAsync();
+                await RefreshAuthorsAsync();
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error fetching store supplies: {ex.Message}");
+                Console.WriteLine($"Error fetching store information: {ex.Message}");
             }
-
-            RefreshBooks();
-            RefreshPublishers();
-            RefreshAuthors();
         }
+
         private void InitializeCommands()
         {
             CreateNewDialogCommand = new DelegateCommand(CreateNewDialog);
             SubtractSupplyCommand = new DelegateCommand(SubtractSupply);
             AddSupplyCommand = new DelegateCommand(AddSupply);
-            ChangeStoreCommand = new DelegateCommand(ChangeStore);
+            ChangeStoreAsyncCommand = new DelegateCommand(async obj => await ChangeStoreAsync(obj));
         }
 
-        private void ChangeStore(object obj)
+        private async Task ChangeStoreAsync(object obj)
         {
             int parameterId = Convert.ToInt32(obj);
             if (parameterId is int storeId)
             {
                 using var db = new BookstoreContext();
 
-                var storeSupplies = db.StoreSupplies
+                var storeSupplies = await db.StoreSupplies
                     .Where(s => s.StoreId == storeId)
                     .Include(ss => ss.IsbnNavigation)
                     .ThenInclude(b => b.Authors)
-                    .ToList();
+                    .ToListAsync();
 
                 StoreSupply = new ObservableCollection<StoreSupply>(storeSupplies);
-
-                
             }
         }
 
@@ -174,7 +176,7 @@ namespace SQLLab2.ViewModel
 
             CreateDialogRequested?.Invoke(className);
         }
-        public void AddBookToStoreSupplies(Book book)
+        public async Task AddBookToStoreSuppliesAsync(Book book)
         {
             using var db = new BookstoreContext();
 
@@ -182,33 +184,33 @@ namespace SQLLab2.ViewModel
 
             for (int i = 1; i <= storeCount; i++)
             {
-                var store = db.Stores.Where(s => s.Id == i).Include(s => s.StoreSupplies).SingleOrDefault();
+                var store = await db.Stores.Where(s => s.Id == i).Include(s => s.StoreSupplies).SingleOrDefaultAsync();
                 store.StoreSupplies.Add(new StoreSupply() { Isbn = book.Isbn, Amount = 0, StoreId = i });
             }
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
-        public void RefreshAuthors()
+        public async Task RefreshAuthorsAsync()
         {
             using var db = new BookstoreContext();
             Authors = new ObservableCollection<Author>(
-                db.Authors
-                .ToList());
+                await db.Authors
+                .ToListAsync());
         }
-        public void RefreshBooks()
+        public async Task RefreshBooksAsync()
         {
             using var db = new BookstoreContext();
             Books = new ObservableCollection<Book>(
-                db.Books.Include(b => b.Authors)
+                await db.Books.Include(b => b.Authors)
                 .Include(b => b.Publisher)
-                .ToList());
+                .ToListAsync());
 
-            ChangeStoreCommand.Execute(1);
+            await ChangeStoreAsync(1);
         }
-        public void RefreshPublishers()
+        public async Task RefreshPublishersAsync()
         {
             using var db = new BookstoreContext();
-            Publishers = new ObservableCollection<Publisher>(db.Publishers);
+            Publishers = new ObservableCollection<Publisher>(await db.Publishers.ToListAsync());
         }
     }
 }

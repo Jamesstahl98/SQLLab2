@@ -111,7 +111,7 @@
                 <Button Content="OK"
                     Width="50"
                     Margin="0,0,20,0"
-                    Command="{Binding UpdateTitleCommand}"
+                    Command="{Binding UpdateTitleAsyncCommand}"
                     Click="CloseDialog"/>
                 <Button Content="Cancel"
                     Width="50"

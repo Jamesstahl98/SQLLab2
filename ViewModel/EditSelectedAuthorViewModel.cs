@@ -14,7 +14,7 @@ namespace SQLLab2.ViewModel
     {
         public MainWindowViewModel MainWindowViewModel { get; set; }
         public Author SelectedAuthor { get; set; }
-        public DelegateCommand UpdateAuthorCommand { get; private set; }
+        public DelegateCommand UpdateAuthorAsyncCommand { get; private set; }
 
         public EditSelectedAuthorViewModel(MainWindowViewModel mainWindowViewModel, bool newAuthor)
         {
@@ -34,17 +34,17 @@ namespace SQLLab2.ViewModel
 
         private void InitializeCommands()
         {
-            UpdateAuthorCommand = new DelegateCommand(UpdateAuthor);
+            UpdateAuthorAsyncCommand = new DelegateCommand(async obj => await (UpdateAuthorAsync(obj)));
         }
 
-        private void UpdateAuthor(object obj)
+        private async Task UpdateAuthorAsync(object obj)
         {
             bool isNewAuthor = false;
 
             using var db = new BookstoreContext();
 
-            var originalAuthor = db.Authors.Where(a => a.Id == SelectedAuthor.Id)
-                .FirstOrDefault();
+            var originalAuthor = await db.Authors.Where(a => a.Id == SelectedAuthor.Id)
+                .FirstOrDefaultAsync();
 
             if (originalAuthor == null)
             {
@@ -56,13 +56,13 @@ namespace SQLLab2.ViewModel
 
             if(isNewAuthor)
             {
-                db.Authors.Add(originalAuthor);
+                await db.Authors.AddAsync(originalAuthor);
             }
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
-            MainWindowViewModel.RefreshAuthors();
-            MainWindowViewModel.RefreshBooks();
+            await MainWindowViewModel.RefreshAuthorsAsync();
+            await MainWindowViewModel.RefreshBooksAsync();
         }
 
         private void SaveChangesToAuthor(Author author)

@@ -53,7 +53,7 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        public DelegateCommand UpdateTitleCommand { get; private set; }
+        public DelegateCommand UpdateTitleAsyncCommand { get; private set; }
         public DelegateCommand AddAuthorCommand { get; private set; }
         public DelegateCommand RemoveAuthorCommand { get; private set; }
 
@@ -87,7 +87,7 @@ namespace SQLLab2.ViewModel
 
         private void InitializeCommands()
         {
-            UpdateTitleCommand = new DelegateCommand(UpdateTitle);
+            UpdateTitleAsyncCommand = new DelegateCommand(async obj => await UpdateTitleAsync(obj));
             AddAuthorCommand = new DelegateCommand(AddAuthor);
             RemoveAuthorCommand = new DelegateCommand(RemoveAuthor);
         }
@@ -102,16 +102,16 @@ namespace SQLLab2.ViewModel
             EditableAuthors.Add(new EditableAuthor());
         }
 
-        private void UpdateTitle(object obj)
+        private async Task UpdateTitleAsync(object obj)
         {
             bool isNewBook = false;
 
             using var db = new BookstoreContext();
 
-            var originalBook = db.Books
+            var originalBook = await db.Books
                 .Include(b => b.Authors)
                 .Include(b => b.Publisher)
-                .FirstOrDefault(b => b.Isbn == SelectedBook.Isbn);
+                .FirstOrDefaultAsync(b => b.Isbn == SelectedBook.Isbn);
 
             if (originalBook == null)
             {
@@ -123,12 +123,12 @@ namespace SQLLab2.ViewModel
 
             if(isNewBook)
             {
-                db.Books.Add(originalBook);
+                await db.Books.AddAsync(originalBook);
             }
 
             if (SelectedBook.Publisher != null)
             {
-                var trackedPublisher = db.Publishers.FirstOrDefault(p => p.Id == SelectedBook.Publisher.Id);
+                var trackedPublisher = await db.Publishers.FirstOrDefaultAsync(p => p.Id == SelectedBook.Publisher.Id);
                 if (trackedPublisher != null)
                 {
                     originalBook.Publisher = trackedPublisher;
@@ -150,7 +150,7 @@ namespace SQLLab2.ViewModel
             foreach (var editableAuthor in EditableAuthors)
             {
                 var author = editableAuthor.SelectedAuthor;
-                var trackedAuthor = db.Authors.FirstOrDefault(a => a.Id == author.Id);
+                var trackedAuthor = await db.Authors.FirstOrDefaultAsync(a => a.Id == author.Id);
 
                 if (trackedAuthor != null)
                 {
@@ -163,12 +163,12 @@ namespace SQLLab2.ViewModel
                 }
             }
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             if (isNewBook)
             {
-                MainWindowViewModel.AddBookToStoreSupplies(originalBook);
+                await MainWindowViewModel.AddBookToStoreSuppliesAsync(originalBook);
             }
-            MainWindowViewModel.RefreshBooks();
+            await MainWindowViewModel.RefreshBooksAsync();
         }
 
         private void SaveChangesToBook(Book book)

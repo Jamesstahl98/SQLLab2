@@ -38,7 +38,7 @@
                 <Button Content="OK"
                     Width="50"
                     Margin="0,0,20,0"
-                    Command="{Binding UpdateAuthorCommand}"
+                    Command="{Binding UpdateAuthorAsyncCommand}"
                     Click="CloseDialog"/>
                 <Button Content="Cancel"
                     Width="50"

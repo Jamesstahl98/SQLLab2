@@ -31,13 +31,13 @@
                Margin="20,20,20,0"
                Height="30">
             <Button Content="Store 1" Style="{StaticResource storeBtn}"
-                    Command="{Binding ChangeStoreCommand}"
+                    Command="{Binding ChangeStoreAsyncCommand}"
                     CommandParameter="1"/>
             <Button Content="Store 2" Style="{StaticResource storeBtn}"
-                    Command="{Binding ChangeStoreCommand}"
+                    Command="{Binding ChangeStoreAsyncCommand}"
                     CommandParameter="2"/>
             <Button Content="Store 3" Style="{StaticResource storeBtn}"
-                    Command="{Binding ChangeStoreCommand}"
+                    Command="{Binding ChangeStoreAsyncCommand}"
                     CommandParameter="3"/>
             <DockPanel HorizontalAlignment="Right"
                    Margin="0,0,20,0">

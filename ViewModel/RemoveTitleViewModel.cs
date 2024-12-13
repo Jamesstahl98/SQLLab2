@@ -11,7 +11,7 @@ namespace SQLLab2.ViewModel
     {
         public MainWindowViewModel MainWindowViewModel { get; set; }
         public Book BookToDelete { get; set; }
-        public DelegateCommand DeleteBookCommand { get; private set; }
+        public DelegateCommand DeleteBookAsyncCommand { get; private set; }
 
         public RemoveTitleViewModel(MainWindowViewModel mainWindowViewModel)
         {
@@ -23,17 +23,17 @@ namespace SQLLab2.ViewModel
 
         private void InitializeCommands()
         {
-            DeleteBookCommand = new DelegateCommand(DeleteBook);
+            DeleteBookAsyncCommand = new DelegateCommand(async obj => await DeleteBookAsync(obj));
         }
 
-        private void DeleteBook(object obj)
+        private async Task DeleteBookAsync(object obj)
         {
             using var db = new BookstoreContext();
 
             db.Remove(BookToDelete);
 
-            db.SaveChanges();
-            MainWindowViewModel.RefreshBooks();
+            await db.SaveChangesAsync();
+            await MainWindowViewModel.RefreshBooksAsync();
         }
     }
 }
