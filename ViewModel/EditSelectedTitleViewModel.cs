@@ -62,7 +62,7 @@ namespace SQLLab2.ViewModel
             MainWindowViewModel = mainWindowViewModel;
 
             AllAuthors = MainWindowViewModel.Authors;
-            if (!newTitle)
+            if (!newTitle && mainWindowViewModel.SelectedBook != null)
             {
                 SelectedBook = new Book(mainWindowViewModel.SelectedBook);
 

@@ -20,7 +20,7 @@ namespace SQLLab2.ViewModel
         {
             MainWindowViewModel = mainWindowViewModel;
 
-            if (!newAuthor)
+            if (!newAuthor && mainWindowViewModel.SelectedAuthor != null)
             {
                 SelectedAuthor = new Author(mainWindowViewModel.SelectedAuthor);
             }

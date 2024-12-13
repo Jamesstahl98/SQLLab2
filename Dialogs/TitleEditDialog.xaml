@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         xmlns:local="clr-namespace:SQLLab2.Dialogs"
+        xmlns:converters="clr-namespace:SQLLab2.Converters"
         mc:Ignorable="d"
         Title="TitleEdit" Height="450" Width="400">
     <Window.Resources>
         <ResourceDictionary>
+            <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/SQLLab2;component/Styles/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -32,12 +34,14 @@
             </Button>
             <Button Style="{StaticResource addRemoveBtn}"
                     Command="{Binding CreateNewDialogCommand}"
-                    CommandParameter="RemoveTitleDialog">
+                    CommandParameter="RemoveTitleDialog"
+                    IsEnabled="{Binding SelectedBook, Converter={StaticResource NullToBoolConverter}}">
                 <fa:IconBlock Icon="Minus"/>
             </Button>
             <Button Style="{StaticResource addRemoveBtn}"
                     Command="{Binding CreateNewDialogCommand}"
-                    CommandParameter="EditSelectedTitleDialog">
+                    CommandParameter="EditSelectedTitleDialog"
+                    IsEnabled="{Binding SelectedBook, Converter={StaticResource NullToBoolConverter}}">
                 <fa:IconBlock Icon="Cogs"/>
             </Button>
         </DockPanel>
