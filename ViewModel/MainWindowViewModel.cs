@@ -154,19 +154,39 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        private void AddSupply(object obj)
+        private async void AddSupply(object obj)
         {
             if (SelectedStoreSupply != null)
             {
-                SelectedStoreSupply.Amount++;
+                using var db = new BookstoreContext();
+
+                var storeSupplies = await db.StoreSupplies
+                    .Where(s => s == SelectedStoreSupply)
+                    .FirstOrDefaultAsync();
+
+                storeSupplies.Amount++;
+
+                await db.SaveChangesAsync();
+
+                SelectedStoreSupply.Amount = storeSupplies.Amount;
             }
         }
 
-        private void SubtractSupply(object obj)
+        private async void SubtractSupply(object obj)
         {
-            if (SelectedStoreSupply != null)
+            if (SelectedStoreSupply != null && SelectedStoreSupply.Amount > 0)
             {
-                SelectedStoreSupply.Amount--;
+                using var db = new BookstoreContext();
+
+                var storeSupplies = await db.StoreSupplies
+                    .Where(s => s == SelectedStoreSupply)
+                    .FirstOrDefaultAsync();
+
+                storeSupplies.Amount--;
+
+                await db.SaveChangesAsync();
+
+                SelectedStoreSupply.Amount = storeSupplies.Amount;
             }
         }
 
