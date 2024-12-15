@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace SQLLab2.ViewModel
 {
@@ -29,6 +30,9 @@ namespace SQLLab2.ViewModel
 
         private Book _selectedBook;
         private ObservableCollection<EditableAuthor> _editableAuthors;
+
+        public bool ErrorThrown { get; set; } = false;
+        public string ErrorMessage { get; set; }
 
         public ObservableCollection<EditableAuthor> EditableAuthors
         {
@@ -123,7 +127,15 @@ namespace SQLLab2.ViewModel
 
             if(isNewBook)
             {
-                await db.Books.AddAsync(originalBook);
+                try
+                {
+                    await db.Books.AddAsync(originalBook);
+                }
+                catch (Exception ex)
+                {
+                    MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
+                    return;
+                }
             }
 
             if (SelectedBook.Publisher != null)
@@ -163,12 +175,20 @@ namespace SQLLab2.ViewModel
                 }
             }
 
-            await db.SaveChangesAsync();
-            if (isNewBook)
+            try
             {
-                await MainWindowViewModel.AddBookToStoreSuppliesAsync(originalBook);
+                await db.SaveChangesAsync();
+
+                if (isNewBook)
+                {
+                    await MainWindowViewModel.AddBookToStoreSuppliesAsync(originalBook);
+                }
+                await MainWindowViewModel.RefreshBooksAsync();
             }
-            await MainWindowViewModel.RefreshBooksAsync();
+            catch (Exception ex)
+            {
+                MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
+            }
         }
 
         private void SaveChangesToBook(Book book)

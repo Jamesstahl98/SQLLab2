@@ -21,13 +21,7 @@
                    Margin="0,20,0,0"/>
             <TextBox Width="200"
                      Text="{Binding SelectedBook.Title}"/>
-
-            <Label Content="ISBN13:"
-               HorizontalAlignment="Center"
-               Margin="0,20,0,0"/>
-            <TextBox Width="200"
-                     Text="{Binding SelectedBook.Isbn}"/>
-
+            
             <Label Content="Language:"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>

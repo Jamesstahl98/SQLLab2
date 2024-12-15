@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SQLLab2.ViewModel
 {
@@ -107,7 +108,7 @@ namespace SQLLab2.ViewModel
         public DelegateCommand ChangeStoreAsyncCommand { get; private set; }
 
         public event Action<string> CreateDialogRequested;
-        public Action<string> ShowMessage { get; set; }
+        public Action<string> ShowMessage { get; set; } = message => MessageBox.Show(message);
         public MainWindowViewModel()
         {
             InitializeCommands();

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SQLLab2.Commands;
 using System;
 using System.Collections.Generic;
@@ -59,10 +60,18 @@ namespace SQLLab2.ViewModel
                 await db.Authors.AddAsync(originalAuthor);
             }
 
-            await db.SaveChangesAsync();
+            try
+            {
+                await db.SaveChangesAsync();
 
-            await MainWindowViewModel.RefreshAuthorsAsync();
-            await MainWindowViewModel.RefreshBooksAsync();
+                await MainWindowViewModel.RefreshAuthorsAsync();
+                await MainWindowViewModel.RefreshBooksAsync();
+            }
+
+            catch (DbUpdateException ex)
+            {
+                MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
+            }
         }
 
         private void SaveChangesToAuthor(Author author)
