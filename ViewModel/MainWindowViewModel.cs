@@ -12,6 +12,7 @@ using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace SQLLab2.ViewModel
 {
@@ -21,6 +22,7 @@ namespace SQLLab2.ViewModel
         private Book _selectedBook;
         private ObservableCollection<StoreSupply> _storeSupply;
         private ObservableCollection<Author> _authors;
+        private ObservableCollection<Genre> _genres;
         private ObservableCollection<Book> _books;
         private Author _selectedAuthor;
 
@@ -43,6 +45,17 @@ namespace SQLLab2.ViewModel
                 RaisePropertyChanged();
             }
         }
+
+        public ObservableCollection<Genre> Genres
+        {
+            get => _genres;
+            set
+            { 
+                _genres = value;
+                RaisePropertyChanged();
+            }
+        }
+
         public ObservableCollection<Book> Books
         {
             get => _books;
@@ -99,6 +112,7 @@ namespace SQLLab2.ViewModel
             SelectedBook = await db.Books
                            .Include(b => b.Authors)
                            .Include(b => b.Publisher)
+                           .Include(b => b.Genres)
                            .SingleOrDefaultAsync(b => b.Isbn == SelectedStoreSupply.Isbn);
         }
 
@@ -123,6 +137,7 @@ namespace SQLLab2.ViewModel
                 await RefreshBooksAsync();
                 await RefreshPublishersAsync();
                 await RefreshAuthorsAsync();
+                await RefreshGenresAsync();
             }
             catch (Exception ex)
             {
@@ -224,6 +239,7 @@ namespace SQLLab2.ViewModel
             Books = new ObservableCollection<Book>(
                 await db.Books.Include(b => b.Authors)
                 .Include(b => b.Publisher)
+                .Include(b => b.Genres)
                 .ToListAsync());
 
             await ChangeStoreAsync(1);
@@ -231,7 +247,16 @@ namespace SQLLab2.ViewModel
         public async Task RefreshPublishersAsync()
         {
             using var db = new BookstoreContext();
-            Publishers = new ObservableCollection<Publisher>(await db.Publishers.ToListAsync());
+            Publishers = new ObservableCollection<Publisher>(
+                await db.Publishers
+                .ToListAsync());
+        }
+        public async Task RefreshGenresAsync()
+        {
+            using var db = new BookstoreContext();
+            Genres = new ObservableCollection<Genre>(
+                await db.Genres
+                .ToListAsync());
         }
     }
 }

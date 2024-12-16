@@ -17,10 +17,10 @@
     <Grid>
         <StackPanel>
             <Label Content="Title:"
-               HorizontalAlignment="Center"
-               Margin="0,20,0,0"/>
+                   HorizontalAlignment="Center"
+                   Margin="0,20,0,0"/>
             <TextBox Width="200"
-                 Text="{Binding SelectedBook.Title}"/>
+                     Text="{Binding SelectedBook.Title}"/>
 
             <Label Content="ISBN13:"
            HorizontalAlignment="Center"
@@ -29,36 +29,36 @@
                  Text="{Binding SelectedBook.Isbn}"/>
 
             <Label Content="Language:"
-               HorizontalAlignment="Center"
-               Margin="0,20,0,0"/>
+                   HorizontalAlignment="Center"
+                   Margin="0,20,0,0"/>
             <TextBox Width="200"
-                 Text="{Binding SelectedBook.Language}"/>
+                     Text="{Binding SelectedBook.Language}"/>
 
             <Label Content="Publisher:"
-                    HorizontalAlignment="Center"
-                    Margin="0,20,0,0"/>
+                   HorizontalAlignment="Center"
+                   Margin="0,20,0,0"/>
             <ComboBox Width="200"
                       ItemsSource="{Binding MainWindowViewModel.Publishers}"
                       SelectedItem="{Binding SelectedBook.Publisher}"
                       DisplayMemberPath="Name"/>
 
             <Label Content="Date published (xx-xx-xxxx):"
-           HorizontalAlignment="Center"
-           Margin="0,20,0,0"/>
+                   HorizontalAlignment="Center"
+                   Margin="0,20,0,0"/>
             <TextBox Width="200"
                  Text="{Binding SelectedBook.PublishDate}"/>
 
             <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Center"
-                    Margin="0,20,0,0">
+                        HorizontalAlignment="Center"
+                        Margin="0,20,0,0">
                 <Button Style="{StaticResource addRemoveBtn}"
-                    Margin="0,0,0,0"
-                    VerticalAlignment="Center"
-                    Command="{Binding AddAuthorCommand}">
+                        Margin="0,0,0,0"
+                        VerticalAlignment="Center"
+                        Command="{Binding AddAuthorCommand}">
                     <fa:IconBlock Icon="Plus"/>
                 </Button>
                 <Label Content="Author:"
-                   HorizontalAlignment="Center"/>
+                       HorizontalAlignment="Center"/>
             </StackPanel>
 
 
@@ -66,11 +66,11 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal"
-                                HorizontalAlignment="Center">
+                                    HorizontalAlignment="Center">
                             <ComboBox Width="200"
-                                  Height="30"
-                              ItemsSource="{Binding DataContext.AllAuthors, RelativeSource={RelativeSource AncestorType=Window}}"
-                              SelectedItem="{Binding SelectedAuthor, Mode=TwoWay}">
+                                       Height="30"
+                                       ItemsSource="{Binding DataContext.AllAuthors, RelativeSource={RelativeSource AncestorType=Window}}"
+                                       SelectedItem="{Binding SelectedAuthor, Mode=TwoWay}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
@@ -82,10 +82,53 @@
                             </ComboBox>
 
                             <Button Style="{StaticResource addRemoveBtn}"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Center"
-                                Command="{Binding DataContext.RemoveAuthorCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                CommandParameter="{Binding}">
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding DataContext.RemoveAuthorCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}">
+                                <fa:IconBlock Icon="Minus"/>
+                            </Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,20,0,0">
+                <Button Style="{StaticResource addRemoveBtn}"
+                        Margin="0,0,0,0"
+                        VerticalAlignment="Center"
+                        Command="{Binding AddGenreCommand}">
+                    <fa:IconBlock Icon="Plus"/>
+                </Button>
+                <Label Content="Genre:"
+                       HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <ItemsControl ItemsSource="{Binding EditableGenres}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <ComboBox Width="200"
+                                      Height="30"
+                                      ItemsSource="{Binding DataContext.AllGenres, RelativeSource={RelativeSource AncestorType=Window}}"
+                                      SelectedItem="{Binding SelectedGenre, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding GenreName}" Margin="4"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <Button Style="{StaticResource addRemoveBtn}"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding DataContext.RemoveGenreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}">
                                 <fa:IconBlock Icon="Minus"/>
                             </Button>
                         </StackPanel>

@@ -124,11 +124,11 @@ public partial class BookstoreContext : DbContext
                     "GenreBookJt",
                     r => r.HasOne<Genre>().WithMany()
                         .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK__genreBook__genre__3EFC4F81"),
                     l => l.HasOne<Book>().WithMany()
                         .HasForeignKey("BookIsbn")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK__genreBook__bookI__3FF073BA"),
                     j =>
                     {

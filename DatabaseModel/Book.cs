@@ -10,6 +10,7 @@ namespace SQLLab2;
 public partial class Book: INotifyPropertyChanged
 {
     private ObservableCollection<Author> _authors;
+    private ObservableCollection<Genre> _genres;
 
     public string Isbn { get; set; } = null!;
 
@@ -41,7 +42,15 @@ public partial class Book: INotifyPropertyChanged
         }
     }
 
-    public virtual ICollection<Genre> Genres { get; set; } = new List<Genre>();
+    public virtual ObservableCollection<Genre> Genres 
+    {
+        get => _genres;
+        set 
+        { 
+            _genres = value;
+            OnPropertyChanged();
+        }
+    }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -64,7 +73,7 @@ public partial class Book: INotifyPropertyChanged
         Publisher = other.Publisher;
         StoreSupplies = new List<StoreSupply>(other.StoreSupplies);
         Authors = new ObservableCollection<Author>(other.Authors);
-        Genres = new List<Genre>(other.Genres);
+        Genres = new ObservableCollection<Genre>(other.Genres);
     }
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)

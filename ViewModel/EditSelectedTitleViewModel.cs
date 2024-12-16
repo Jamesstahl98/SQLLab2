@@ -28,8 +28,24 @@ namespace SQLLab2.ViewModel
             }
         }
 
+        public class EditableGenre : ViewModelBase
+        {
+            private Genre _selectedGenre;
+
+            public Genre SelectedGenre
+            {
+                get => _selectedGenre;
+                set
+                {
+                    _selectedGenre = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
         private Book _selectedBook;
         private ObservableCollection<EditableAuthor> _editableAuthors;
+        private ObservableCollection<EditableGenre> _editableGenres;
 
         public bool ErrorThrown { get; set; } = false;
         public string ErrorMessage { get; set; }
@@ -43,8 +59,18 @@ namespace SQLLab2.ViewModel
                 RaisePropertyChanged();
             }
         }
+        public ObservableCollection<EditableGenre> EditableGenres
+        {
+            get => _editableGenres;
+            set
+            {
+                _editableGenres = value;
+                RaisePropertyChanged();
+            }
+        }
 
         public ObservableCollection<Author> AllAuthors { get; set; }
+        public ObservableCollection<Genre> AllGenres { get; set; }
         public MainWindowViewModel MainWindowViewModel { get; set; }
 
         public Book SelectedBook
@@ -60,14 +86,19 @@ namespace SQLLab2.ViewModel
         public DelegateCommand UpdateTitleAsyncCommand { get; private set; }
         public DelegateCommand AddAuthorCommand { get; private set; }
         public DelegateCommand RemoveAuthorCommand { get; private set; }
+        public DelegateCommand AddGenreCommand { get; private set; }
+        public DelegateCommand RemoveGenreCommand { get; private set; }
 
         public EditSelectedTitleViewModel(MainWindowViewModel mainWindowViewModel, bool newTitle)
         {
             MainWindowViewModel = mainWindowViewModel;
 
             AllAuthors = MainWindowViewModel.Authors;
+            AllGenres = MainWindowViewModel.Genres;
+
             if (!newTitle && mainWindowViewModel.SelectedBook != null)
             {
+                Debug.WriteLine(mainWindowViewModel.SelectedBook.Genres);
                 SelectedBook = new Book(mainWindowViewModel.SelectedBook);
 
                 EditableAuthors = new ObservableCollection<EditableAuthor>(
@@ -76,7 +107,15 @@ namespace SQLLab2.ViewModel
                     {
                         SelectedAuthor = AllAuthors.FirstOrDefault(a => a.Id == author.Id) ?? AllAuthors.FirstOrDefault()
                     })
-            );
+                );
+
+                EditableGenres = new ObservableCollection<EditableGenre>(
+                SelectedBook.Genres.Select(genre =>
+                    new EditableGenre
+                    {
+                        SelectedGenre = AllGenres.FirstOrDefault(g => g.Id == genre.Id) ?? AllGenres.FirstOrDefault()
+                    })
+                );
             }
 
             else
@@ -84,6 +123,7 @@ namespace SQLLab2.ViewModel
                 SelectedBook = new Book();
 
                 EditableAuthors = new ObservableCollection<EditableAuthor>();
+                EditableGenres = new ObservableCollection<EditableGenre>();
             }
 
             InitializeCommands();
@@ -94,6 +134,8 @@ namespace SQLLab2.ViewModel
             UpdateTitleAsyncCommand = new DelegateCommand(async obj => await UpdateTitleAsync(obj));
             AddAuthorCommand = new DelegateCommand(AddAuthor);
             RemoveAuthorCommand = new DelegateCommand(RemoveAuthor);
+            AddGenreCommand = new DelegateCommand(AddGenre);
+            RemoveGenreCommand = new DelegateCommand(RemoveGenre);
         }
 
         private void RemoveAuthor(object obj)
@@ -106,6 +148,16 @@ namespace SQLLab2.ViewModel
             EditableAuthors.Add(new EditableAuthor());
         }
 
+        private void RemoveGenre(object obj)
+        {
+            EditableGenres.Remove((EditableGenre)obj);
+        }
+
+        private void AddGenre(object obj)
+        {
+            EditableGenres.Add(new EditableGenre());
+        }
+
         private async Task UpdateTitleAsync(object obj)
         {
             bool isNewBook = false;
@@ -115,6 +167,7 @@ namespace SQLLab2.ViewModel
             var originalBook = await db.Books
                 .Include(b => b.Authors)
                 .Include(b => b.Publisher)
+                .Include(b => b.Genres)
                 .FirstOrDefaultAsync(b => b.Isbn == SelectedBook.Isbn);
 
             if (originalBook == null)
@@ -151,30 +204,8 @@ namespace SQLLab2.ViewModel
                 }
             }
 
-            if (originalBook.Authors != null)
-            {
-                originalBook.Authors.Clear();
-            }
-            else
-            {
-                originalBook.Authors = new ObservableCollection<Author>();
-            }
-            foreach (var editableAuthor in EditableAuthors)
-            {
-                var author = editableAuthor.SelectedAuthor;
-                var trackedAuthor = await db.Authors.FirstOrDefaultAsync(a => a.Id == author.Id);
-
-                if (trackedAuthor != null)
-                {
-                    originalBook.Authors.Add(trackedAuthor);
-                }
-                else
-                {
-                    db.Authors.Attach(author);
-                    originalBook.Authors.Add(author);
-                }
-            }
-
+            await AddAuthorsToBookAsync(originalBook, db);
+            await AddGenresToBookAsync(originalBook, db);
             try
             {
                 await db.SaveChangesAsync();
@@ -199,6 +230,59 @@ namespace SQLLab2.ViewModel
             book.PublishDate = SelectedBook.PublishDate;
             book.Price = SelectedBook.Price;
             book.Pages = SelectedBook.Pages;
+        }
+
+        private async Task AddAuthorsToBookAsync(Book book, BookstoreContext db)
+        {
+            if (book.Authors != null)
+            {
+                book.Authors.Clear();
+            }
+            else
+            {
+                book.Authors = new ObservableCollection<Author>();
+            }
+            foreach (var editableAuthor in EditableAuthors)
+            {
+                var author = editableAuthor.SelectedAuthor;
+                var trackedAuthor = await db.Authors.FirstOrDefaultAsync(a => a.Id == author.Id);
+
+                if (trackedAuthor != null)
+                {
+                    book.Authors.Add(trackedAuthor);
+                }
+                else
+                {
+                    db.Authors.Attach(author);
+                    book.Authors.Add(author);
+                }
+            }
+        }
+        private async Task AddGenresToBookAsync(Book book, BookstoreContext db)
+        {
+            if (book.Genres != null)
+            {
+                book.Genres.Clear();
+            }
+            else
+            {
+                book.Genres = new ObservableCollection<Genre>();
+            }
+            foreach (var editableGenre in EditableGenres)
+            {
+                var genre = editableGenre.SelectedGenre;
+                var trackedGenre = await db.Genres.FirstOrDefaultAsync(g => g.Id == genre.Id);
+
+                if (trackedGenre != null)
+                {
+                    book.Genres.Add(trackedGenre);
+                }
+                else
+                {
+                    db.Genres.Attach(genre);
+                    book.Genres.Add(genre);
+                }
+            }
         }
     }
 }

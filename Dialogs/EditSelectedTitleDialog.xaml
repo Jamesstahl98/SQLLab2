@@ -86,6 +86,49 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,20,0,0">
+                <Button Style="{StaticResource addRemoveBtn}"
+                        Margin="0,0,0,0"
+                        VerticalAlignment="Center"
+                        Command="{Binding AddGenreCommand}">
+                    <fa:IconBlock Icon="Plus"/>
+                </Button>
+                <Label Content="Genre:"
+                       HorizontalAlignment="Center"/>
+            </StackPanel>
+
+            <ItemsControl ItemsSource="{Binding EditableGenres}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                            <ComboBox Width="200"
+                                      Height="30"
+                                      ItemsSource="{Binding DataContext.AllGenres, RelativeSource={RelativeSource AncestorType=Window}}"
+                                      SelectedItem="{Binding SelectedGenre, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding GenreName}" Margin="4"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <Button Style="{StaticResource addRemoveBtn}"
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding DataContext.RemoveGenreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}">
+                                <fa:IconBlock Icon="Minus"/>
+                            </Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
             <Label Content="Price:"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>

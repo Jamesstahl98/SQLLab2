@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <converters:AuthorsToStringConverter x:Key="AuthorsToStringConverter"/>
+            <converters:GenresToStringConverter x:Key="GenresToStringConverter"/>
             <converters:PublisherToStringConverter x:Key="PublisherToStringConverter"/>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/SQLLab2;component/Styles/Styles.xaml"/>
@@ -95,9 +96,13 @@
                             StringFormat='ISBN: {0}'}"
                        Margin="4"/>
             <TextBlock Text="{Binding Path=SelectedBook.Publisher, 
-                            StringFormat='Publisher: {0}',
-                            Converter={StaticResource PublisherToStringConverter}}"
+                             StringFormat='Publisher: {0}',
+                             Converter={StaticResource PublisherToStringConverter}}"
                        Margin="4"/>
+            <TextBlock Text="{Binding Path=SelectedBook.Genres, 
+                             StringFormat='Genre: {0}',
+                             Converter={StaticResource GenresToStringConverter}}"
+                        Margin="4"/>
             <TextBlock Text="{Binding Path=SelectedBook.PublishDate, 
                             StringFormat='Date Published: {0}'}"
                        Margin="4"/>
