@@ -20,6 +20,9 @@
                 <MenuItem Header="Edit _Titles"
                           Command="{Binding CreateNewDialogCommand}"
                           CommandParameter="TitleEditDialog"/>
+                <MenuItem Header="Edit _Titles"
+                          Command="{Binding CreateNewDialogCommand}"
+                          CommandParameter="GenreListDialog"/>
             </MenuItem>
 
             <MenuItem Header="_View">

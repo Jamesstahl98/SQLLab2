@@ -25,6 +25,7 @@ namespace SQLLab2.ViewModel
         private ObservableCollection<Genre> _genres;
         private ObservableCollection<Book> _books;
         private Author _selectedAuthor;
+        private Genre _selectedGenre;
 
         public ObservableCollection<StoreSupply> StoreSupply
         {
@@ -86,6 +87,16 @@ namespace SQLLab2.ViewModel
             set
             {
                 _selectedAuthor = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        public Genre SelectedGenre
+        {
+            get => _selectedGenre;
+            set
+            {
+                _selectedGenre = value;
                 RaisePropertyChanged();
             }
         }
