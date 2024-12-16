@@ -41,10 +41,12 @@ namespace SQLLab2.Dialogs
             else if(e.NewValue is Order order)
             {
                 (DataContext as MainWindowViewModel).SelectedOrder = order;
+                (DataContext as MainWindowViewModel).SelectedCustomer = order.Customer;
             }
             else if(e.NewValue is OrderBookJt orderBookJt)
             {
                 (DataContext as MainWindowViewModel).SelectedOrder = orderBookJt.Order;
+                (DataContext as MainWindowViewModel).SelectedCustomer = orderBookJt.Order.Customer;
             }
         }
     }

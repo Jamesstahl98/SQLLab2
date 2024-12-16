@@ -24,4 +24,23 @@ public partial class Customer
     public string Email { get; set; } = null!;
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    public Customer()
+    {
+
+    }
+    public Customer(Customer other)
+    {
+        if (other == null)
+            throw new ArgumentNullException(nameof(other));
+
+        Id = other.Id;
+        FirstName = other.FirstName;
+        LastName = other.LastName;
+        Birthdate = other.Birthdate;
+        City = other.City;
+        Address = other.Address;
+        PostalCode = other.PostalCode;
+        Email = other.Email;
+    }
 }

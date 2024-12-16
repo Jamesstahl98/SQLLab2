@@ -41,7 +41,7 @@
             </Button>
             <Button Style="{StaticResource addRemoveBtn}"
                     Command="{Binding CreateNewDialogCommand}"
-                    CommandParameter="EditSelectedGenreDialog"
+                    CommandParameter="EditCustomerDialog"
                     IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
                 <fa:IconBlock Icon="Cogs"/>
             </Button>
@@ -52,6 +52,9 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Orders}">
                     <TextBlock>
+                        <Run Text="Customer ID:"/>
+                        <Run Text="{Binding Id}"/>
+                        <Run Text=","/>
                         <Run Text="{Binding FullName, Mode=OneWay}"/>
                         <Run Text=","/>
                         <Run Text="{Binding Email}"/>
