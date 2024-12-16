@@ -26,6 +26,8 @@ namespace SQLLab2.ViewModel
         private ObservableCollection<Book> _books;
         private Author _selectedAuthor;
         private Genre _selectedGenre;
+        private Customer _selectedCustomer;
+        private Order _selectedOrder;
 
         public ObservableCollection<StoreSupply> StoreSupply
         {
@@ -78,6 +80,25 @@ namespace SQLLab2.ViewModel
                 RaisePropertyChanged();
 
                 UpdateSelectedBookAsync();
+            }
+        }
+
+        public Customer SelectedCustomer
+        {
+            get => _selectedCustomer;
+            set
+            {
+                _selectedCustomer = value;
+                RaisePropertyChanged();
+            }
+        }
+        public Order SelectedOrder
+        {
+            get => _selectedOrder;
+            set
+            {
+                _selectedOrder = value;
+                RaisePropertyChanged();
             }
         }
 

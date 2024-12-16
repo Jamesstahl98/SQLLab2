@@ -155,6 +155,8 @@ public partial class BookstoreContext : DbContext
             entity.Property(e => e.FirstName).HasColumnName("firstName");
             entity.Property(e => e.LastName).HasColumnName("lastName");
             entity.Property(e => e.PostalCode).HasColumnName("postalCode");
+
+            entity.Ignore(e => e.FullName);
         });
 
         modelBuilder.Entity<Genre>(entity =>

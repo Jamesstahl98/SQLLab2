@@ -5,6 +5,8 @@ namespace SQLLab2;
 
 public partial class Customer
 {
+    public string FullName => $"{FirstName} {LastName}";
+
     public int Id { get; set; }
 
     public string FirstName { get; set; } = null!;
