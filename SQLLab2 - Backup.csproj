@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Dialogs\AuthorDialog\RemoveAuthorDialog.xaml.cs">
+    <Compile Update="Dialogs\Author\RemoveAuthorDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

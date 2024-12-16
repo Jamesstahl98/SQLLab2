@@ -12,7 +12,7 @@ namespace SQLLab2.ViewModel
     {
         public MainWindowViewModel MainWindowViewModel {  get; set; }
         public string PendingGenreName { get; set; }
-        public int GenreId { get; set; }
+        public int? GenreId { get; set; }
         public DelegateCommand UpdateGenreAsyncCommand { get; private set; }
 
         public EditSelectedGenreViewModel(MainWindowViewModel mainWindowViewModel, bool isNewGenre)
@@ -44,11 +44,11 @@ namespace SQLLab2.ViewModel
             }
             else
             {
-                db.Genres.AddAsync(new Genre() { GenreName = PendingGenreName });
+                await db.Genres.AddAsync(new Genre() { GenreName = PendingGenreName });
             }
             await db.SaveChangesAsync();
 
-            MainWindowViewModel.RefreshGenresAsync();
+            await MainWindowViewModel.RefreshGenresAsync();
         }
     }
 }

@@ -30,7 +30,7 @@
    HorizontalAlignment="Right">
             <Button Style="{StaticResource addRemoveBtn}"
                     Command="{Binding CreateNewDialogCommand}"
-                    CommandParameter="EditSelectedGenreDialog">
+                    CommandParameter="AddNewGenreDialog">
                 <fa:IconBlock Icon="Plus"/>
             </Button>
             <Button Style="{StaticResource addRemoveBtn}"

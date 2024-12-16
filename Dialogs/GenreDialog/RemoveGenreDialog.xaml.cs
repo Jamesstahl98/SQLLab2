@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLLab2.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,16 +13,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SQLLab2.Dialogs.Genre
+namespace SQLLab2.Dialogs
 {
     /// <summary>
-    /// Interaction logic for AddNewGenreDialog.xaml
+    /// Interaction logic for RemoveGenreDialog.xaml
     /// </summary>
-    public partial class AddNewGenreDialog : Window
+    public partial class RemoveGenreDialog : Window
     {
-        public AddNewGenreDialog()
+        public RemoveGenreDialog()
         {
             InitializeComponent();
+            DataContext = new RemoveGenreViewModel((App.Current.MainWindow as MainWindow).DataContext as MainWindowViewModel);
         }
         public void CloseDialog(object sender, RoutedEventArgs e)
         {
