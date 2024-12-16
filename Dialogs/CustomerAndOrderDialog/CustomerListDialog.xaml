@@ -30,12 +30,12 @@
                    HorizontalAlignment="Right">
             <Button Style="{StaticResource addRemoveBtn}"
                      Command="{Binding CreateNewDialogCommand}"
-                     CommandParameter="AddNewGenreDialog">
+                     CommandParameter="AddCustomerDialog">
                 <fa:IconBlock Icon="Plus"/>
             </Button>
             <Button Style="{StaticResource addRemoveBtn}"
                     Command="{Binding CreateNewDialogCommand}"
-                    CommandParameter="RemoveGenreDialog"
+                    CommandParameter="RemoveCustomerDialog"
                     IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
                 <fa:IconBlock Icon="Minus"/>
             </Button>

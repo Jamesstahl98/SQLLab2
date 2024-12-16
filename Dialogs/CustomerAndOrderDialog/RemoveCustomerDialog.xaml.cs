@@ -16,14 +16,14 @@ using System.Windows.Shapes;
 namespace SQLLab2.Dialogs
 {
     /// <summary>
-    /// Interaction logic for AddCustomerDialog.xaml
+    /// Interaction logic for RemoveCustomerDialog.xaml
     /// </summary>
-    public partial class AddCustomerDialog : Window
+    public partial class RemoveCustomerDialog : Window
     {
-        public AddCustomerDialog()
+        public RemoveCustomerDialog()
         {
             InitializeComponent();
-            DataContext = new EditSelectedCustomerViewModel((App.Current.MainWindow as MainWindow).DataContext as MainWindowViewModel, true);
+            DataContext = new RemoveCustomerViewModel((App.Current.MainWindow as MainWindow).DataContext as MainWindowViewModel);
         }
         public void CloseDialog(object sender, RoutedEventArgs e)
         {
