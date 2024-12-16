@@ -24,6 +24,7 @@ namespace SQLLab2.ViewModel
         private ObservableCollection<Author> _authors;
         private ObservableCollection<Genre> _genres;
         private ObservableCollection<Book> _books;
+        private ObservableCollection<Customer> _customers;
         private Author _selectedAuthor;
         private Genre _selectedGenre;
         private Customer _selectedCustomer;
@@ -68,7 +69,15 @@ namespace SQLLab2.ViewModel
                 RaisePropertyChanged();
             }
         }
-
+        public ObservableCollection<Customer> Customers
+        {
+            get => _customers;
+            set
+            {
+                _customers = value;
+                RaisePropertyChanged();
+            }
+        }
         public ObservableCollection<Publisher> Publishers { get; set; }
 
         public StoreSupply SelectedStoreSupply
@@ -170,6 +179,7 @@ namespace SQLLab2.ViewModel
                 await RefreshPublishersAsync();
                 await RefreshAuthorsAsync();
                 await RefreshGenresAsync();
+                await RefreshCustomersAsync();
             }
             catch (Exception ex)
             {
@@ -289,6 +299,16 @@ namespace SQLLab2.ViewModel
             Genres = new ObservableCollection<Genre>(
                 await db.Genres
                 .ToListAsync());
+        }
+        public async Task RefreshCustomersAsync()
+        {
+            using var db = new BookstoreContext();
+            Customers = new ObservableCollection<Customer>(
+                await db.Customers
+                      .Include(c => c.Orders)
+                      .ThenInclude(o => o.OrderBookJts)
+                      .ThenInclude(ob => ob.BookIsbnNavigation)
+                      .ToListAsync());
         }
     }
 }

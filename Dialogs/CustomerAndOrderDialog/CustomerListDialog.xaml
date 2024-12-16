@@ -29,18 +29,18 @@
                    Width="80"
                    HorizontalAlignment="Right">
             <Button Style="{StaticResource addRemoveBtn}"
-                     Command="{Binding MainWindowViewModel.CreateNewDialogCommand}"
+                     Command="{Binding CreateNewDialogCommand}"
                      CommandParameter="AddNewGenreDialog">
                 <fa:IconBlock Icon="Plus"/>
             </Button>
             <Button Style="{StaticResource addRemoveBtn}"
-                    Command="{Binding MainWindowViewModel.CreateNewDialogCommand}"
+                    Command="{Binding CreateNewDialogCommand}"
                     CommandParameter="RemoveGenreDialog"
                     IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
                 <fa:IconBlock Icon="Minus"/>
             </Button>
             <Button Style="{StaticResource addRemoveBtn}"
-                    Command="{Binding MainWindowViewModel.CreateNewDialogCommand}"
+                    Command="{Binding CreateNewDialogCommand}"
                     CommandParameter="EditSelectedGenreDialog"
                     IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
                 <fa:IconBlock Icon="Cogs"/>
@@ -48,7 +48,7 @@
         </DockPanel>
         <TreeView ItemsSource="{Binding Customers}"
                   Grid.Row="1"
-                  >
+                  SelectedItemChanged="TreeView_SelectedItemChanged">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Orders}">
                     <TextBlock>
