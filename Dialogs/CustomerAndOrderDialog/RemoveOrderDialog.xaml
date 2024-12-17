@@ -5,8 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLLab2.Dialogs"
         mc:Ignorable="d"
-        Title="RemoveOrderDialog" Height="450" Width="800">
+        Title="Remove Order" Height="Auto" Width="250">
     <Grid>
-        
+        <StackPanel>
+            <TextBlock Text="{Binding OrderToDelete.Id,
+                         StringFormat=You are about to delete the order with the ID: {0}. Proceed?}"
+                   TextWrapping="Wrap"
+                   Margin="40"/>
+            <DockPanel Margin="0,50,0,50"
+                   LastChildFill="False"
+                   HorizontalAlignment="Center">
+                <Button Content="OK"
+                    Width="50"
+                    Margin="0,0,20,0"
+                    Command="{Binding DeleteOrderAsyncCommand}"
+                    Click="CloseDialog"/>
+                <Button Content="Cancel"
+                    Width="50"
+                    Click="CloseDialog"/>
+            </DockPanel>
+        </StackPanel>
     </Grid>
 </Window>

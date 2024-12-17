@@ -4,9 +4,96 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLLab2.Dialogs"
+        xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         mc:Ignorable="d"
-        Title="EditOrderDialog" Height="450" Width="800">
+        Title="EditOrderDialog" Height="Auto" Width="400">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/SQLLab2;component/Styles/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
-        
+        <StackPanel>
+            <Label Content="Date and time placed:"
+               HorizontalAlignment="Center"
+               Margin="0,20,0,0"/>
+            <TextBox Width="200"
+                 Text="{Binding SelectedOrder.DateAndTimePlaced}"/>
+
+            <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0,20,0,0">
+                <Button Style="{StaticResource addRemoveBtn}"
+                    Margin="0,0,0,0"
+                    VerticalAlignment="Center"
+                    Command="{Binding AddBookCommand}">
+                    <fa:IconBlock Icon="Plus"/>
+                </Button>
+                <Label Content="Books:"
+                   HorizontalAlignment="Center"/>
+            </StackPanel>
+            <ItemsControl ItemsSource="{Binding EditableBooks}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+                            <ComboBox Width="200"
+                       Height="30"
+                       ItemsSource="{Binding DataContext.AllBooks, RelativeSource={RelativeSource AncestorType=Window}}"
+                       SelectedItem="{Binding SelectedBook, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Title}" Margin="4"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+
+                            <Button Style="{StaticResource addRemoveBtn}"
+                                Margin="5,0,5,0"
+                                VerticalAlignment="Center"
+                                Command="{Binding DataContext.RemoveBookCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                CommandParameter="{Binding}">
+                                <fa:IconBlock Icon="Minus"/>
+                            </Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Label Content="City:"
+               HorizontalAlignment="Center"
+               Margin="0,20,0,0"/>
+            <TextBox Width="200"
+                 Text="{Binding SelectedOrder.City}"/>
+
+            <Label Content="Address:"
+               HorizontalAlignment="Center"
+               Margin="0,20,0,0"/>
+            <TextBox Width="200"
+                 Text="{Binding SelectedOrder.Address}"/>
+
+            <Label Content="Postal Code:"
+               HorizontalAlignment="Center"
+               Margin="0,20,0,0"/>
+            <TextBox Width="200"
+                 Text="{Binding SelectedOrder.PostalCode}"/>
+
+            <DockPanel Margin="0,50"
+                   LastChildFill="False"
+                   HorizontalAlignment="Center">
+                <Button Content="OK"
+                    Width="50"
+                    Margin="0,0,20,0"
+                    Command="{Binding UpdateOrderAsyncCommand}"
+                    Click="CloseDialog"/>
+                <Button Content="Cancel"
+                    Width="50"
+                    Click="CloseDialog"/>
+            </DockPanel>
+        </StackPanel>
     </Grid>
 </Window>

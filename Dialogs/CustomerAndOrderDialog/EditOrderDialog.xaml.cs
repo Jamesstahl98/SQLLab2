@@ -25,5 +25,9 @@ namespace SQLLab2.Dialogs
             InitializeComponent();
             DataContext = new EditSelectedOrderViewModel((App.Current.MainWindow as MainWindow).DataContext as MainWindowViewModel, false);
         }
+        public void CloseDialog(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

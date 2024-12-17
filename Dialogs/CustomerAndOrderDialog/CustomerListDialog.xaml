@@ -7,7 +7,7 @@
         xmlns:converters="clr-namespace:SQLLab2.Converters"
         xmlns:local="clr-namespace:SQLLab2.Dialogs"
         mc:Ignorable="d"
-        Title="Customer List" Height="450" Width="600">
+        Title="Customer List" Height="450" Width="760">
     <Window.Resources>
         <ResourceDictionary>
             <converters:AuthorsToStringConverter x:Key="AuthorsToStringConverter"/>
@@ -28,42 +28,48 @@
                    Margin="20,10,20,0"
                    Width="Auto">
             <DockPanel HorizontalAlignment="Right">
-                <Button Style="{StaticResource addRemoveBtn}"
+                <Button Content="Add Order"
+                        Width="105"
+                        Margin="5,0"
                         Command="{Binding CreateNewDialogCommand}"
                         CommandParameter="AddOrderDialog">
-                    <fa:IconBlock Icon="Plus"/>
                 </Button>
-                <Button Style="{StaticResource addRemoveBtn}"
+                <Button Content="Remove Order"
+                        Width="105"
+                        Margin="5,0"
                         Command="{Binding CreateNewDialogCommand}"
                         CommandParameter="RemoveOrderDialog"
-                        IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
-                    <fa:IconBlock Icon="Minus"/>
+                        IsEnabled="{Binding SelectedOrder, Converter={StaticResource NullToBoolConverter}}">
                 </Button>
-                <Button Style="{StaticResource addRemoveBtn}"
+                <Button Content="Edit Order"
+                        Width="105"
+                        Margin="5,0"
                         Command="{Binding CreateNewDialogCommand}"
                         CommandParameter="EditOrderDialog"
-                        IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
-                    <fa:IconBlock Icon="Cogs"/>
+                        IsEnabled="{Binding SelectedOrder, Converter={StaticResource NullToBoolConverter}}">
                 </Button>
             </DockPanel>
 
             <DockPanel HorizontalAlignment="Right">
-                <Button Style="{StaticResource addRemoveBtn}"
-                     Command="{Binding CreateNewDialogCommand}"
-                     CommandParameter="AddCustomerDialog">
-                    <fa:IconBlock Icon="Plus"/>
+                <Button Content="Add Customer"
+                        Width="105"
+                        Margin="5,0"
+                        Command="{Binding CreateNewDialogCommand}"
+                        CommandParameter="AddCustomerDialog">
                 </Button>
-                <Button Style="{StaticResource addRemoveBtn}"
+                <Button Content="Remove Customer"
+                        Margin="5,0"
+                        Width="105"
                         Command="{Binding CreateNewDialogCommand}"
                         CommandParameter="RemoveCustomerDialog"
                         IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
-                    <fa:IconBlock Icon="Minus"/>
                 </Button>
-                <Button Style="{StaticResource addRemoveBtn}"
+                <Button Content="Edit Customer"
+                        Width="105"
+                        Margin="5,0"
                         Command="{Binding CreateNewDialogCommand}"
                         CommandParameter="EditCustomerDialog"
                         IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
-                    <fa:IconBlock Icon="Cogs"/>
                 </Button>
             </DockPanel>
         </DockPanel>

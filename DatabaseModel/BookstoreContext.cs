@@ -184,7 +184,7 @@ public partial class BookstoreContext : DbContext
 
             entity.HasOne(d => d.Customer).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.CustomerId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__orders__customer__384F51F2");
         });
 
@@ -208,7 +208,7 @@ public partial class BookstoreContext : DbContext
 
             entity.HasOne(d => d.Order).WithMany(p => p.OrderBookJts)
                 .HasForeignKey(d => d.OrderId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK__orderBook__order__44B528D7");
         });
 
