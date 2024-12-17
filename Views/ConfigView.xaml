@@ -46,11 +46,13 @@
                    Margin="0,0,20,0">
                 <Button Style="{StaticResource addRemoveBtn}"
                         Command="{Binding AddSupplyCommand}"
+                        ToolTip="Add to supply"
                         IsEnabled="{Binding SelectedBook, Converter={StaticResource NullToBoolConverter}}">
                     <fa:IconBlock Icon="Plus"/>
                 </Button>
                 <Button Style="{StaticResource addRemoveBtn}"
                         Command="{Binding SubtractSupplyCommand}"
+                        ToolTip="Remove from supply"
                         IsEnabled="{Binding SelectedBook, Converter={StaticResource NullToBoolConverter}}">
                     <fa:IconBlock Icon="Minus"/>
                 </Button>

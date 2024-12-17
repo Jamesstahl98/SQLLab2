@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SQLLab2.Dialogs"
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         mc:Ignorable="d"
-        Title="AddTitleDialog" Height="Auto" Width="400">
+        Title="Add Title" Height="Auto" Width="400">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -54,6 +54,7 @@
                 <Button Style="{StaticResource addRemoveBtn}"
                         Margin="0,0,0,0"
                         VerticalAlignment="Center"
+                        ToolTip="Add new author"
                         Command="{Binding AddAuthorCommand}">
                     <fa:IconBlock Icon="Plus"/>
                 </Button>
@@ -84,6 +85,7 @@
                             <Button Style="{StaticResource addRemoveBtn}"
                                     Margin="5,0,5,0"
                                     VerticalAlignment="Center"
+                                    ToolTip="Remove author"
                                     Command="{Binding DataContext.RemoveAuthorCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                     CommandParameter="{Binding}">
                                 <fa:IconBlock Icon="Minus"/>
@@ -99,6 +101,7 @@
                 <Button Style="{StaticResource addRemoveBtn}"
                         Margin="0,0,0,0"
                         VerticalAlignment="Center"
+                        ToolTip="Add new genre"
                         Command="{Binding AddGenreCommand}">
                     <fa:IconBlock Icon="Plus"/>
                 </Button>
@@ -127,6 +130,7 @@
                             <Button Style="{StaticResource addRemoveBtn}"
                                     Margin="5,0,5,0"
                                     VerticalAlignment="Center"
+                                    ToolTip="Remove genre"
                                     Command="{Binding DataContext.RemoveGenreCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                     CommandParameter="{Binding}">
                                 <fa:IconBlock Icon="Minus"/>
@@ -151,7 +155,7 @@
             <DockPanel Margin="0,50,0,50"
                LastChildFill="False"
                HorizontalAlignment="Center">
-                <Button Content="OK"
+                <Button Content="Confirm"
                     Width="50"
                     Margin="0,0,20,0"
                     Command="{Binding UpdateTitleAsyncCommand}"

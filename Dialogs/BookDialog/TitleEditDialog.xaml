@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:SQLLab2.Dialogs"
         xmlns:converters="clr-namespace:SQLLab2.Converters"
         mc:Ignorable="d"
-        Title="TitleEdit" Height="450" Width="400">
+        Title="Books" Height="450" Width="400">
     <Window.Resources>
         <ResourceDictionary>
             <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
@@ -29,18 +29,21 @@
            HorizontalAlignment="Right">
             <Button Style="{StaticResource addRemoveBtn}"
                     Command="{Binding CreateNewDialogCommand}"
+                    ToolTip="Add new book"
                     CommandParameter="AddTitleDialog">
                 <fa:IconBlock Icon="Plus"/>
             </Button>
             <Button Style="{StaticResource addRemoveBtn}"
                     Command="{Binding CreateNewDialogCommand}"
                     CommandParameter="RemoveTitleDialog"
+                    ToolTip="Remove selected book"
                     IsEnabled="{Binding SelectedBook, Converter={StaticResource NullToBoolConverter}}">
                 <fa:IconBlock Icon="Minus"/>
             </Button>
             <Button Style="{StaticResource addRemoveBtn}"
                     Command="{Binding CreateNewDialogCommand}"
                     CommandParameter="EditSelectedTitleDialog"
+                    ToolTip="Edit selected book"
                     IsEnabled="{Binding SelectedBook, Converter={StaticResource NullToBoolConverter}}">
                 <fa:IconBlock Icon="Cogs"/>
             </Button>
@@ -63,7 +66,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <Button Grid.Row="2"
-                Content="OK"
+                Content="Close"
                 Width="60"
                 Margin="20"
                 Click="CloseDialog"/>

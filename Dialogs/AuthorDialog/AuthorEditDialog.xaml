@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:SQLLab2.Dialogs"
         xmlns:converters="clr-namespace:SQLLab2.Converters"
         mc:Ignorable="d"
-        Title="AuthorEditDialog" Height="450" Width="400">
+        Title="Authors" Height="450" Width="400">
     <Window.Resources>
         <ResourceDictionary>
             <converters:AuthorsToStringConverter x:Key="AuthorsToStringConverter"/>
@@ -29,19 +29,22 @@
        Width="80"
        HorizontalAlignment="Right">
             <Button Style="{StaticResource addRemoveBtn}"
-                Command="{Binding CreateNewDialogCommand}"
-                CommandParameter="AddAuthorDialog">
+                    Command="{Binding CreateNewDialogCommand}"
+                    ToolTip="Add new author"
+                    CommandParameter="AddAuthorDialog">
                 <fa:IconBlock Icon="Plus"/>
             </Button>
             <Button Style="{StaticResource addRemoveBtn}"
                     Command="{Binding CreateNewDialogCommand}"
                     CommandParameter="RemoveAuthorDialog"
+                    ToolTip="Remove selected author"
                     IsEnabled="{Binding SelectedAuthor, Converter={StaticResource NullToBoolConverter}}">
                 <fa:IconBlock Icon="Minus"/>
             </Button>
             <Button Style="{StaticResource addRemoveBtn}"
-                Command="{Binding CreateNewDialogCommand}"
-                CommandParameter="EditSelectedAuthorDialog"
+                    Command="{Binding CreateNewDialogCommand}"
+                    CommandParameter="EditSelectedAuthorDialog"
+                    ToolTip="Edit selected author"
                     IsEnabled="{Binding SelectedAuthor, Converter={StaticResource NullToBoolConverter}}">
                 <fa:IconBlock Icon="Cogs"/>
             </Button>
@@ -56,8 +59,8 @@
             </DataGrid.Columns>
         </DataGrid>
         <Button Grid.Row="2"
-            Content="OK"
-            Width="60"
+            Content="Close Window"
+            Width="100"
             Margin="20"
             Click="CloseDialog"/>
     </Grid>

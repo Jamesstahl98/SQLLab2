@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SQLLab2.Dialogs"
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         mc:Ignorable="d"
-        Title="EditOrderDialog" Height="Auto" Width="400">
+        Title="Edit Order" Height="Auto" Width="400">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -26,13 +26,14 @@
                     HorizontalAlignment="Center"
                     Margin="0,20,0,0">
                 <Button Style="{StaticResource addRemoveBtn}"
-                    Margin="0,0,0,0"
-                    VerticalAlignment="Center"
-                    Command="{Binding AddBookCommand}">
+                        Margin="0,0,0,0"
+                        VerticalAlignment="Center"
+                        ToolTip="Add new book"
+                        Command="{Binding AddBookCommand}">
                     <fa:IconBlock Icon="Plus"/>
                 </Button>
                 <Label Content="Books:"
-                   HorizontalAlignment="Center"/>
+                       HorizontalAlignment="Center"/>
             </StackPanel>
             <ItemsControl ItemsSource="{Binding EditableBooks}">
                 <ItemsControl.ItemTemplate>
@@ -53,10 +54,11 @@
                             </ComboBox>
 
                             <Button Style="{StaticResource addRemoveBtn}"
-                                Margin="5,0,5,0"
-                                VerticalAlignment="Center"
-                                Command="{Binding DataContext.RemoveBookCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                CommandParameter="{Binding}">
+                                    Margin="5,0,5,0"
+                                    VerticalAlignment="Center"
+                                    ToolTip="Remove book"
+                                    Command="{Binding DataContext.RemoveBookCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}">
                                 <fa:IconBlock Icon="Minus"/>
                             </Button>
                         </StackPanel>
@@ -85,7 +87,7 @@
             <DockPanel Margin="0,50"
                    LastChildFill="False"
                    HorizontalAlignment="Center">
-                <Button Content="OK"
+                <Button Content="Close"
                     Width="50"
                     Margin="0,0,20,0"
                     Command="{Binding UpdateOrderAsyncCommand}"

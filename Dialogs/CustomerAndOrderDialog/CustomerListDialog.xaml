@@ -120,7 +120,7 @@
             </TreeView.ItemTemplate>
         </TreeView>
         <Button Grid.Row="2"
-                Content="OK"
+                Content="Close"
                 Width="60"
                 Margin="20"
                 Click="CloseDialog"/>

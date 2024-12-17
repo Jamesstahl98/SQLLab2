@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLLab2.Dialogs"
         mc:Ignorable="d"
-        Title="AddCustomerDialog" Height="Auto" Width="400">
+        Title="Add Customer" Height="Auto" Width="400">
     <Grid>
         <StackPanel>
             <Label Content="First name:"
@@ -47,7 +47,7 @@
             <DockPanel Margin="0,50"
                    LastChildFill="False"
                    HorizontalAlignment="Center">
-                <Button Content="OK"
+                <Button Content="Confirm"
                     Width="50"
                     Margin="0,0,20,0"
                     Command="{Binding UpdateCustomerAsyncCommand}"
