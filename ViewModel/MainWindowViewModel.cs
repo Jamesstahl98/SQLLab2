@@ -18,19 +18,19 @@ namespace SQLLab2.ViewModel
 {
     class MainWindowViewModel : ViewModelBase
     {
-        private ObservableCollection<StoreSupply> _storeSupply;
+        private ObservableCollection<StoreSupplyViewModel> _storeSupply;
         private ObservableCollection<Author> _authors;
         private ObservableCollection<Genre> _genres;
         private ObservableCollection<Book> _books;
         private ObservableCollection<Customer> _customers;
-        private StoreSupply _selectedStoreSupply;
+        private StoreSupplyViewModel _selectedStoreSupply;
         private Book _selectedBook;
         private Author _selectedAuthor;
         private Genre _selectedGenre;
         private Customer _selectedCustomer;
         private Order _selectedOrder;
 
-        public ObservableCollection<StoreSupply> StoreSupply
+        public ObservableCollection<StoreSupplyViewModel> StoreSupply
         {
             get => _storeSupply;
             set
@@ -80,7 +80,7 @@ namespace SQLLab2.ViewModel
         }
         public ObservableCollection<Publisher> Publishers { get; set; }
 
-        public StoreSupply SelectedStoreSupply
+        public StoreSupplyViewModel SelectedStoreSupply
         {
             get => _selectedStoreSupply;
             set
@@ -201,7 +201,9 @@ namespace SQLLab2.ViewModel
                     .ThenInclude(b => b.Authors)
                     .ToListAsync();
 
-                StoreSupply = new ObservableCollection<StoreSupply>(storeSupplies);
+                StoreSupply = new ObservableCollection<StoreSupplyViewModel>(
+                    storeSupplies.Select(s => new StoreSupplyViewModel(s))
+                );
             }
         }
 
@@ -212,7 +214,8 @@ namespace SQLLab2.ViewModel
                 using var db = new BookstoreContext();
 
                 var storeSupplies = await db.StoreSupplies
-                    .Where(s => s == SelectedStoreSupply)
+                    .Where(s => s.StoreId == SelectedStoreSupply.StoreId 
+                    && s.Isbn == SelectedStoreSupply.Isbn)
                     .FirstOrDefaultAsync();
 
                 storeSupplies.Amount++;
@@ -230,7 +233,8 @@ namespace SQLLab2.ViewModel
                 using var db = new BookstoreContext();
 
                 var storeSupplies = await db.StoreSupplies
-                    .Where(s => s == SelectedStoreSupply)
+                    .Where(s => s.StoreId == SelectedStoreSupply.StoreId
+                    && s.Isbn == SelectedStoreSupply.Isbn)
                     .FirstOrDefaultAsync();
 
                 storeSupplies.Amount--;

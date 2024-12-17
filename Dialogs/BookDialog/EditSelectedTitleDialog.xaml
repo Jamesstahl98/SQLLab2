@@ -32,10 +32,10 @@
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
             <ComboBox Width="200"
-          ItemsSource="{Binding MainWindowViewModel.Publishers}"
-          SelectedValue="{Binding SelectedBook.Publisher.Id, Mode=TwoWay}"
-          SelectedValuePath="Id"
-          DisplayMemberPath="Name"/>
+                      ItemsSource="{Binding MainWindowViewModel.Publishers}"
+                      SelectedValue="{Binding SelectedBook.Publisher.Id, Mode=TwoWay}"
+                      SelectedValuePath="Id"
+                      DisplayMemberPath="Name"/>
 
             <Label Content="Date published (xxxx-xx-xx):"
                HorizontalAlignment="Center"

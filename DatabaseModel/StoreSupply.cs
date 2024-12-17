@@ -5,35 +5,15 @@ using System.Runtime.CompilerServices;
 
 namespace SQLLab2;
 
-public partial class StoreSupply : INotifyPropertyChanged
+public partial class StoreSupply
 {
-    private int _amount;
-
     public int StoreId { get; set; }
 
     public string Isbn { get; set; } = null!;
 
-    public int Amount
-    {
-        get => _amount;
-        set
-        {
-            if (_amount != value)
-            {
-                _amount = value;
-                OnPropertyChanged();
-            }
-        }
-    }
+    public int Amount { get; set; }
 
     public virtual Book IsbnNavigation { get; set; } = null!;
 
     public virtual Store Store { get; set; } = null!;
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }
