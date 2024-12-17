@@ -172,19 +172,12 @@ namespace SQLLab2.ViewModel
 
         private async Task InitializeDataAsync()
         {
-            try
-            {
-                await ChangeStoreAsync(1);
-                await RefreshBooksAsync();
-                await RefreshPublishersAsync();
-                await RefreshAuthorsAsync();
-                await RefreshGenresAsync();
-                await RefreshCustomersAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error fetching store information: {ex.Message}");
-            }
+            await ChangeStoreAsync(1);
+            await RefreshBooksAsync();
+            await RefreshPublishersAsync();
+            await RefreshAuthorsAsync();
+            await RefreshGenresAsync();
+            await RefreshCustomersAsync();
         }
 
         private void InitializeCommands()
@@ -262,7 +255,11 @@ namespace SQLLab2.ViewModel
 
             for (int i = 1; i <= storeCount; i++)
             {
-                var store = await db.Stores.Where(s => s.Id == i).Include(s => s.StoreSupplies).SingleOrDefaultAsync();
+                var store = await db.Stores
+                    .Where(s => s.Id == i)
+                    .Include(s => s.StoreSupplies)
+                    .SingleOrDefaultAsync();
+
                 store.StoreSupplies.Add(new StoreSupply() { Isbn = book.Isbn, Amount = 0, StoreId = i });
             }
 
@@ -270,45 +267,80 @@ namespace SQLLab2.ViewModel
         }
         public async Task RefreshAuthorsAsync()
         {
-            using var db = new BookstoreContext();
-            Authors = new ObservableCollection<Author>(
-                await db.Authors
-                .ToListAsync());
+            try
+            {
+                using var db = new BookstoreContext();
+                Authors = new ObservableCollection<Author>(
+                    await db.Authors
+                    .ToListAsync());
+            }
+            catch (Exception ex)
+            {
+                ShowMessage?.Invoke($"Error loading authors: {ex.InnerException?.Message ?? ex.Message}");
+            }
         }
         public async Task RefreshBooksAsync()
         {
-            using var db = new BookstoreContext();
-            Books = new ObservableCollection<Book>(
-                await db.Books.Include(b => b.Authors)
-                .Include(b => b.Publisher)
-                .Include(b => b.Genres)
-                .ToListAsync());
+            try
+            {
+                using var db = new BookstoreContext();
+                Books = new ObservableCollection<Book>(
+                    await db.Books.Include(b => b.Authors)
+                    .Include(b => b.Publisher)
+                    .Include(b => b.Genres)
+                    .ToListAsync());
 
-            await ChangeStoreAsync(1);
+                await ChangeStoreAsync(1);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage?.Invoke($"Error loading books: {ex.InnerException?.Message ?? ex.Message}");
+            }
         }
         public async Task RefreshPublishersAsync()
         {
-            using var db = new BookstoreContext();
-            Publishers = new ObservableCollection<Publisher>(
-                await db.Publishers
-                .ToListAsync());
+            try
+            {
+                using var db = new BookstoreContext();
+                Publishers = new ObservableCollection<Publisher>(
+                    await db.Publishers
+                    .ToListAsync());
+            }
+            catch (Exception ex)
+            {
+                ShowMessage?.Invoke($"Error loading publishers: {ex.InnerException?.Message ?? ex.Message}");
+            }
         }
         public async Task RefreshGenresAsync()
         {
-            using var db = new BookstoreContext();
-            Genres = new ObservableCollection<Genre>(
-                await db.Genres
-                .ToListAsync());
+            try
+            {
+                using var db = new BookstoreContext();
+                Genres = new ObservableCollection<Genre>(
+                    await db.Genres
+                    .ToListAsync());
+            }
+            catch (Exception ex)
+            {
+                ShowMessage?.Invoke($"Error loading genres: {ex.InnerException?.Message ?? ex.Message}");
+            }
         }
         public async Task RefreshCustomersAsync()
         {
-            using var db = new BookstoreContext();
-            Customers = new ObservableCollection<Customer>(
-                await db.Customers
-                      .Include(c => c.Orders)
-                      .ThenInclude(o => o.OrderBookJts)
-                      .ThenInclude(ob => ob.BookIsbnNavigation)
-                      .ToListAsync());
+            try
+            {
+                using var db = new BookstoreContext();
+                Customers = new ObservableCollection<Customer>(
+                    await db.Customers
+                          .Include(c => c.Orders)
+                          .ThenInclude(o => o.OrderBookJts)
+                          .ThenInclude(ob => ob.BookIsbnNavigation)
+                          .ToListAsync());
+            }
+            catch (Exception ex)
+            {
+                ShowMessage?.Invoke($"Error loading customers: {ex.InnerException?.Message ?? ex.Message}");
+            }
         }
     }
 }
