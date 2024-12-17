@@ -25,9 +25,9 @@
         </Grid.RowDefinitions>
 
         <DockPanel Grid.Row="0"
-   Margin="20,10,20,0"
-   Width="80"
-   HorizontalAlignment="Right">
+                   Margin="20,10,20,0"
+                   Width="80"
+                   HorizontalAlignment="Right">
             <Button Style="{StaticResource addRemoveBtn}"
                     Command="{Binding CreateNewDialogCommand}"
                     CommandParameter="AddNewGenreDialog">
@@ -47,18 +47,18 @@
             </Button>
         </DockPanel>
         <DataGrid Grid.Row="1"
-              ItemsSource="{Binding Genres}"
-              SelectedItem="{Binding SelectedGenre}"
-              AutoGenerateColumns="False"
-              IsReadOnly="True">
+                  ItemsSource="{Binding Genres}"
+                  SelectedItem="{Binding SelectedGenre}"
+                  AutoGenerateColumns="False"
+                  IsReadOnly="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Genre" Binding="{Binding GenreName}"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Grid.Row="2"
-        Content="OK"
-        Width="60"
-        Margin="20"
-        Click="CloseDialog"/>
+                Content="Close"
+                Width="60"
+                Margin="20"
+                Click="CloseDialog"/>
     </Grid>
 </Window>

@@ -7,24 +7,23 @@
         mc:Ignorable="d"
         Title="Add Genre" Height="Auto" Width="400">
     <Grid>
-        <StackPanel
-        Margin="0,40">
+        <StackPanel Margin="0,40">
             <Label Content="Genre Name:"
-               HorizontalAlignment="Center"/>
+                   HorizontalAlignment="Center"/>
             <TextBox Text="{Binding PendingGenreName}"
-                 Width="150"/>
+                     Width="150"/>
 
             <DockPanel Margin="0,50,0,0"
                     LastChildFill="False"
                     HorizontalAlignment="Center">
-                <Button Content="OK"
-                Width="50"
-                Margin="0,0,20,0"
-                Command="{Binding UpdateGenreAsyncCommand}"
-                Click="CloseDialog"/>
+                <Button Content="Confirm"
+                        Width="50"
+                        Margin="0,0,20,0"
+                        Command="{Binding UpdateGenreAsyncCommand}"
+                        Click="CloseDialog"/>
                 <Button Content="Cancel"
-                Width="50"
-                Click="CloseDialog"/>
+                        Width="50"
+                        Click="CloseDialog"/>
             </DockPanel>
         </StackPanel>
     </Grid>

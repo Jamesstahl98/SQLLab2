@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLLab2.Dialogs"
         mc:Ignorable="d"
-        Title="Remove Order" Height="Auto" Width="250">
+        Title="Remove Order" Height="260" Width="250">
     <Grid>
         <StackPanel>
             <TextBlock Text="{Binding OrderToDelete.Id,

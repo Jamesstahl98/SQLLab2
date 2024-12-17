@@ -5,23 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLLab2.Dialogs"
         mc:Ignorable="d"
-        Title="Remove Genre" Height="Auto" Width="250">
+        Title="Remove Genre" Height="Auto" Width="260">
     <StackPanel>
         <TextBlock Text="{Binding GenreToDelete.GenreName,
                      StringFormat=You are about to delete the genre {0} Proceed?}"
-               TextWrapping="Wrap"
-               Margin="40"/>
+                   TextWrapping="Wrap"
+                   Margin="40"/>
         <DockPanel Margin="0,50,0,50"
-               LastChildFill="False"
-               HorizontalAlignment="Center">
-            <Button Content="OK"
-                Width="50"
-                Margin="0,0,20,0"
-                Command="{Binding DeleteGenreAsyncCommand}"
-                Click="CloseDialog"/>
+                   LastChildFill="False"
+                   HorizontalAlignment="Center">
+            <Button Content="Close"
+                    Width="50"
+                    Margin="0,0,20,0"
+                    Command="{Binding DeleteGenreAsyncCommand}"
+                    Click="CloseDialog"/>
             <Button Content="Cancel"
-                Width="50"
-                Click="CloseDialog"/>
+                    Width="50"
+                    Click="CloseDialog"/>
         </DockPanel>
     </StackPanel>
 </Window>
