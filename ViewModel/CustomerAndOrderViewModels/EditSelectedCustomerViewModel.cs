@@ -11,7 +11,7 @@ namespace SQLLab2.ViewModel
     class EditSelectedCustomerViewModel
     {
         public MainWindowViewModel MainWindowViewModel { get; set; }
-        public Customer SelectedCustomer { get; set; }
+        public CustomerViewModel SelectedCustomer { get; set; }
         public DelegateCommand UpdateCustomerAsyncCommand { get; private set; }
 
         public EditSelectedCustomerViewModel(MainWindowViewModel mainWindowViewModel, bool newCustomer)
@@ -20,11 +20,11 @@ namespace SQLLab2.ViewModel
 
             if (!newCustomer && mainWindowViewModel.SelectedCustomer != null)
             {
-                SelectedCustomer = new Customer(mainWindowViewModel.SelectedCustomer);
+                SelectedCustomer = mainWindowViewModel.SelectedCustomer;
             }
             else
             {
-                SelectedCustomer = new Customer();
+                SelectedCustomer = new CustomerViewModel(new Customer());
             }
 
             InitializeCommands();

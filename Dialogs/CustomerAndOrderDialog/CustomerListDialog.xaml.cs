@@ -32,21 +32,24 @@ namespace SQLLab2.Dialogs
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            (DataContext as MainWindowViewModel).SelectedCustomer = null;
-            (DataContext as MainWindowViewModel).SelectedOrder = null;
-            if (e.NewValue is Customer customer)
+            var viewModel = (DataContext as MainWindowViewModel);
+
+            viewModel.SelectedCustomer = null;
+            viewModel.SelectedOrder = null;
+
+            if (e.NewValue is CustomerViewModel customer)
             {
-                (DataContext as MainWindowViewModel).SelectedCustomer = customer;
+                viewModel.SelectedCustomer = customer;
             }
-            else if(e.NewValue is Order order)
+            else if(e.NewValue is OrderViewModel order)
             {
-                (DataContext as MainWindowViewModel).SelectedOrder = order;
-                (DataContext as MainWindowViewModel).SelectedCustomer = order.Customer;
+                viewModel.SelectedOrder = order;
+                viewModel.SelectedCustomer = order.Customer;
             }
-            else if(e.NewValue is OrderBookJt orderBookJt)
+            else if (e.NewValue is OrderBookJt orderBookJt)
             {
-                (DataContext as MainWindowViewModel).SelectedOrder = orderBookJt.Order;
-                (DataContext as MainWindowViewModel).SelectedCustomer = orderBookJt.Order.Customer;
+                viewModel.SelectedOrder = new OrderViewModel(orderBookJt.Order);
+                viewModel.SelectedCustomer = new CustomerViewModel(orderBookJt.Order.Customer);
             }
         }
     }

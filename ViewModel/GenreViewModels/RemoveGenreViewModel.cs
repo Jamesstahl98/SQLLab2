@@ -16,7 +16,7 @@ namespace SQLLab2.ViewModel
         public RemoveGenreViewModel(MainWindowViewModel mainWindowViewModel)
         {
             MainWindowViewModel = mainWindowViewModel;
-            GenreToDelete = MainWindowViewModel.SelectedGenre;
+            GenreToDelete = MainWindowViewModel.SelectedGenre.Genre;
 
             InitializeCommands();
         }

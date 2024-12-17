@@ -20,15 +20,15 @@ namespace SQLLab2.ViewModel
     {
         private ObservableCollection<StoreSupplyViewModel> _storeSupply;
         private ObservableCollection<AuthorViewModel> _authors;
-        private ObservableCollection<Genre> _genres;
+        private ObservableCollection<GenreViewModel> _genres;
         private ObservableCollection<BookViewModel> _books;
-        private ObservableCollection<Customer> _customers;
+        private ObservableCollection<CustomerViewModel> _customers;
         private StoreSupplyViewModel _selectedStoreSupply;
         private BookViewModel _selectedBook;
         private AuthorViewModel _selectedAuthor;
-        private Genre _selectedGenre;
-        private Customer _selectedCustomer;
-        private Order _selectedOrder;
+        private GenreViewModel _selectedGenre;
+        private CustomerViewModel _selectedCustomer;
+        private OrderViewModel _selectedOrder;
 
         public ObservableCollection<StoreSupplyViewModel> StoreSupply
         {
@@ -50,7 +50,7 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        public ObservableCollection<Genre> Genres
+        public ObservableCollection<GenreViewModel> Genres
         {
             get => _genres;
             set
@@ -69,7 +69,7 @@ namespace SQLLab2.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public ObservableCollection<Customer> Customers
+        public ObservableCollection<CustomerViewModel> Customers
         {
             get => _customers;
             set
@@ -92,7 +92,7 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        public Customer SelectedCustomer
+        public CustomerViewModel SelectedCustomer
         {
             get => _selectedCustomer;
             set
@@ -101,7 +101,7 @@ namespace SQLLab2.ViewModel
                 RaisePropertyChanged();
             }
         }
-        public Order SelectedOrder
+        public OrderViewModel SelectedOrder
         {
             get => _selectedOrder;
             set
@@ -121,7 +121,7 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        public Genre SelectedGenre
+        public GenreViewModel SelectedGenre
         {
             get => _selectedGenre;
             set
@@ -328,9 +328,13 @@ namespace SQLLab2.ViewModel
             try
             {
                 using var db = new BookstoreContext();
-                Genres = new ObservableCollection<Genre>(
+                var genres = new ObservableCollection<Genre>(
                     await db.Genres
                     .ToListAsync());
+
+                Genres = new ObservableCollection<GenreViewModel>(
+                    genres.Select(g => new GenreViewModel(g))
+                );
             }
             catch (Exception ex)
             {
@@ -342,12 +346,14 @@ namespace SQLLab2.ViewModel
             try
             {
                 using var db = new BookstoreContext();
-                Customers = new ObservableCollection<Customer>(
+                var customers = new ObservableCollection<Customer>(
                     await db.Customers
                           .Include(c => c.Orders)
                           .ThenInclude(o => o.OrderBookJts)
                           .ThenInclude(ob => ob.BookIsbnNavigation)
                           .ToListAsync());
+                Customers = new ObservableCollection<CustomerViewModel>(
+                    customers.Select(c => new CustomerViewModel(c)));
             }
             catch (Exception ex)
             {

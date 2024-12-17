@@ -38,7 +38,7 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        private Order _selectedOrder;
+        private OrderViewModel _selectedOrder;
         private ObservableCollection<EditableBook> _editableBooks;
 
         public ObservableCollection<EditableBook> EditableBooks
@@ -54,7 +54,7 @@ namespace SQLLab2.ViewModel
         public ObservableCollection<BookViewModel> AllBooks { get; set; }
         public MainWindowViewModel MainWindowViewModel { get; set; }
 
-        public Order SelectedOrder
+        public OrderViewModel SelectedOrder
         {
             get => _selectedOrder;
             set
@@ -76,7 +76,7 @@ namespace SQLLab2.ViewModel
 
             if (!newOrder && mainWindowViewModel.SelectedOrder != null)
             {
-                SelectedOrder = new Order(mainWindowViewModel.SelectedOrder);
+                SelectedOrder = mainWindowViewModel.SelectedOrder;
 
                 EditableBooks = new ObservableCollection<EditableBook>(
                 SelectedOrder.OrderBookJts.Select(book =>
@@ -89,7 +89,7 @@ namespace SQLLab2.ViewModel
 
             else
             {
-                SelectedOrder = new Order();
+                SelectedOrder = new OrderViewModel(new Order());
 
                 EditableBooks = new ObservableCollection<EditableBook>();
             }

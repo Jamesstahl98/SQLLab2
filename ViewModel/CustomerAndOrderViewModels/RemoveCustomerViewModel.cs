@@ -16,7 +16,7 @@ namespace SQLLab2.ViewModel
         public RemoveCustomerViewModel(MainWindowViewModel mainWindowViewModel)
         {
             MainWindowViewModel = mainWindowViewModel;
-            CustomerToDelete = MainWindowViewModel.SelectedCustomer;
+            CustomerToDelete = MainWindowViewModel.SelectedCustomer.Customer;
 
             InitializeCommands();
         }

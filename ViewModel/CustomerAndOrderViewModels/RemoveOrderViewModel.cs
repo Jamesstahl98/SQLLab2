@@ -16,7 +16,7 @@ namespace SQLLab2.ViewModel
         public RemoveOrderViewModel(MainWindowViewModel mainWindowViewModel)
         {
             MainWindowViewModel = mainWindowViewModel;
-            OrderToDelete = MainWindowViewModel.SelectedOrder;
+            OrderToDelete = MainWindowViewModel.SelectedOrder.Order;
 
             InitializeCommands();
         }

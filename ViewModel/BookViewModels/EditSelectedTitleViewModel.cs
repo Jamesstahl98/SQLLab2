@@ -30,9 +30,9 @@ namespace SQLLab2.ViewModel
 
         public class EditableGenre : ViewModelBase
         {
-            private Genre _selectedGenre;
+            private GenreViewModel _selectedGenre;
 
-            public Genre SelectedGenre
+            public GenreViewModel SelectedGenre
             {
                 get => _selectedGenre;
                 set
@@ -70,7 +70,7 @@ namespace SQLLab2.ViewModel
         }
 
         public ObservableCollection<AuthorViewModel> AllAuthors { get; set; }
-        public ObservableCollection<Genre> AllGenres { get; set; }
+        public ObservableCollection<GenreViewModel> AllGenres { get; set; }
         public MainWindowViewModel MainWindowViewModel { get; set; }
 
         public BookViewModel SelectedBook
@@ -270,8 +270,8 @@ namespace SQLLab2.ViewModel
             }
             foreach (var editableGenre in EditableGenres)
             {
-                var genre = editableGenre.SelectedGenre;
-                var trackedGenre = await db.Genres.FirstOrDefaultAsync(g => g.Id == genre.Id);
+                var selectedGenreViewModel = editableGenre.SelectedGenre;
+                var trackedGenre = await db.Genres.FirstOrDefaultAsync(g => g.Id == selectedGenreViewModel.Id);
 
                 if (trackedGenre != null)
                 {
@@ -279,8 +279,8 @@ namespace SQLLab2.ViewModel
                 }
                 else
                 {
-                    db.Genres.Attach(genre);
-                    book.Genres.Add(genre);
+                    db.Genres.Attach(selectedGenreViewModel.Genre);
+                    book.Genres.Add(selectedGenreViewModel.Genre);
                 }
             }
         }

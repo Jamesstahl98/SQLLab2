@@ -32,7 +32,8 @@
                         Width="105"
                         Margin="5,0"
                         Command="{Binding CreateNewDialogCommand}"
-                        CommandParameter="AddOrderDialog">
+                        CommandParameter="AddOrderDialog"
+                        IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
                 </Button>
                 <Button Content="Remove Order"
                         Width="105"
