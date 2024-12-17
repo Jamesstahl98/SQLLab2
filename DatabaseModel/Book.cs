@@ -7,11 +7,8 @@ using System.Windows.Controls;
 
 namespace SQLLab2;
 
-public partial class Book: INotifyPropertyChanged
+public partial class Book
 {
-    private ObservableCollection<Author> _authors;
-    private ObservableCollection<Genre> _genres;
-
     public string Isbn { get; set; } = null!;
 
     public string Title { get; set; } = null!;
@@ -32,27 +29,10 @@ public partial class Book: INotifyPropertyChanged
 
     public virtual ICollection<StoreSupply> StoreSupplies { get; set; } = new List<StoreSupply>();
 
-    public virtual ObservableCollection<Author> Authors
-    {
-        get => _authors;
-        set
-        {
-            _authors = value;
-            OnPropertyChanged();
-        }
-    }
+    public virtual ObservableCollection<Author> Authors { get; set; }
 
-    public virtual ObservableCollection<Genre> Genres 
-    {
-        get => _genres;
-        set 
-        { 
-            _genres = value;
-            OnPropertyChanged();
-        }
-    }
+    public virtual ObservableCollection<Genre> Genres { get; set; }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     public Book()
     {
@@ -74,10 +54,5 @@ public partial class Book: INotifyPropertyChanged
         StoreSupplies = new List<StoreSupply>(other.StoreSupplies);
         Authors = new ObservableCollection<Author>(other.Authors);
         Genres = new ObservableCollection<Genre>(other.Genres);
-    }
-
-    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

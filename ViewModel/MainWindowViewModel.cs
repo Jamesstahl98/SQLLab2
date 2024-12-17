@@ -18,13 +18,13 @@ namespace SQLLab2.ViewModel
 {
     class MainWindowViewModel : ViewModelBase
     {
-        private StoreSupply _selectedStoreSupply;
-        private Book _selectedBook;
         private ObservableCollection<StoreSupply> _storeSupply;
         private ObservableCollection<Author> _authors;
         private ObservableCollection<Genre> _genres;
         private ObservableCollection<Book> _books;
         private ObservableCollection<Customer> _customers;
+        private StoreSupply _selectedStoreSupply;
+        private Book _selectedBook;
         private Author _selectedAuthor;
         private Genre _selectedGenre;
         private Customer _selectedCustomer;
