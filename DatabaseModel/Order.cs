@@ -20,4 +20,20 @@ public partial class Order
     public virtual Customer Customer { get; set; } = null!;
 
     public virtual ICollection<OrderBookJt> OrderBookJts { get; set; } = new List<OrderBookJt>();
+
+    public Order()
+    {
+
+    }
+
+    public Order(Order other)
+    {
+        Id = other.Id;
+        CustomerId = other.CustomerId;
+        DateAndTimePlaced = other.DateAndTimePlaced;
+        City = other.City;
+        Address = other.Address;
+        PostalCode = other.PostalCode;
+        Customer = other.Customer;
+    }
 }

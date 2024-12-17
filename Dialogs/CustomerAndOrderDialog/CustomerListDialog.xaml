@@ -26,25 +26,46 @@
 
         <DockPanel Grid.Row="0"
                    Margin="20,10,20,0"
-                   Width="80"
-                   HorizontalAlignment="Right">
-            <Button Style="{StaticResource addRemoveBtn}"
+                   Width="Auto">
+            <DockPanel HorizontalAlignment="Right">
+                <Button Style="{StaticResource addRemoveBtn}"
+                        Command="{Binding CreateNewDialogCommand}"
+                        CommandParameter="AddOrderDialog">
+                    <fa:IconBlock Icon="Plus"/>
+                </Button>
+                <Button Style="{StaticResource addRemoveBtn}"
+                        Command="{Binding CreateNewDialogCommand}"
+                        CommandParameter="RemoveOrderDialog"
+                        IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
+                    <fa:IconBlock Icon="Minus"/>
+                </Button>
+                <Button Style="{StaticResource addRemoveBtn}"
+                        Command="{Binding CreateNewDialogCommand}"
+                        CommandParameter="EditOrderDialog"
+                        IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
+                    <fa:IconBlock Icon="Cogs"/>
+                </Button>
+            </DockPanel>
+
+            <DockPanel HorizontalAlignment="Right">
+                <Button Style="{StaticResource addRemoveBtn}"
                      Command="{Binding CreateNewDialogCommand}"
                      CommandParameter="AddCustomerDialog">
-                <fa:IconBlock Icon="Plus"/>
-            </Button>
-            <Button Style="{StaticResource addRemoveBtn}"
-                    Command="{Binding CreateNewDialogCommand}"
-                    CommandParameter="RemoveCustomerDialog"
-                    IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
-                <fa:IconBlock Icon="Minus"/>
-            </Button>
-            <Button Style="{StaticResource addRemoveBtn}"
-                    Command="{Binding CreateNewDialogCommand}"
-                    CommandParameter="EditCustomerDialog"
-                    IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
-                <fa:IconBlock Icon="Cogs"/>
-            </Button>
+                    <fa:IconBlock Icon="Plus"/>
+                </Button>
+                <Button Style="{StaticResource addRemoveBtn}"
+                        Command="{Binding CreateNewDialogCommand}"
+                        CommandParameter="RemoveCustomerDialog"
+                        IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
+                    <fa:IconBlock Icon="Minus"/>
+                </Button>
+                <Button Style="{StaticResource addRemoveBtn}"
+                        Command="{Binding CreateNewDialogCommand}"
+                        CommandParameter="EditCustomerDialog"
+                        IsEnabled="{Binding SelectedCustomer, Converter={StaticResource NullToBoolConverter}}">
+                    <fa:IconBlock Icon="Cogs"/>
+                </Button>
+            </DockPanel>
         </DockPanel>
         <TreeView ItemsSource="{Binding Customers}"
                   Grid.Row="1"
