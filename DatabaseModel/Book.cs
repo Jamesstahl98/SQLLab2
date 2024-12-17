@@ -32,27 +32,4 @@ public partial class Book
     public virtual ObservableCollection<Author> Authors { get; set; }
 
     public virtual ObservableCollection<Genre> Genres { get; set; }
-
-
-    public Book()
-    {
-
-    }
-    public Book(Book other)
-    {
-        if (other == null)
-            throw new ArgumentNullException(nameof(other));
-
-        Isbn = other.Isbn;
-        Title = other.Title;
-        Language = other.Language;
-        Price = other.Price;
-        Pages = other.Pages;
-        PublishDate = other.PublishDate;
-        PublisherId = other.PublisherId;
-        Publisher = other.Publisher;
-        StoreSupplies = new List<StoreSupply>(other.StoreSupplies);
-        Authors = new ObservableCollection<Author>(other.Authors);
-        Genres = new ObservableCollection<Genre>(other.Genres);
-    }
 }

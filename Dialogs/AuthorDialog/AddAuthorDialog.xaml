@@ -12,25 +12,25 @@
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
             <TextBox Width="200"
-                     Text="{Binding SelectedAuthor.FirstName}"/>
+                     Text="{Binding SelectedAuthorViewModel.FirstName}"/>
             
             <Label Content="Last name:"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
             <TextBox Width="200"
-                     Text="{Binding SelectedAuthor.LastName}"/>
+                     Text="{Binding SelectedAuthorViewModel.LastName}"/>
             
             <Label Content="Birth date (xx/xx/xxxx):"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
             <TextBox Width="200"
-                     Text="{Binding SelectedAuthor.BirthDate}"/>
+                     Text="{Binding SelectedAuthorViewModel.BirthDate}"/>
             
             <Label Content="Death date (Leave blank if author is alive):"
                    HorizontalAlignment="Center"
                    Margin="0,20,0,0"/>
             <TextBox Width="200"
-                     Text="{Binding SelectedAuthor.DeathDate}"/>
+                     Text="{Binding SelectedAuthorViewModel.DeathDate}"/>
             
             <DockPanel Margin="0,50,0,0"
                        LastChildFill="False"

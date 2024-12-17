@@ -10,7 +10,7 @@ namespace SQLLab2.ViewModel
     class RemoveTitleViewModel
     {
         public MainWindowViewModel MainWindowViewModel { get; set; }
-        public Book BookToDelete { get; set; }
+        public BookViewModel BookToDelete { get; set; }
         public DelegateCommand DeleteBookAsyncCommand { get; private set; }
 
         public RemoveTitleViewModel(MainWindowViewModel mainWindowViewModel)

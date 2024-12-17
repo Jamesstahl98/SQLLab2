@@ -15,9 +15,9 @@ namespace SQLLab2.ViewModel
     {
         public class EditableAuthor : ViewModelBase
         {
-            private Author _selectedAuthor;
+            private AuthorViewModel _selectedAuthor;
 
-            public Author SelectedAuthor
+            public AuthorViewModel SelectedAuthor
             {
                 get => _selectedAuthor;
                 set
@@ -43,7 +43,7 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        private Book _selectedBook;
+        private BookViewModel _selectedBook;
         private ObservableCollection<EditableAuthor> _editableAuthors;
         private ObservableCollection<EditableGenre> _editableGenres;
 
@@ -69,11 +69,11 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        public ObservableCollection<Author> AllAuthors { get; set; }
+        public ObservableCollection<AuthorViewModel> AllAuthors { get; set; }
         public ObservableCollection<Genre> AllGenres { get; set; }
         public MainWindowViewModel MainWindowViewModel { get; set; }
 
-        public Book SelectedBook
+        public BookViewModel SelectedBook
         {
             get => _selectedBook;
             set
@@ -98,7 +98,7 @@ namespace SQLLab2.ViewModel
 
             if (!newTitle && mainWindowViewModel.SelectedBook != null)
             {
-                SelectedBook = new Book(mainWindowViewModel.SelectedBook);
+                SelectedBook = mainWindowViewModel.SelectedBook;
 
                 EditableAuthors = new ObservableCollection<EditableAuthor>(
                 SelectedBook.Authors.Select(author =>
@@ -119,7 +119,8 @@ namespace SQLLab2.ViewModel
 
             else
             {
-                SelectedBook = new Book();
+                //Test
+                SelectedBook = new BookViewModel(new Book());
 
                 EditableAuthors = new ObservableCollection<EditableAuthor>();
                 EditableGenres = new ObservableCollection<EditableGenre>();
@@ -243,8 +244,8 @@ namespace SQLLab2.ViewModel
             }
             foreach (var editableAuthor in EditableAuthors)
             {
-                var author = editableAuthor.SelectedAuthor;
-                var trackedAuthor = await db.Authors.FirstOrDefaultAsync(a => a.Id == author.Id);
+                var selectedAuthorViewModel = editableAuthor.SelectedAuthor;
+                var trackedAuthor = await db.Authors.FirstOrDefaultAsync(a => a.Id == selectedAuthorViewModel.Id);
 
                 if (trackedAuthor != null)
                 {
@@ -252,8 +253,8 @@ namespace SQLLab2.ViewModel
                 }
                 else
                 {
-                    db.Authors.Attach(author);
-                    book.Authors.Add(author);
+                    db.Authors.Attach(selectedAuthorViewModel.Author);
+                    book.Authors.Add(selectedAuthorViewModel.Author);
                 }
             }
         }

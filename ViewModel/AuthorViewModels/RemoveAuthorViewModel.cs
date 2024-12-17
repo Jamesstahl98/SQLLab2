@@ -10,7 +10,7 @@ namespace SQLLab2.ViewModel
     class RemoveAuthorViewModel
     {
         public MainWindowViewModel MainWindowViewModel { get; set; }
-        public Author AuthorToDelete { get; set; }
+        public AuthorViewModel AuthorToDelete { get; set; }
         public DelegateCommand DeleteAuthorAsyncCommand { get; private set; }
 
         public RemoveAuthorViewModel(MainWindowViewModel mainWindowViewModel)

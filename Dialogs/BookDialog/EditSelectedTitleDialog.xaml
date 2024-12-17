@@ -33,7 +33,7 @@
                    Margin="0,20,0,0"/>
             <ComboBox Width="200"
                       ItemsSource="{Binding MainWindowViewModel.Publishers}"
-                      SelectedValue="{Binding SelectedBook.Publisher.Id, Mode=TwoWay}"
+                      SelectedItem="{Binding SelectedBook.Publisher}"
                       SelectedValuePath="Id"
                       DisplayMemberPath="Name"/>
 

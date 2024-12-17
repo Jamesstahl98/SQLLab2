@@ -19,13 +19,13 @@ namespace SQLLab2.ViewModel
     class MainWindowViewModel : ViewModelBase
     {
         private ObservableCollection<StoreSupplyViewModel> _storeSupply;
-        private ObservableCollection<Author> _authors;
+        private ObservableCollection<AuthorViewModel> _authors;
         private ObservableCollection<Genre> _genres;
-        private ObservableCollection<Book> _books;
+        private ObservableCollection<BookViewModel> _books;
         private ObservableCollection<Customer> _customers;
         private StoreSupplyViewModel _selectedStoreSupply;
-        private Book _selectedBook;
-        private Author _selectedAuthor;
+        private BookViewModel _selectedBook;
+        private AuthorViewModel _selectedAuthor;
         private Genre _selectedGenre;
         private Customer _selectedCustomer;
         private Order _selectedOrder;
@@ -40,7 +40,7 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        public ObservableCollection<Author> Authors
+        public ObservableCollection<AuthorViewModel> Authors
         {
             get => _authors;
             set
@@ -60,7 +60,7 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        public ObservableCollection<Book> Books
+        public ObservableCollection<BookViewModel> Books
         {
             get => _books;
             set
@@ -111,7 +111,7 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        public Author SelectedAuthor
+        public AuthorViewModel SelectedAuthor
         {
             get => _selectedAuthor;
             set
@@ -131,7 +131,7 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        public Book SelectedBook
+        public BookViewModel SelectedBook
         {
             get => _selectedBook;
             set
@@ -150,11 +150,13 @@ namespace SQLLab2.ViewModel
             }
 
             using var db = new BookstoreContext();
-            SelectedBook = await db.Books
-                           .Include(b => b.Authors)
-                           .Include(b => b.Publisher)
-                           .Include(b => b.Genres)
-                           .SingleOrDefaultAsync(b => b.Isbn == SelectedStoreSupply.Isbn);
+            var book = await db.Books
+                .Include(b => b.Authors)
+                .Include(b => b.Publisher)
+                .Include(b => b.Genres)
+                .SingleOrDefaultAsync(b => b.Isbn == SelectedStoreSupply.Isbn);
+
+            SelectedBook = book != null ? new BookViewModel(book) : null;
         }
 
         public DelegateCommand CreateNewDialogCommand { get; private set; }
@@ -274,9 +276,11 @@ namespace SQLLab2.ViewModel
             try
             {
                 using var db = new BookstoreContext();
-                Authors = new ObservableCollection<Author>(
-                    await db.Authors
-                    .ToListAsync());
+                var authors = await db.Authors.ToListAsync();
+
+                Authors = new ObservableCollection<AuthorViewModel>(
+                    authors.Select(a => new AuthorViewModel(a))
+                );
             }
             catch (Exception ex)
             {
@@ -288,11 +292,15 @@ namespace SQLLab2.ViewModel
             try
             {
                 using var db = new BookstoreContext();
-                Books = new ObservableCollection<Book>(
-                    await db.Books.Include(b => b.Authors)
+                var books = await db.Books
+                    .Include(b => b.Authors)
                     .Include(b => b.Publisher)
                     .Include(b => b.Genres)
-                    .ToListAsync());
+                    .ToListAsync();
+
+                Books = new ObservableCollection<BookViewModel>(
+                    books.Select(b => new BookViewModel(b))
+                );
 
                 await ChangeStoreAsync(1);
             }

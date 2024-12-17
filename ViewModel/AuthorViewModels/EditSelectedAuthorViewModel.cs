@@ -15,7 +15,7 @@ namespace SQLLab2.ViewModel
     internal class EditSelectedAuthorViewModel : ViewModelBase
     {
         public MainWindowViewModel MainWindowViewModel { get; set; }
-        public Author SelectedAuthor { get; set; }
+        public AuthorViewModel SelectedAuthorViewModel { get; set; }
         public DelegateCommand UpdateAuthorAsyncCommand { get; private set; }
 
         public EditSelectedAuthorViewModel(MainWindowViewModel mainWindowViewModel, bool newAuthor)
@@ -24,11 +24,11 @@ namespace SQLLab2.ViewModel
 
             if (!newAuthor && mainWindowViewModel.SelectedAuthor != null)
             {
-                SelectedAuthor = new Author(mainWindowViewModel.SelectedAuthor);
+                SelectedAuthorViewModel = mainWindowViewModel.SelectedAuthor;
             }
             else
             {
-                SelectedAuthor = new Author();
+                SelectedAuthorViewModel = new AuthorViewModel(new Author());
             }
 
             InitializeCommands();
@@ -45,7 +45,8 @@ namespace SQLLab2.ViewModel
 
             using var db = new BookstoreContext();
 
-            var originalAuthor = await db.Authors.Where(a => a.Id == SelectedAuthor.Id)
+            var originalAuthor = await db.Authors
+                .Where(a => a.Id == SelectedAuthorViewModel.Author.Id)
                 .FirstOrDefaultAsync();
 
             if (originalAuthor == null)
@@ -65,11 +66,7 @@ namespace SQLLab2.ViewModel
             {
                 await db.SaveChangesAsync();
 
-                //var indexOfAuthor = MainWindowViewModel.Authors.IndexOf(SelectedAuthor);
-                //MainWindowViewModel.Authors[indexOfAuthor] = originalAuthor;
                 UpdateMainWindowAuthorsCollection(originalAuthor, isNewAuthor);
-                //await MainWindowViewModel.RefreshAuthorsAsync();
-                //await MainWindowViewModel.RefreshBooksAsync();
             }
 
             catch (DbUpdateException ex)
@@ -80,34 +77,35 @@ namespace SQLLab2.ViewModel
 
         private void SaveChangesToAuthor(Author author)
         {
-            author.FirstName = SelectedAuthor.FirstName;
-            author.LastName = SelectedAuthor.LastName;
-            author.BirthDate = SelectedAuthor.BirthDate;
-            author.DeathDate = SelectedAuthor.DeathDate;
+            if (SelectedAuthorViewModel == null || author == null)
+                throw new ArgumentNullException(nameof(SelectedAuthorViewModel));
+
+            author.FirstName = SelectedAuthorViewModel.FirstName;
+            author.LastName = SelectedAuthorViewModel.LastName;
+            author.BirthDate = SelectedAuthorViewModel.BirthDate;
+            author.DeathDate = SelectedAuthorViewModel.DeathDate;
         }
         private void UpdateMainWindowAuthorsCollection(Author updatedAuthor, bool isNewAuthor)
         {
+            var updatedAuthorViewModel = new AuthorViewModel(updatedAuthor);
             if (isNewAuthor)
             {
-                // Add the new author to the ObservableCollection
-                MainWindowViewModel.Authors.Add(updatedAuthor);
+                MainWindowViewModel.Authors.Add(updatedAuthorViewModel);
             }
             else
             {
-                // Find the author in the ObservableCollection and update it
-                var existingAuthor = MainWindowViewModel.Authors
+                var existingAuthorViewModel = MainWindowViewModel.Authors
                     .FirstOrDefault(a => a.Id == updatedAuthor.Id);
 
-                if (existingAuthor != null)
+                if (existingAuthorViewModel != null)
                 {
-                    existingAuthor.FirstName = updatedAuthor.FirstName;
-                    existingAuthor.LastName = updatedAuthor.LastName;
-                    existingAuthor.BirthDate = updatedAuthor.BirthDate;
-                    existingAuthor.DeathDate = updatedAuthor.DeathDate;
+                    existingAuthorViewModel.FirstName = updatedAuthor.FirstName;
+                    existingAuthorViewModel.LastName = updatedAuthor.LastName;
+                    existingAuthorViewModel.BirthDate = updatedAuthor.BirthDate;
+                    existingAuthorViewModel.DeathDate = updatedAuthor.DeathDate;
 
-                    // Notify UI about changes if Author does not implement INotifyPropertyChanged
-                    var index = MainWindowViewModel.Authors.IndexOf(existingAuthor);
-                    MainWindowViewModel.Authors[index] = updatedAuthor;
+                    var index = MainWindowViewModel.Authors.IndexOf(existingAuthorViewModel);
+                    MainWindowViewModel.Authors[index] = updatedAuthorViewModel;
                 }
             }
         }

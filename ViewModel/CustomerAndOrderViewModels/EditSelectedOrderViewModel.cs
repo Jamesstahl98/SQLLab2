@@ -14,10 +14,10 @@ namespace SQLLab2.ViewModel
     {
         public class EditableBook : ViewModelBase
         {
-            private Book _selectedBook;
+            private BookViewModel _selectedBook;
             private int _amount;
 
-            public Book SelectedBook
+            public BookViewModel SelectedBook
             {
                 get => _selectedBook;
                 set
@@ -51,7 +51,7 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        public ObservableCollection<Book> AllBooks { get; set; }
+        public ObservableCollection<BookViewModel> AllBooks { get; set; }
         public MainWindowViewModel MainWindowViewModel { get; set; }
 
         public Order SelectedOrder
@@ -77,7 +77,7 @@ namespace SQLLab2.ViewModel
             if (!newOrder && mainWindowViewModel.SelectedOrder != null)
             {
                 SelectedOrder = new Order(mainWindowViewModel.SelectedOrder);
-                //THIS
+
                 EditableBooks = new ObservableCollection<EditableBook>(
                 SelectedOrder.OrderBookJts.Select(book =>
                     new EditableBook
@@ -181,9 +181,9 @@ namespace SQLLab2.ViewModel
 
             foreach (var editableBook in EditableBooks)
             {
-                var selectedBook = editableBook.SelectedBook;
+                var selectedBookViewModel = editableBook.SelectedBook;
 
-                var trackedBook = await db.Books.FirstOrDefaultAsync(b => b.Isbn == selectedBook.Isbn);
+                var trackedBook = await db.Books.FirstOrDefaultAsync(b => b.Isbn == selectedBookViewModel.Isbn);
 
                 if (trackedBook != null)
                 {
@@ -197,13 +197,13 @@ namespace SQLLab2.ViewModel
                 }
                 else
                 {
-                    db.Books.Attach(selectedBook);
+                    db.Books.Attach(selectedBookViewModel.Book);
 
                     order.OrderBookJts.Add(new OrderBookJt
                     {
                         OrderId = order.Id,
-                        BookIsbn = selectedBook.Isbn,
-                        UnitPrice = selectedBook.Price,
+                        BookIsbn = selectedBookViewModel.Isbn,
+                        UnitPrice = selectedBookViewModel.Price,
                         Amount = 1
                     });
                 }
