@@ -98,7 +98,6 @@ namespace SQLLab2.ViewModel
 
             if (!newTitle && mainWindowViewModel.SelectedBook != null)
             {
-                Debug.WriteLine(mainWindowViewModel.SelectedBook.Genres);
                 SelectedBook = new Book(mainWindowViewModel.SelectedBook);
 
                 EditableAuthors = new ObservableCollection<EditableAuthor>(
