@@ -10,13 +10,13 @@ namespace SQLLab2.ViewModel
     class RemoveGenreViewModel
     {
         public MainWindowViewModel MainWindowViewModel { get; set; }
-        public Genre GenreToDelete { get; set; }
+        public GenreViewModel GenreViewModelToDelete { get; set; }
         public DelegateCommand DeleteGenreAsyncCommand { get; private set; }
 
         public RemoveGenreViewModel(MainWindowViewModel mainWindowViewModel)
         {
             MainWindowViewModel = mainWindowViewModel;
-            GenreToDelete = MainWindowViewModel.SelectedGenre.Genre;
+            GenreViewModelToDelete = MainWindowViewModel.SelectedGenre;
 
             InitializeCommands();
         }
@@ -30,11 +30,10 @@ namespace SQLLab2.ViewModel
         {
             using var db = new BookstoreContext();
 
-            db.Remove(GenreToDelete);
+            db.Remove(GenreViewModelToDelete.Genre);
+            MainWindowViewModel.Genres.Remove(GenreViewModelToDelete);
 
             await db.SaveChangesAsync();
-            await MainWindowViewModel.RefreshGenresAsync();
-            await MainWindowViewModel.RefreshBooksAsync();
         }
     }
 }

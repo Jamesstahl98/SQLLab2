@@ -121,7 +121,8 @@ internal class CustomerViewModel : ViewModelBase
 
     public string FullName => _customer.FullName;
 
-    public ObservableCollection<OrderViewModel> Orders { get; set; }
+    public ObservableCollection<OrderViewModel> Orders { get;
+        set; }
 
     public CustomerViewModel(Customer customer)
     {

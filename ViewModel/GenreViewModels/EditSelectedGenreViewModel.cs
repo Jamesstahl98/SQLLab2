@@ -44,11 +44,11 @@ namespace SQLLab2.ViewModel
             }
             else
             {
-                await db.Genres.AddAsync(new Genre() { GenreName = PendingGenreName });
+                var newGenre = new Genre() { GenreName = PendingGenreName };
+                await db.Genres.AddAsync(newGenre);
+                MainWindowViewModel.Genres.Add(new GenreViewModel(newGenre));
             }
             await db.SaveChangesAsync();
-
-            await MainWindowViewModel.RefreshGenresAsync();
         }
     }
 }

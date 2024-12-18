@@ -109,9 +109,10 @@
                                         <Run Text="{Binding BookIsbnNavigation.Title}"/>
                                         <Run Text=", ISBN13:"/>
                                         <Run Text="{Binding BookIsbnNavigation.Isbn}"/>
-                                        <Run Text=","/>
+                                        <Run Text=", Unit price:"/>
                                         <Run Text="{Binding UnitPrice}"/>
-                                        <Run Text="SEK"/>
+                                        <Run Text=", Amount:"/>
+                                        <Run Text="{Binding Amount}"/>
                                     </TextBlock>
                                 </DataTemplate>
                             </HierarchicalDataTemplate.ItemTemplate>

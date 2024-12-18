@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Remove Genre" Height="Auto" Width="260">
     <StackPanel>
-        <TextBlock Text="{Binding GenreToDelete.GenreName,
+        <TextBlock Text="{Binding GenreViewModelToDelete.GenreName,
                      StringFormat=You are about to delete the genre {0} Proceed?}"
                    TextWrapping="Wrap"
                    Margin="40"/>

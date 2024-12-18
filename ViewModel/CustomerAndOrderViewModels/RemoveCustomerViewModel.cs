@@ -10,13 +10,13 @@ namespace SQLLab2.ViewModel
     class RemoveCustomerViewModel
     {
         public MainWindowViewModel MainWindowViewModel { get; set; }
-        public Customer CustomerToDelete { get; set; }
+        public CustomerViewModel CustomerViewModelToDelete { get; set; }
         public DelegateCommand DeleteCustomerAsyncCommand { get; private set; }
 
         public RemoveCustomerViewModel(MainWindowViewModel mainWindowViewModel)
         {
             MainWindowViewModel = mainWindowViewModel;
-            CustomerToDelete = MainWindowViewModel.SelectedCustomer.Customer;
+            CustomerViewModelToDelete = MainWindowViewModel.SelectedCustomer;
 
             InitializeCommands();
         }
@@ -30,10 +30,10 @@ namespace SQLLab2.ViewModel
         {
             using var db = new BookstoreContext();
 
-            db.Remove(CustomerToDelete);
+            db.Remove(CustomerViewModelToDelete.Customer);
 
             await db.SaveChangesAsync();
-            await MainWindowViewModel.RefreshCustomersAsync();
+            MainWindowViewModel.Customers.Remove(CustomerViewModelToDelete);
         }
     }
 }

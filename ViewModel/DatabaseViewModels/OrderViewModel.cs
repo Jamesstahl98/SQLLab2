@@ -10,6 +10,7 @@ namespace SQLLab2.ViewModel;
 internal class OrderViewModel : ViewModelBase
 {
     private readonly Order _order;
+    private CustomerViewModel _customer;
 
     public Order Order => _order;
 
@@ -93,12 +94,13 @@ internal class OrderViewModel : ViewModelBase
 
     public CustomerViewModel Customer
     {
-        get => new CustomerViewModel(_order.Customer);
+        get => _customer;
         set
         {
-            if (_order.Customer != value?.Customer)
+            if (_customer != value)
             {
-                _order.Customer = value?.Customer;
+                _customer = value;
+                _order.Customer = _customer?.Customer;
                 RaisePropertyChanged();
             }
         }

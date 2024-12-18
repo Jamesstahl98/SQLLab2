@@ -1,4 +1,5 @@
-﻿using SQLLab2.Commands;
+﻿using Microsoft.EntityFrameworkCore;
+using SQLLab2.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,13 @@ namespace SQLLab2.ViewModel
     internal class RemoveOrderViewModel
     {
         public MainWindowViewModel MainWindowViewModel { get; set; }
-        public Order OrderToDelete { get; set; }
+        public OrderViewModel OrderViewModelToDelete { get; set; }
         public DelegateCommand DeleteOrderAsyncCommand { get; private set; }
 
         public RemoveOrderViewModel(MainWindowViewModel mainWindowViewModel)
         {
             MainWindowViewModel = mainWindowViewModel;
-            OrderToDelete = MainWindowViewModel.SelectedOrder.Order;
+            OrderViewModelToDelete = MainWindowViewModel.SelectedOrder;
 
             InitializeCommands();
         }
@@ -30,10 +31,23 @@ namespace SQLLab2.ViewModel
         {
             using var db = new BookstoreContext();
 
-            db.Remove(OrderToDelete);
+            var orderToDelete = await db.Orders
+                .Include(o => o.OrderBookJts)
+                .FirstOrDefaultAsync(o => o.Id == OrderViewModelToDelete.Order.Id);
 
-            await db.SaveChangesAsync();
-            await MainWindowViewModel.RefreshCustomersAsync();
+            if (orderToDelete != null)
+            {
+                db.Remove(orderToDelete);
+                await db.SaveChangesAsync();
+
+                var customerViewModel = MainWindowViewModel.Customers
+                    .FirstOrDefault(c => c.Id == OrderViewModelToDelete.CustomerId);
+
+                if (customerViewModel != null)
+                {
+                    customerViewModel.Orders.Remove(OrderViewModelToDelete);
+                }
+            }
         }
     }
 }

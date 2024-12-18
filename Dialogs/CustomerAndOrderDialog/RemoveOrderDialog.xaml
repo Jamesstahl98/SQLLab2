@@ -8,7 +8,7 @@
         Title="Remove Order" Height="260" Width="250">
     <Grid>
         <StackPanel>
-            <TextBlock Text="{Binding OrderToDelete.Id,
+            <TextBlock Text="{Binding OrderViewModelToDelete.Id,
                          StringFormat=You are about to delete the order with the ID: {0}. Proceed?}"
                    TextWrapping="Wrap"
                    Margin="40"/>

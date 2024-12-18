@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using SQLLab2.Commands;
 using System;
 using System.Collections.Generic;
@@ -122,7 +123,7 @@ namespace SQLLab2.ViewModel
             using var db = new BookstoreContext();
 
             var originalOrder = await db.Orders
-                .Include(b => b.OrderBookJts)
+                .Include(o => o.OrderBookJts)
                 .FirstOrDefaultAsync(o => o.Id == SelectedOrder.Id);
 
             if (originalOrder == null)
@@ -132,28 +133,24 @@ namespace SQLLab2.ViewModel
             }
 
             SaveChangesToOrder(originalOrder);
-
-            if (isNewOrder)
-            {
-                try
-                {
-                    await db.Orders.AddAsync(originalOrder);
-                }
-                catch (Exception ex)
-                {
-                    MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
-                    return;
-                }
-            }
-
             await AddBooksToOrderAsync(originalOrder, db);
             try
             {
-                await db.SaveChangesAsync();
-
-                await MainWindowViewModel.RefreshCustomersAsync();
+                if(isNewOrder)
+                {
+                    await db.Orders.AddAsync(originalOrder);
+                    await db.SaveChangesAsync();
+                    var orderViewModel = new OrderViewModel(originalOrder);
+                    orderViewModel.Customer = MainWindowViewModel.SelectedCustomer;
+                    MainWindowViewModel.SelectedCustomer.Orders.Add(orderViewModel);
+                }
+                else
+                {
+                    await db.SaveChangesAsync();
+                    MainWindowViewModel.SelectedOrder = new OrderViewModel(originalOrder);
+                }
             }
-            catch (Exception ex)
+            catch(SqlException ex)
             {
                 MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
             }
@@ -187,13 +184,23 @@ namespace SQLLab2.ViewModel
 
                 if (trackedBook != null)
                 {
-                    order.OrderBookJts.Add(new OrderBookJt
+                    var existingOrderBookJt = order.OrderBookJts
+                        .FirstOrDefault(ob => ob.BookIsbn == trackedBook.Isbn);
+
+                    if (existingOrderBookJt != null)
                     {
-                        OrderId = order.Id,
-                        BookIsbn = trackedBook.Isbn,
-                        UnitPrice = trackedBook.Price,
-                        Amount = 1
-                    });
+                        existingOrderBookJt.Amount += 1;
+                    }
+                    else
+                    {
+                        order.OrderBookJts.Add(new OrderBookJt
+                        {
+                            OrderId = order.Id,
+                            BookIsbn = trackedBook.Isbn,
+                            UnitPrice = trackedBook.Price,
+                            Amount = 1
+                        });
+                    }
                 }
                 else
                 {

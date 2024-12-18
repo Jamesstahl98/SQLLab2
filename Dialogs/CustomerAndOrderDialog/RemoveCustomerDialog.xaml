@@ -8,7 +8,7 @@
         Title="Remove Customer" Height="260" Width="250">
     <Grid>
         <StackPanel>
-            <TextBlock Text="{Binding CustomerToDelete.FullName,
+            <TextBlock Text="{Binding CustomerViewModelToDelete.FullName,
                      StringFormat=You are about to delete the customer {0} Proceed?}"
                TextWrapping="Wrap"
                Margin="40"/>

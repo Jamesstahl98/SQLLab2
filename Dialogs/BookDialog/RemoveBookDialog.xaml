@@ -8,7 +8,7 @@
         Title="Remove Title" Height="260" Width="250">
     <Grid>
         <StackPanel>
-            <TextBlock Text="{Binding BookToDelete.Title,
+            <TextBlock Text="{Binding BookViewModelToDelete.Title,
                              StringFormat=You are about to delete the book {0} Proceed?}"
                        TextWrapping="Wrap"
                        Margin="40"/>

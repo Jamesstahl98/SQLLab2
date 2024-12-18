@@ -23,6 +23,7 @@ namespace SQLLab2.ViewModel
         private ObservableCollection<GenreViewModel> _genres;
         private ObservableCollection<BookViewModel> _books;
         private ObservableCollection<CustomerViewModel> _customers;
+        private ObservableCollection<OrderViewModel> _orders;
         private StoreSupplyViewModel _selectedStoreSupply;
         private BookViewModel _selectedBook;
         private AuthorViewModel _selectedAuthor;
@@ -75,6 +76,15 @@ namespace SQLLab2.ViewModel
             set
             {
                 _customers = value;
+                RaisePropertyChanged();
+            }
+        }
+        public ObservableCollection<OrderViewModel> Orders
+        {
+            get => _orders;
+            set
+            {
+                _orders = value;
                 RaisePropertyChanged();
             }
         }
@@ -354,6 +364,11 @@ namespace SQLLab2.ViewModel
                           .ToListAsync());
                 Customers = new ObservableCollection<CustomerViewModel>(
                     customers.Select(c => new CustomerViewModel(c)));
+
+                var orders = new ObservableCollection<Order>(
+                    db.Orders);
+                Orders = new ObservableCollection<OrderViewModel>(
+                    orders.Select(o => new OrderViewModel(o)));
             }
             catch (Exception ex)
             {

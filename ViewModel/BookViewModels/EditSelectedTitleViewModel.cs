@@ -212,9 +212,9 @@ namespace SQLLab2.ViewModel
 
                 if (isNewBook)
                 {
-                    await MainWindowViewModel.AddBookToStoreSuppliesAsync(originalBook);
+                    MainWindowViewModel.Books.Add(new BookViewModel(originalBook));
+                    MainWindowViewModel.AddBookToStoreSuppliesAsync(originalBook);
                 }
-                await MainWindowViewModel.RefreshBooksAsync();
             }
             catch (Exception ex)
             {

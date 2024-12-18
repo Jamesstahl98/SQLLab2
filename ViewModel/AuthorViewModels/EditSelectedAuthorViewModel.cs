@@ -66,7 +66,10 @@ namespace SQLLab2.ViewModel
             {
                 await db.SaveChangesAsync();
 
-                UpdateMainWindowAuthorsCollection(originalAuthor, isNewAuthor);
+                if(isNewAuthor)
+                {
+                    MainWindowViewModel.Authors.Add(new AuthorViewModel(originalAuthor));
+                }
             }
 
             catch (DbUpdateException ex)
@@ -84,30 +87,6 @@ namespace SQLLab2.ViewModel
             author.LastName = SelectedAuthorViewModel.LastName;
             author.BirthDate = SelectedAuthorViewModel.BirthDate;
             author.DeathDate = SelectedAuthorViewModel.DeathDate;
-        }
-        private void UpdateMainWindowAuthorsCollection(Author updatedAuthor, bool isNewAuthor)
-        {
-            var updatedAuthorViewModel = new AuthorViewModel(updatedAuthor);
-            if (isNewAuthor)
-            {
-                MainWindowViewModel.Authors.Add(updatedAuthorViewModel);
-            }
-            else
-            {
-                var existingAuthorViewModel = MainWindowViewModel.Authors
-                    .FirstOrDefault(a => a.Id == updatedAuthor.Id);
-
-                if (existingAuthorViewModel != null)
-                {
-                    existingAuthorViewModel.FirstName = updatedAuthor.FirstName;
-                    existingAuthorViewModel.LastName = updatedAuthor.LastName;
-                    existingAuthorViewModel.BirthDate = updatedAuthor.BirthDate;
-                    existingAuthorViewModel.DeathDate = updatedAuthor.DeathDate;
-
-                    var index = MainWindowViewModel.Authors.IndexOf(existingAuthorViewModel);
-                    MainWindowViewModel.Authors[index] = updatedAuthorViewModel;
-                }
-            }
         }
     }
 }

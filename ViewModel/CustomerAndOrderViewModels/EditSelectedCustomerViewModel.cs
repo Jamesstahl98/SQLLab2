@@ -61,7 +61,10 @@ namespace SQLLab2.ViewModel
             {
                 await db.SaveChangesAsync();
 
-                await MainWindowViewModel.RefreshCustomersAsync();
+                if (isNewCustomer)
+                {
+                    MainWindowViewModel.Customers.Add(new CustomerViewModel(originalCustomer));
+                }
             }
 
             catch (DbUpdateException ex)
