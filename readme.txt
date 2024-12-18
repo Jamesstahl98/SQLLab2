@@ -1,0 +1,2 @@
+To Run the project you will need to add the key "ConnectionString" to user secrets. This key should contain the connection string to the server.
+Other Nuget packages used in this project are FontAwesome.Sharp, Microsoft.EntityFrameWorkCore.SqlServer and Microsoft.EntityFrameworkCore.Tools.
