@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SQLLab2.Dialogs"
         mc:Ignorable="d"
-        Title="Remove Genre" Height="Auto" Width="260">
+        Title="Remove Genre" Height="300" Width="260">
     <StackPanel>
         <TextBlock Text="{Binding GenreViewModelToDelete.GenreName,
                      StringFormat=You are about to delete the genre {0} Proceed?}"

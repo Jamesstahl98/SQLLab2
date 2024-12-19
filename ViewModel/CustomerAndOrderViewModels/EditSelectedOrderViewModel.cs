@@ -135,26 +135,41 @@ class EditSelectedOrderViewModel : ViewModelBase
 
         SaveChangesToOrder(originalOrder);
         await AddBooksToOrderAsync(originalOrder, db);
-        try
-        {
             if(isNewOrder)
             {
-                await db.Orders.AddAsync(originalOrder);
-                await db.SaveChangesAsync();
-                var orderViewModel = new OrderViewModel(originalOrder);
-                orderViewModel.Customer = MainWindowViewModel.SelectedCustomer;
-                MainWindowViewModel.SelectedCustomer.Orders.Add(orderViewModel);
+                try
+                {
+                    await db.Orders.AddAsync(originalOrder);
+                    await db.SaveChangesAsync();
+                    var orderViewModel = new OrderViewModel(originalOrder);
+                    orderViewModel.Customer = MainWindowViewModel.SelectedCustomer;
+                    MainWindowViewModel.SelectedCustomer.Orders.Add(orderViewModel);
+                }
+                catch(Exception ex)
+                {
+                    MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
+                }
             }
             else
             {
-                await db.SaveChangesAsync();
-                MainWindowViewModel.SelectedOrder = new OrderViewModel(originalOrder);
+                try
+                {
+                    await db.SaveChangesAsync();
+                    MainWindowViewModel.SelectedOrder = new OrderViewModel(originalOrder);
+                    var orderBookJts = originalOrder.OrderBookJts;
+                    SelectedOrder.OrderBookJts.Clear();
+                    foreach (var orderBookJt in orderBookJts)
+                    {
+                        SelectedOrder.OrderBookJts.Add(orderBookJt);
+                    }
+                    MainWindowViewModel.SelectedCustomer.Orders.Remove(SelectedOrder);
+                    MainWindowViewModel.SelectedCustomer.Orders.Add(SelectedOrder);
+                }
+                catch(Exception ex)
+                {
+                    MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
+                }
             }
-        }
-        catch(SqlException ex)
-        {
-            MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
-        }
     }
 
     private void SaveChangesToOrder(Order order)
@@ -215,12 +230,6 @@ class EditSelectedOrderViewModel : ViewModelBase
                     Amount = 1
                 });
             }
-        }
-        var orderBookJts = order.OrderBookJts;
-        SelectedOrder.OrderBookJts.Clear();
-        foreach(var orderBookJt in orderBookJts)
-        {
-            SelectedOrder.OrderBookJts.Add(orderBookJt);
         }
     }
 }

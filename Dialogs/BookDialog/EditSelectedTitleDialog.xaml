@@ -33,8 +33,7 @@
                    Margin="0,20,0,0"/>
             <ComboBox Width="200"
                       ItemsSource="{Binding MainWindowViewModel.Publishers}"
-                      SelectedItem="{Binding SelectedBook.Publisher}"
-                      SelectedValuePath="Id"
+                      SelectedItem="{Binding SelectedBook.Publisher, Mode=TwoWay}"
                       DisplayMemberPath="Name"/>
 
             <Label Content="Date published (xxxx-xx-xx):"

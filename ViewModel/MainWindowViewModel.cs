@@ -7,6 +7,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Remoting;
 using System.Text;
@@ -156,7 +157,7 @@ class MainWindowViewModel : ViewModelBase
             .Include(b => b.Genres)
             .SingleOrDefaultAsync(b => b.Isbn == SelectedStoreSupply.Isbn);
 
-        SelectedBook = book != null ? new BookViewModel(book) : null;
+        SelectedBook = Books.FirstOrDefault(b => b.Isbn == book.Isbn);
     }
 
     public DelegateCommand CreateNewDialogCommand { get; private set; }
@@ -311,8 +312,6 @@ class MainWindowViewModel : ViewModelBase
             Books = new ObservableCollection<BookViewModel>(
                 books.Select(b => new BookViewModel(b))
             );
-
-            //await ChangeStoreAsync(1);
         }
         catch (Exception ex)
         {

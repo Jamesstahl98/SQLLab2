@@ -22,10 +22,6 @@ namespace SQLLab2.ViewModel
         {
             _book = book ?? throw new ArgumentNullException(nameof(book));
         }
-        public BookViewModel()
-        {
-
-        }
 
         private string _isbn;
         public string Isbn
@@ -114,14 +110,11 @@ namespace SQLLab2.ViewModel
         private Publisher? _publisher;
         public Publisher? Publisher
         {
-            get => _publisher != null ? _publisher : _book.Publisher;
+            get => _publisher ?? _book.Publisher;
             set
             {
-                if (_publisher != value)
-                {
                     _publisher = value;
                     RaisePropertyChanged();
-                }
             }
         }
 

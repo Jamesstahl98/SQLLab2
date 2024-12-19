@@ -26,7 +26,7 @@ namespace SQLLab2.ViewModel
             {
                 SelectedCustomer = new CustomerViewModel(new Customer());
             }
-
+            
             InitializeCommands();
         }
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -90,13 +91,15 @@ internal class EditSelectedTitleViewModel : ViewModelBase
     public EditSelectedTitleViewModel(MainWindowViewModel mainWindowViewModel, bool newTitle)
     {
         MainWindowViewModel = mainWindowViewModel;
-
+        
         AllAuthors = MainWindowViewModel.Authors;
         AllGenres = MainWindowViewModel.Genres;
 
         if (!newTitle && mainWindowViewModel.SelectedBook != null)
         {
             SelectedBook = mainWindowViewModel.SelectedBook;
+            SelectedBook.Publisher = MainWindowViewModel.Publishers
+                .FirstOrDefault(p => p.Id == SelectedBook.Publisher.Id);
 
             EditableAuthors = new ObservableCollection<EditableAuthor>(
                 SelectedBook.Authors.Select(author =>

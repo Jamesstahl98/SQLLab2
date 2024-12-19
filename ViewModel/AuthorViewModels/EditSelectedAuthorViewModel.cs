@@ -10,83 +10,82 @@ using System.Text;
 using System.Threading.Tasks;
 using static SQLLab2.ViewModel.EditSelectedTitleViewModel;
 
-namespace SQLLab2.ViewModel
+namespace SQLLab2.ViewModel;
+
+internal class EditSelectedAuthorViewModel : ViewModelBase
 {
-    internal class EditSelectedAuthorViewModel : ViewModelBase
+    public MainWindowViewModel MainWindowViewModel { get; set; }
+    public AuthorViewModel SelectedAuthorViewModel { get; set; }
+    public DelegateCommand UpdateAuthorAsyncCommand { get; private set; }
+
+    public EditSelectedAuthorViewModel(MainWindowViewModel mainWindowViewModel, bool newAuthor)
     {
-        public MainWindowViewModel MainWindowViewModel { get; set; }
-        public AuthorViewModel SelectedAuthorViewModel { get; set; }
-        public DelegateCommand UpdateAuthorAsyncCommand { get; private set; }
+        MainWindowViewModel = mainWindowViewModel;
 
-        public EditSelectedAuthorViewModel(MainWindowViewModel mainWindowViewModel, bool newAuthor)
+        if (!newAuthor && mainWindowViewModel.SelectedAuthor != null)
         {
-            MainWindowViewModel = mainWindowViewModel;
-
-            if (!newAuthor && mainWindowViewModel.SelectedAuthor != null)
-            {
-                SelectedAuthorViewModel = mainWindowViewModel.SelectedAuthor;
-            }
-            else
-            {
-                SelectedAuthorViewModel = new AuthorViewModel(new Author());
-            }
-
-            InitializeCommands();
+            SelectedAuthorViewModel = mainWindowViewModel.SelectedAuthor;
+        }
+        else
+        {
+            SelectedAuthorViewModel = new AuthorViewModel(new Author());
         }
 
-        private void InitializeCommands()
+        InitializeCommands();
+    }
+
+    private void InitializeCommands()
+    {
+        UpdateAuthorAsyncCommand = new DelegateCommand(async obj => await (UpdateAuthorAsync(obj)));
+    }
+
+    private async Task UpdateAuthorAsync(object obj)
+    {
+        bool isNewAuthor = false;
+
+        using var db = new BookstoreContext();
+
+        var originalAuthor = await db.Authors
+            .Where(a => a.Id == SelectedAuthorViewModel.Author.Id)
+            .FirstOrDefaultAsync();
+
+        if (originalAuthor == null)
         {
-            UpdateAuthorAsyncCommand = new DelegateCommand(async obj => await (UpdateAuthorAsync(obj)));
+            originalAuthor = new Author();
+            isNewAuthor = true;
         }
 
-        private async Task UpdateAuthorAsync(object obj)
+        SaveChangesToAuthor(originalAuthor);
+
+        if(isNewAuthor)
         {
-            bool isNewAuthor = false;
+            await db.Authors.AddAsync(originalAuthor);
+        }
 
-            using var db = new BookstoreContext();
-
-            var originalAuthor = await db.Authors
-                .Where(a => a.Id == SelectedAuthorViewModel.Author.Id)
-                .FirstOrDefaultAsync();
-
-            if (originalAuthor == null)
-            {
-                originalAuthor = new Author();
-                isNewAuthor = true;
-            }
-
-            SaveChangesToAuthor(originalAuthor);
+        try
+        {
+            await db.SaveChangesAsync();
 
             if(isNewAuthor)
             {
-                await db.Authors.AddAsync(originalAuthor);
-            }
-
-            try
-            {
-                await db.SaveChangesAsync();
-
-                if(isNewAuthor)
-                {
-                    MainWindowViewModel.Authors.Add(new AuthorViewModel(originalAuthor));
-                }
-            }
-
-            catch (DbUpdateException ex)
-            {
-                MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
+                MainWindowViewModel.Authors.Add(new AuthorViewModel(originalAuthor));
             }
         }
 
-        private void SaveChangesToAuthor(Author author)
+        catch (DbUpdateException ex)
         {
-            if (SelectedAuthorViewModel == null || author == null)
-                throw new ArgumentNullException(nameof(SelectedAuthorViewModel));
-
-            author.FirstName = SelectedAuthorViewModel.FirstName;
-            author.LastName = SelectedAuthorViewModel.LastName;
-            author.BirthDate = SelectedAuthorViewModel.BirthDate;
-            author.DeathDate = SelectedAuthorViewModel.DeathDate;
+            MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
         }
+    }
+
+    private void SaveChangesToAuthor(Author author)
+    {
+        if (SelectedAuthorViewModel == null || author == null)
+            throw new ArgumentNullException(nameof(SelectedAuthorViewModel));
+
+        author.FirstName = SelectedAuthorViewModel.FirstName;
+        author.LastName = SelectedAuthorViewModel.LastName;
+        author.BirthDate = SelectedAuthorViewModel.BirthDate;
+        author.DeathDate = SelectedAuthorViewModel.DeathDate;
     }
 }
