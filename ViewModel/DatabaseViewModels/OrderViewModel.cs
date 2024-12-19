@@ -108,9 +108,18 @@ internal class OrderViewModel : ViewModelBase
 
     public ObservableCollection<OrderBookJt> OrderBookJts { get; set; }
 
-    public OrderViewModel(Order order)
+    public OrderViewModel(Order order, CustomerViewModel customerViewModel = null)
     {
         _order = order ?? throw new ArgumentNullException(nameof(order));
         OrderBookJts = new ObservableCollection<OrderBookJt>(_order.OrderBookJts);
+
+        if (customerViewModel != null)
+        {
+            Customer = customerViewModel;
+        }
+        else if (order.Customer != null)
+        {
+            Customer = new CustomerViewModel(order.Customer, true);
+        }
     }
 }

@@ -121,13 +121,20 @@ internal class CustomerViewModel : ViewModelBase
 
     public string FullName => _customer.FullName;
 
-    public ObservableCollection<OrderViewModel> Orders { get;
-        set; }
+    public ObservableCollection<OrderViewModel> Orders { get; set; }
 
-    public CustomerViewModel(Customer customer)
+    public CustomerViewModel(Customer customer, bool skipOrderInitialization = false)
     {
         _customer = customer ?? throw new ArgumentNullException(nameof(customer));
-        Orders = new ObservableCollection<OrderViewModel>(
-            _customer.Orders.Select(order => new OrderViewModel(order)));
+
+        if (!skipOrderInitialization)
+        {
+            Orders = new ObservableCollection<OrderViewModel>(
+                _customer.Orders.Select(order => new OrderViewModel(order, this)));
+        }
+        else
+        {
+            Orders = new ObservableCollection<OrderViewModel>();
+        }
     }
 }

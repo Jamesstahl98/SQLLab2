@@ -1,4 +1,5 @@
-﻿using SQLLab2.Commands;
+﻿using Microsoft.EntityFrameworkCore;
+using SQLLab2.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +31,16 @@ namespace SQLLab2.ViewModel
         {
             using var db = new BookstoreContext();
 
-            db.Remove(AuthorViewModelToDelete.Author);
+            var authorToDelete = await db.Authors
+                                        .AsNoTracking()
+                                        .FirstOrDefaultAsync(a => a.Id == AuthorViewModelToDelete.Author.Id);
 
-            await db.SaveChangesAsync();
+            if (authorToDelete != null)
+            {
+                db.Authors.Remove(authorToDelete);
+                await db.SaveChangesAsync();
+            }
+
             MainWindowViewModel.Authors.Remove(AuthorViewModelToDelete);
         }
     }

@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace SQLLab2.ViewModel
@@ -101,27 +102,25 @@ namespace SQLLab2.ViewModel
                 SelectedBook = mainWindowViewModel.SelectedBook;
 
                 EditableAuthors = new ObservableCollection<EditableAuthor>(
-                SelectedBook.Authors.Select(author =>
-                    new EditableAuthor
-                    {
-                        SelectedAuthor = AllAuthors.FirstOrDefault(a => a.Id == author.Id) ?? AllAuthors.FirstOrDefault()
-                    })
+                    SelectedBook.Authors.Select(author =>
+                        new EditableAuthor
+                        {
+                            SelectedAuthor = AllAuthors.FirstOrDefault(a => a.Id == author.Id) ?? AllAuthors.FirstOrDefault()
+                        })
                 );
 
                 EditableGenres = new ObservableCollection<EditableGenre>(
-                SelectedBook.Genres.Select(genre =>
-                    new EditableGenre
-                    {
-                        SelectedGenre = AllGenres.FirstOrDefault(g => g.Id == genre.Id) ?? AllGenres.FirstOrDefault()
-                    })
+                    SelectedBook.Genres.Select(genre =>
+                        new EditableGenre
+                        {
+                            SelectedGenre = AllGenres.FirstOrDefault(g => g.Id == genre.Id) ?? AllGenres.FirstOrDefault()
+                        })
                 );
             }
 
             else
             {
-                //Test
                 SelectedBook = new BookViewModel(new Book());
-
                 EditableAuthors = new ObservableCollection<EditableAuthor>();
                 EditableGenres = new ObservableCollection<EditableGenre>();
             }
@@ -190,7 +189,6 @@ namespace SQLLab2.ViewModel
                     return;
                 }
             }
-
             if (SelectedBook.Publisher != null)
             {
                 var trackedPublisher = await db.Publishers.FirstOrDefaultAsync(p => p.Id == SelectedBook.Publisher.Id);
@@ -206,6 +204,7 @@ namespace SQLLab2.ViewModel
 
             await AddAuthorsToBookAsync(originalBook, db);
             await AddGenresToBookAsync(originalBook, db);
+
             try
             {
                 await db.SaveChangesAsync();
@@ -215,10 +214,27 @@ namespace SQLLab2.ViewModel
                     MainWindowViewModel.Books.Add(new BookViewModel(originalBook));
                     MainWindowViewModel.AddBookToStoreSuppliesAsync(originalBook);
                 }
+                else
+                {
+                    var authors = originalBook.Authors;
+                    SelectedBook.Authors.Clear();
+                    foreach (var author in authors)
+                    {
+                        SelectedBook.Authors.Add(author);
+                    }
+
+                    var genres = originalBook.Genres;
+                    SelectedBook.Genres.Clear();
+                    foreach (var genre in genres)
+                    {
+                        SelectedBook.Genres.Add(genre);
+                    }
+                }
             }
             catch (Exception ex)
             {
                 MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
+                return;
             }
         }
 

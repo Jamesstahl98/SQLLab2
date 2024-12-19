@@ -46,11 +46,6 @@ namespace SQLLab2.Dialogs
                 viewModel.SelectedOrder = order;
                 viewModel.SelectedCustomer = order.Customer;
             }
-            else if (e.NewValue is OrderBookJt orderBookJt)
-            {
-                viewModel.SelectedOrder = new OrderViewModel(orderBookJt.Order);
-                viewModel.SelectedCustomer = new CustomerViewModel(orderBookJt.Order.Customer);
-            }
         }
     }
 }
