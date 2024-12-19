@@ -45,10 +45,4 @@ internal class GenreViewModel : ViewModelBase
             }
         }
     }
-
-    public ObservableCollection<BookViewModel> Books
-    {
-        get => new ObservableCollection<BookViewModel>(
-            _genre.BookIsbns.Select(b => new BookViewModel(b)));
-    }
 }

@@ -271,8 +271,15 @@ class MainWindowViewModel : ViewModelBase
 
             store.StoreSupplies.Add(new StoreSupply() { Isbn = book.Isbn, Amount = 0, StoreId = i });
         }
-
-        await db.SaveChangesAsync();
+        try
+        {
+            await db.SaveChangesAsync();
+            await ChangeStoreAsync(1);
+        }
+        catch(Exception ex)
+        {
+            ShowMessage?.Invoke($"Error adding new book to store supply: {ex.InnerException?.Message ?? ex.Message}");
+        }
     }
     public async Task RefreshAuthorsAsync()
     {
@@ -305,7 +312,7 @@ class MainWindowViewModel : ViewModelBase
                 books.Select(b => new BookViewModel(b))
             );
 
-            await ChangeStoreAsync(1);
+            //await ChangeStoreAsync(1);
         }
         catch (Exception ex)
         {

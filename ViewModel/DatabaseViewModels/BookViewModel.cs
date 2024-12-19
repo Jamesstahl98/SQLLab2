@@ -127,14 +127,6 @@ namespace SQLLab2.ViewModel
 
         public ObservableCollection<Author> Authors => _book.Authors;
 
-        public string AuthorNames => _book.Authors != null && _book.Authors.Any()
-            ? string.Join(", ", _book.Authors.Select(a => a.FullName))
-            : "No Authors";
-
         public ObservableCollection<Genre> Genres => _book.Genres;
-
-        public string GenreNames => _book.Genres != null && _book.Genres.Any()
-            ? string.Join(", ", _book.Genres.Select(g => g.GenreName))
-            : "No Genres";
     }
 }
