@@ -58,6 +58,7 @@ class MainWindowViewModel : ViewModelBase
         { 
             _genres = value;
             RaisePropertyChanged();
+            RaisePropertyChanged(nameof(StoreSupply));
         }
     }
 
@@ -204,7 +205,7 @@ class MainWindowViewModel : ViewModelBase
         CreateDialogRequested?.Invoke(className);
     }
 
-    private async Task ChangeStoreAsync(object obj)
+    public async Task ChangeStoreAsync(object obj)
     {
         int parameterId = Convert.ToInt32(obj);
         if (parameterId is int storeId)
@@ -283,9 +284,9 @@ class MainWindowViewModel : ViewModelBase
             await db.SaveChangesAsync();
             await ChangeStoreAsync(1);
         }
-        catch(Exception ex)
+        catch (DbUpdateException ex)
         {
-            ShowMessage?.Invoke($"Error adding new book to store supply: {ex.InnerException?.Message ?? ex.Message}");
+            ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
         }
     }
     public async Task RefreshAuthorsAsync()

@@ -81,11 +81,11 @@ class EditSelectedOrderViewModel : ViewModelBase
             SelectedOrder = mainWindowViewModel.SelectedOrder;
 
             EditableBooks = new ObservableCollection<EditableBook>(
-            SelectedOrder.OrderBookJts.Select(book =>
-                new EditableBook
-                {
-                    SelectedBook = AllBooks.FirstOrDefault(b => b.Isbn == book.BookIsbn) ?? AllBooks.FirstOrDefault()
-                })
+                SelectedOrder.OrderBookJts.Select(book =>
+                    new EditableBook
+                    {
+                        SelectedBook = AllBooks.FirstOrDefault(b => b.Isbn == book.BookIsbn)
+                    })
             );
         }
 
@@ -145,7 +145,7 @@ class EditSelectedOrderViewModel : ViewModelBase
                     orderViewModel.Customer = MainWindowViewModel.SelectedCustomer;
                     MainWindowViewModel.SelectedCustomer.Orders.Add(orderViewModel);
                 }
-                catch(Exception ex)
+                catch (DbUpdateException ex)
                 {
                     MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
                 }
@@ -165,7 +165,7 @@ class EditSelectedOrderViewModel : ViewModelBase
                     MainWindowViewModel.SelectedCustomer.Orders.Remove(SelectedOrder);
                     MainWindowViewModel.SelectedCustomer.Orders.Add(SelectedOrder);
                 }
-                catch(Exception ex)
+                catch (DbUpdateException ex)
                 {
                     MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
                 }
@@ -195,6 +195,8 @@ class EditSelectedOrderViewModel : ViewModelBase
         foreach (var editableBook in EditableBooks)
         {
             var selectedBookViewModel = editableBook.SelectedBook;
+            if (selectedBookViewModel == null)
+                continue;
 
             var trackedBook = await db.Books.FirstOrDefaultAsync(b => b.Isbn == selectedBookViewModel.Isbn);
 

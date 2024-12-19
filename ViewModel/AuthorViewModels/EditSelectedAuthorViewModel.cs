@@ -76,6 +76,7 @@ internal class EditSelectedAuthorViewModel : ViewModelBase
         {
             MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
         }
+        await MainWindowViewModel.ChangeStoreAsync(1);
     }
 
     private void SaveChangesToAuthor(Author author)

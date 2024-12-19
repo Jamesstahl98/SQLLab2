@@ -10,8 +10,6 @@ namespace SQLLab2;
 
 public partial class BookstoreContext : DbContext
 {
-    [DllImport("Kernel32")]
-    public static extern void AllocConsole();
     public BookstoreContext()
     {
     }
@@ -48,7 +46,6 @@ public partial class BookstoreContext : DbContext
         var config = new ConfigurationBuilder().AddUserSecrets<BookstoreContext>().Build();
         var connectionString = config["ConnectionString"];
         optionsBuilder.UseSqlServer(connectionString);
-        AllocConsole();
         optionsBuilder
             .LogTo(
                 message => MyLogger(message),

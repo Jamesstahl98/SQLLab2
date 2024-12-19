@@ -183,7 +183,7 @@ internal class EditSelectedTitleViewModel : ViewModelBase
             {
                 await db.Books.AddAsync(originalBook);
             }
-            catch (Exception ex)
+            catch (DbUpdateException ex)
             {
                 MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
                 return;
@@ -220,22 +220,23 @@ internal class EditSelectedTitleViewModel : ViewModelBase
                 SelectedBook.Authors.Clear();
                 foreach (var author in authors)
                 {
-                    SelectedBook.Authors.Add(author);
+                    SelectedBook.Authors.Add(new AuthorViewModel(author));
                 }
 
                 var genres = originalBook.Genres;
                 SelectedBook.Genres.Clear();
                 foreach (var genre in genres)
                 {
-                    SelectedBook.Genres.Add(genre);
+                    SelectedBook.Genres.Add(new GenreViewModel(genre));
                 }
             }
         }
-        catch (Exception ex)
+        catch (DbUpdateException ex)
         {
             MainWindowViewModel.ShowMessage?.Invoke($"Database Update Error: {ex.InnerException?.Message ?? ex.Message}");
             return;
         }
+        await MainWindowViewModel.ChangeStoreAsync(1);
     }
 
     private void SaveChangesToBook(Book book)

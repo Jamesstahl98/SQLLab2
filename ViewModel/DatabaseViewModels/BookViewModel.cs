@@ -21,6 +21,14 @@ namespace SQLLab2.ViewModel
         public BookViewModel(Book book)
         {
             _book = book ?? throw new ArgumentNullException(nameof(book));
+
+            Genres = new ObservableCollection<GenreViewModel>(
+                (_book.Genres ?? new ObservableCollection<Genre>()).Select(g => new GenreViewModel(g))
+            );
+
+            Authors = new ObservableCollection<AuthorViewModel>(
+                (_book.Authors ?? new ObservableCollection<Author>()).Select(a => new AuthorViewModel(a))
+            );
         }
 
         private string _isbn;
@@ -118,8 +126,8 @@ namespace SQLLab2.ViewModel
             }
         }
 
-        public ObservableCollection<Author> Authors => _book.Authors;
+        public ObservableCollection<AuthorViewModel> Authors { get; }
 
-        public ObservableCollection<Genre> Genres => _book.Genres;
+        public ObservableCollection<GenreViewModel> Genres { get; set; }
     }
 }

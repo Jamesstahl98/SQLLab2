@@ -71,7 +71,7 @@ internal class AuthorViewModel : ViewModelBase
         }
     }
 
-    public string FullName => _author.FullName;
+    public string FullName => $"{FirstName} {LastName}";
 
     public ObservableCollection<Book> BookIsbns { get; set; }
 

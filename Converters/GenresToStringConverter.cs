@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLLab2.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -13,7 +14,7 @@ namespace SQLLab2.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is ObservableCollection<Genre> genres)
+            if (value is ObservableCollection<GenreViewModel> genres)
             {
                 return string.Join(", ", genres.Select(a => a.GenreName));
             }
