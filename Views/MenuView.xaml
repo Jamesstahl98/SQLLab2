@@ -4,33 +4,46 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SQLLab2.Views"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Menu>
             <MenuItem Header="_File">
                 <MenuItem Header="E_xit"
-                          InputGestureText="Alt-F4"/>
+                          InputGestureText="Alt-F4"
+                          Command="{Binding ExitProgramRequestCommand}"
+                          Icon="{fa:Icon DoorOpen}"/>
             </MenuItem>
 
             <MenuItem Header="_Edit">
                 <MenuItem Header="Edit _Authors"
                           Command="{Binding CreateNewDialogCommand}"
-                          CommandParameter="AuthorEditDialog"/>
+                          CommandParameter="AuthorEditDialog"
+                          InputGestureText="Ctrl-A"
+                          Icon="{fa:Icon Pen}"/>
                 <MenuItem Header="Edit _Titles"
                           Command="{Binding CreateNewDialogCommand}"
-                          CommandParameter="TitleEditDialog"/>
+                          CommandParameter="TitleEditDialog"
+                          InputGestureText="Ctrl-T"
+                          Icon="{fa:Icon Book}"/>
                 <MenuItem Header="Edit _Genres"
                           Command="{Binding CreateNewDialogCommand}"
-                          CommandParameter="GenreListDialog"/>
+                          CommandParameter="GenreListDialog"
+                          InputGestureText="Ctrl-G"
+                          Icon="{fa:Icon MasksTheater}"/>
                 <MenuItem Header="Edit _Customers"
                           Command="{Binding CreateNewDialogCommand}"
-                          CommandParameter="CustomerListDialog"/>
+                          CommandParameter="CustomerListDialog"
+                          InputGestureText="Ctrl-C"
+                          Icon="{fa:Icon User}"/>
             </MenuItem>
 
             <MenuItem Header="_View">
                 <MenuItem Header="_Fullscreen"
-                          InputGestureText="Alt-Enter"/>
+                          InputGestureText="Alt-Enter"
+					      Command="{Binding ChangeWindowStateCommand}"
+                          Icon="{fa:Icon Expand}"/>
             </MenuItem>
         </Menu>
     </Grid>

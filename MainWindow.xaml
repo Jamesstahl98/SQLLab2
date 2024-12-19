@@ -11,7 +11,30 @@
     <Window.Resources>
         
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Control"
+                    Key="A"
+                    Command="{Binding CreateNewDialogCommand}"
+                    CommandParameter="AuthorEditDialog"/>
+        <KeyBinding Modifiers="Control"
+                    Key="T"
+                    Command="{Binding CreateNewDialogCommand}"
+                    CommandParameter="TitleEditDialog"/>
+        <KeyBinding Modifiers="Control"
+                Key="G"
+                Command="{Binding CreateNewDialogCommand}"
+                CommandParameter="GenreListDialog"/>
+        <KeyBinding Modifiers="Control"
+                    Key="C"
+                    Command="{Binding CreateNewDialogCommand}"
+                    CommandParameter="CustomerListDialog"/>
 
+        <KeyBinding Modifiers="Alt"
+                Key="Enter"
+                Command="{Binding ChangeWindowStateCommand}"/>
+
+    </Window.InputBindings>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

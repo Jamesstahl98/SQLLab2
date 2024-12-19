@@ -24,6 +24,8 @@ namespace SQLLab2
             DataContext = viewModel;
 
             viewModel.CreateDialogRequested += OnCreateDialogRequested;
+            viewModel.ChangeWindowStateRequested += OnChangeWindowStateRequested;
+            viewModel.RequestExit += () => Application.Current.Shutdown();
         }
 
         private void OnCreateDialogRequested(string className)
@@ -39,6 +41,17 @@ namespace SQLLab2
             {
                 Window newWindow = (Window)Activator.CreateInstance(windowType);
                 newWindow.Show();
+            }
+        }
+        private void OnChangeWindowStateRequested()
+        {
+            if (WindowState == WindowState.Maximized)
+            {
+                WindowState = WindowState.Normal;
+            }
+            else
+            {
+                WindowState = WindowState.Maximized;
             }
         }
     }

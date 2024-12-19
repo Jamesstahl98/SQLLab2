@@ -161,10 +161,13 @@ class MainWindowViewModel : ViewModelBase
     }
 
     public DelegateCommand CreateNewDialogCommand { get; private set; }
+    public DelegateCommand ChangeWindowStateCommand { get; private set; }
+    public DelegateCommand ExitProgramRequestCommand { get; private set; }
     public DelegateCommand SubtractSupplyCommand { get; private set; }
     public DelegateCommand AddSupplyCommand { get; private set; }
     public DelegateCommand ChangeStoreAsyncCommand { get; private set; }
-
+    public event Action ChangeWindowStateRequested;
+    public event Action RequestExit;
     public event Action<string> CreateDialogRequested;
     public Action<string> ShowMessage { get; set; } = message => MessageBox.Show(message);
     public MainWindowViewModel()
@@ -185,10 +188,20 @@ class MainWindowViewModel : ViewModelBase
 
     private void InitializeCommands()
     {
+        ChangeWindowStateCommand = new DelegateCommand(ChangeWindowState);
         CreateNewDialogCommand = new DelegateCommand(CreateNewDialog);
+        ExitProgramRequestCommand = new DelegateCommand(ExitProgramRequest);
         SubtractSupplyCommand = new DelegateCommand(SubtractSupply);
         AddSupplyCommand = new DelegateCommand(AddSupply);
         ChangeStoreAsyncCommand = new DelegateCommand(async obj => await ChangeStoreAsync(obj));
+    }
+    private void ExitProgramRequest(object obj) => RequestExit?.Invoke();
+    private void ChangeWindowState(object obj) => ChangeWindowStateRequested?.Invoke();
+    private void CreateNewDialog(object obj)
+    {
+        string className = obj as string;
+
+        CreateDialogRequested?.Invoke(className);
     }
 
     private async Task ChangeStoreAsync(object obj)
@@ -249,13 +262,6 @@ class MainWindowViewModel : ViewModelBase
 
             SelectedStoreSupply.Amount = storeSupplies.Amount;
         }
-    }
-
-    private void CreateNewDialog(object obj)
-    {
-        string className = obj as string;
-
-        CreateDialogRequested?.Invoke(className);
     }
     public async Task AddBookToStoreSuppliesAsync(Book book)
     {
