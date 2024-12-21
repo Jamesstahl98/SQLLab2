@@ -42,6 +42,7 @@ namespace SQLLab2.ViewModel
             }
 
             MainWindowViewModel.Books.Remove(BookViewModelToDelete);
+            MainWindowViewModel.ChangeStoreAsync(1);
         }
     }
 }
